@@ -24,7 +24,7 @@
         "audios"
       ]
     },
-    "canonical_url": {
+    "canonicalUrl": {
       "type": "string"
     },
     "metaRobots": {

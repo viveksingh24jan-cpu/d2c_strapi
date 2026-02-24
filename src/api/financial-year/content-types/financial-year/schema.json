@@ -15,7 +15,7 @@
       "type": "string",
       "required": true
     },
-    "start_year": {
+    "startYear": {
       "type": "integer"
     },
     "is_active": {

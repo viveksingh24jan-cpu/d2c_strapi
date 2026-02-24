@@ -30,18 +30,18 @@
         "footer_legal"
       ]
     },
-    "display_order": {
+    "displayOrder": {
       "type": "integer"
     },
-    "is_external": {
+    "isExternal": {
       "type": "boolean",
       "default": false
     },
-    "is_active": {
+    "isActive": {
       "type": "boolean",
       "default": true
     },
-    "open_in_new_tab": {
+    "openInNewTab": {
       "type": "boolean",
       "required": true,
       "default": false

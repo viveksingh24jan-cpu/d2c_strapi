@@ -22,13 +22,13 @@
     "Content": {
       "type": "blocks"
     },
-    "Is_mandatory": {
+    "IsMandatory": {
       "type": "boolean"
     },
-    "last_updated": {
+    "lastUpdated": {
       "type": "datetime"
     },
-    "attachment_pdf": {
+    "attachmentPdf": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
@@ -38,13 +38,10 @@
         "audios"
       ]
     },
-    "seo_title": {
-      "type": "string",
-      "maxLength": 60
-    },
-    "seo_description": {
-      "type": "text",
-      "maxLength": 160
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
     }
   }
 }

@@ -5,7 +5,7 @@
   },
   "options": {},
   "attributes": {
-    "form_name": {
+    "formName": {
       "type": "string"
     },
     "title": {

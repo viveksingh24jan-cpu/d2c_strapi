@@ -8,7 +8,7 @@ export interface DisclosuresDisclosureDocument extends Struct.ComponentSchema {
   attributes: {
     description: Schema.Attribute.Text;
     file: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    form_name: Schema.Attribute.String;
+    formName: Schema.Attribute.String;
     title: Schema.Attribute.String;
   };
 }
@@ -19,14 +19,14 @@ export interface SharedAppLinks extends Struct.ComponentSchema {
     displayName: 'app_links';
   };
   attributes: {
-    app_store_badge: Schema.Attribute.Media<
+    appStoreBadge: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
-    app_store_url: Schema.Attribute.String;
-    play_store_badge: Schema.Attribute.Media<
+    appStoreUrl: Schema.Attribute.String;
+    playStoreBadge: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
-    play_store_url: Schema.Attribute.String;
+    playStoreUrl: Schema.Attribute.String;
   };
 }
 
@@ -47,10 +47,10 @@ export interface SharedPromoCard extends Struct.ComponentSchema {
     displayName: 'promo_card';
   };
   attributes: {
-    cta_text: Schema.Attribute.String & Schema.Attribute.Required;
-    cta_url: Schema.Attribute.String & Schema.Attribute.Required;
+    ctaText: Schema.Attribute.String & Schema.Attribute.Required;
+    ctaUrl: Schema.Attribute.String & Schema.Attribute.Required;
     description: Schema.Attribute.String & Schema.Attribute.Required;
-    promo_image: Schema.Attribute.Media<
+    promoImage: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     > &
       Schema.Attribute.Required;
@@ -91,7 +91,7 @@ export interface SharedSeo extends Struct.ComponentSchema {
     name: 'Seo';
   };
   attributes: {
-    canonical_url: Schema.Attribute.String;
+    canonicalUrl: Schema.Attribute.String;
     keywords: Schema.Attribute.String;
     metaDescription: Schema.Attribute.Text;
     metaRobots: Schema.Attribute.String;

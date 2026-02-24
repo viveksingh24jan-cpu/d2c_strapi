@@ -30,19 +30,19 @@
     "badge": {
       "type": "string"
     },
-    "cta_text": {
+    "ctaText": {
       "type": "string",
       "required": true
     },
-    "cta_url": {
+    "ctaUrl": {
       "type": "string",
       "required": true
     },
-    "is_active": {
+    "isActive": {
       "type": "boolean",
       "required": true
     },
-    "sort_order": {
+    "sortOrder": {
       "type": "integer",
       "required": true
     },

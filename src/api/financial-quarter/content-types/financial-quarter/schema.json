@@ -26,7 +26,7 @@
       "component": "disclosures.disclosure-document",
       "repeatable": true
     },
-    "financial_year": {
+    "financialYear": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::financial-year.financial-year"

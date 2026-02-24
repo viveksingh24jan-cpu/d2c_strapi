@@ -5,13 +5,13 @@
   },
   "options": {},
   "attributes": {
-    "app_store_url": {
+    "appStoreUrl": {
       "type": "string"
     },
-    "play_store_url": {
+    "playStoreUrl": {
       "type": "string"
     },
-    "play_store_badge": {
+    "playStoreBadge": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
@@ -21,7 +21,7 @@
         "audios"
       ]
     },
-    "app_store_badge": {
+    "appStoreBadge": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [

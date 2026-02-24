@@ -471,7 +471,6 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    author: Schema.Attribute.Relation<'manyToOne', 'api::author.author'>;
     blocks: Schema.Attribute.DynamicZone<
       ['shared.media', 'shared.quote', 'shared.rich-text', 'shared.slider']
     >;
@@ -503,38 +502,6 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiAuthorAuthor extends Struct.CollectionTypeSchema {
-  collectionName: 'authors';
-  info: {
-    description: 'Create authors for your content';
-    displayName: 'Author';
-    pluralName: 'authors';
-    singularName: 'author';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    articles: Schema.Attribute.Relation<'oneToMany', 'api::article.article'>;
-    avatar: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    email: Schema.Attribute.String;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::author.author'
-    > &
-      Schema.Attribute.Private;
-    name: Schema.Attribute.String;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiCalculatorCalculator extends Struct.CollectionTypeSchema {
   collectionName: 'calculators';
   info: {
@@ -551,7 +518,7 @@ export interface ApiCalculatorCalculator extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    is_active: Schema.Attribute.Boolean;
+    isActive: Schema.Attribute.Boolean;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -616,7 +583,7 @@ export interface ApiFinancialQuarterFinancialQuarter
       'disclosures.disclosure-document',
       true
     >;
-    financial_year: Schema.Attribute.Relation<
+    financialYear: Schema.Attribute.Relation<
       'oneToOne',
       'api::financial-year.financial-year'
     >;
@@ -659,7 +626,7 @@ export interface ApiFinancialYearFinancialYear
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    start_year: Schema.Attribute.Integer;
+    startYear: Schema.Attribute.Integer;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -677,38 +644,38 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    app_links: Schema.Attribute.Component<'shared.app-links', false>;
-    bima_bharosa_url: Schema.Attribute.String;
+    appLinks: Schema.Attribute.Component<'shared.app-links', false>;
+    bimaBharosaUrl: Schema.Attribute.String;
     cin_number: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    footer_copyright: Schema.Attribute.Text;
-    footer_description: Schema.Attribute.Text;
-    footer_logo: Schema.Attribute.Media<
+    footerCopyright: Schema.Attribute.Text;
+    footerDescription: Schema.Attribute.Text;
+    footerLogo: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
-    gic_url: Schema.Attribute.String;
-    header_email_address: Schema.Attribute.String;
-    header_logo: Schema.Attribute.Media<
+    gicUrl: Schema.Attribute.String;
+    headerEmailAddress: Schema.Attribute.String;
+    headerLogo: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
-    header_phone_number: Schema.Attribute.String;
-    irdai_reg_number: Schema.Attribute.String & Schema.Attribute.Required;
-    irdai_url: Schema.Attribute.String;
+    headerPhoneNumber: Schema.Attribute.String;
+    irdaiRegNumber: Schema.Attribute.String & Schema.Attribute.Required;
+    irdaiUrl: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::global-config.global-config'
     > &
       Schema.Attribute.Private;
-    privacy_policy_url: Schema.Attribute.String;
+    privacyPolicyUrl: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    registered_address: Schema.Attribute.Text & Schema.Attribute.Required;
-    section_41_warning: Schema.Attribute.Blocks;
-    social_links: Schema.Attribute.Component<'shared.social-link', true>;
-    support_email: Schema.Attribute.String;
-    terms_of_service_url: Schema.Attribute.String;
+    registeredAddress: Schema.Attribute.Text & Schema.Attribute.Required;
+    section41Warning: Schema.Attribute.Blocks;
+    socialLinks: Schema.Attribute.Component<'shared.social-link', true>;
+    supportEmail: Schema.Attribute.String;
+    termsOfServiceUrl: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -786,17 +753,17 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
       'api::homepage.homepage'
     > &
       Schema.Attribute.Private;
-    navigation_footers: Schema.Attribute.Relation<
+    navigationFooters: Schema.Attribute.Relation<
       'oneToMany',
       'api::navigation-menu.navigation-menu'
     >;
-    navigation_headers: Schema.Attribute.Relation<
+    navigationHeaders: Schema.Attribute.Relation<
       'oneToMany',
       'api::navigation-menu.navigation-menu'
     >;
     promo_cards: Schema.Attribute.Component<'shared.promo-card', true>;
     publishedAt: Schema.Attribute.DateTime;
-    SEO_HOMEPAGE: Schema.Attribute.Component<'shared.seo', false>;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     Stats: Schema.Attribute.Component<'shared.stats', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -820,10 +787,10 @@ export interface ApiInsuranceProductInsuranceProduct
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    cta_text: Schema.Attribute.String & Schema.Attribute.Required;
-    cta_url: Schema.Attribute.String & Schema.Attribute.Required;
+    ctaText: Schema.Attribute.String & Schema.Attribute.Required;
+    ctaUrl: Schema.Attribute.String & Schema.Attribute.Required;
     icon: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
-    is_active: Schema.Attribute.Boolean & Schema.Attribute.Required;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.Required;
     isFeatured: Schema.Attribute.Boolean;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -834,7 +801,7 @@ export interface ApiInsuranceProductInsuranceProduct
     productDescription: Schema.Attribute.Blocks;
     productName: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    sort_order: Schema.Attribute.Integer & Schema.Attribute.Required;
+    sortOrder: Schema.Attribute.Integer & Schema.Attribute.Required;
     startingPrice: Schema.Attribute.Decimal;
     Tagline: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
@@ -862,7 +829,7 @@ export interface ApiLeadershipProfileLeadershipProfile
       Schema.Attribute.Private;
     designation: Schema.Attribute.String & Schema.Attribute.Required;
     din: Schema.Attribute.String;
-    display_order: Schema.Attribute.Integer;
+    displayrder: Schema.Attribute.Integer;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -889,15 +856,15 @@ export interface ApiLegalPageLegalPage extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    attachment_pdf: Schema.Attribute.Media<
+    attachmentPdf: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
     Content: Schema.Attribute.Blocks;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Is_mandatory: Schema.Attribute.Boolean;
-    last_updated: Schema.Attribute.DateTime;
+    IsMandatory: Schema.Attribute.Boolean;
+    lastUpdated: Schema.Attribute.DateTime;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -905,14 +872,7 @@ export interface ApiLegalPageLegalPage extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    seo_description: Schema.Attribute.Text &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 160;
-      }>;
-    seo_title: Schema.Attribute.String &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 60;
-      }>;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     slug: Schema.Attribute.UID;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -944,9 +904,9 @@ export interface ApiNavigationMenuNavigationMenu
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    display_order: Schema.Attribute.Integer;
-    is_active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    is_external: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    displayOrder: Schema.Attribute.Integer;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    isExternal: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     label: Schema.Attribute.String & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -964,7 +924,7 @@ export interface ApiNavigationMenuNavigationMenu
       ]
     > &
       Schema.Attribute.Required;
-    open_in_new_tab: Schema.Attribute.Boolean &
+    openInNewTab: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<false>;
     parent: Schema.Attribute.Relation<
@@ -1583,7 +1543,6 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::about.about': ApiAboutAbout;
       'api::article.article': ApiArticleArticle;
-      'api::author.author': ApiAuthorAuthor;
       'api::calculator.calculator': ApiCalculatorCalculator;
       'api::category.category': ApiCategoryCategory;
       'api::financial-quarter.financial-quarter': ApiFinancialQuarterFinancialQuarter;

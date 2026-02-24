@@ -14,27 +14,27 @@
     "cin_number": {
       "type": "string"
     },
-    "irdai_reg_number": {
+    "irdaiRegNumber": {
       "type": "string",
       "required": true
     },
-    "registered_address": {
+    "registeredAddress": {
       "type": "text",
       "required": true
     },
-    "section_41_warning": {
+    "section41Warning": {
       "type": "blocks"
     },
-    "irdai_url": {
+    "irdaiUrl": {
       "type": "string"
     },
-    "gic_url": {
+    "gicUrl": {
       "type": "string"
     },
-    "bima_bharosa_url": {
+    "bimaBharosaUrl": {
       "type": "string"
     },
-    "header_logo": {
+    "headerLogo": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
@@ -44,16 +44,16 @@
         "audios"
       ]
     },
-    "header_phone_number": {
+    "headerPhoneNumber": {
       "type": "string"
     },
-    "header_email_address": {
+    "headerEmailAddress": {
       "type": "string"
     },
-    "footer_description": {
+    "footerDescription": {
       "type": "text"
     },
-    "footer_logo": {
+    "footerLogo": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
@@ -63,26 +63,26 @@
         "audios"
       ]
     },
-    "privacy_policy_url": {
+    "privacyPolicyUrl": {
       "type": "string"
     },
-    "terms_of_service_url": {
+    "termsOfServiceUrl": {
       "type": "string"
     },
-    "support_email": {
+    "supportEmail": {
       "type": "string"
     },
-    "social_links": {
+    "socialLinks": {
       "type": "component",
       "component": "shared.social-link",
       "repeatable": true
     },
-    "app_links": {
+    "appLinks": {
       "type": "component",
       "component": "shared.app-links",
       "repeatable": false
     },
-    "footer_copyright": {
+    "footerCopyright": {
       "type": "text"
     }
   }

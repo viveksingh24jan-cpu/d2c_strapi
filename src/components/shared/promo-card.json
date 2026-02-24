@@ -13,15 +13,15 @@
       "type": "string",
       "required": true
     },
-    "cta_text": {
+    "ctaText": {
       "type": "string",
       "required": true
     },
-    "cta_url": {
+    "ctaUrl": {
       "type": "string",
       "required": true
     },
-    "promo_image": {
+    "promoImage": {
       "type": "media",
       "multiple": false,
       "required": true,

@@ -42,7 +42,7 @@
     "bio": {
       "type": "blocks"
     },
-    "display_order": {
+    "displayrder": {
       "type": "integer"
     }
   }

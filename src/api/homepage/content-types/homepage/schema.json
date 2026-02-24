@@ -77,17 +77,17 @@
       "component": "shared.promo-card",
       "repeatable": true
     },
-    "SEO_HOMEPAGE": {
+    "seo": {
       "type": "component",
       "component": "shared.seo",
       "repeatable": false
     },
-    "navigation_headers": {
+    "navigationHeaders": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::navigation-menu.navigation-menu"
     },
-    "navigation_footers": {
+    "navigationFooters": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::navigation-menu.navigation-menu"
