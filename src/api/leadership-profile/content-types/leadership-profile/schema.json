@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "leadership_profiles",
+  "info": {
+    "singularName": "leadership-profile",
+    "pluralName": "leadership-profiles",
+    "displayName": "LeadershipProfile"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "designation": {
+      "type": "string",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Board",
+        "KMP"
+      ]
+    },
+    "din": {
+      "type": "string"
+    },
+    "photo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "bio": {
+      "type": "blocks"
+    },
+    "display_order": {
+      "type": "integer"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "financial_years",
+  "info": {
+    "singularName": "financial-year",
+    "pluralName": "financial-years",
+    "displayName": "FinancialYear"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "start_year": {
+      "type": "integer"
+    },
+    "is_active": {
+      "type": "boolean"
+    }
+  }
+}

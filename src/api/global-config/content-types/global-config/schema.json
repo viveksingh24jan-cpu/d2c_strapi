@@ -1,0 +1,89 @@
+{
+  "kind": "singleType",
+  "collectionName": "global_configs",
+  "info": {
+    "singularName": "global-config",
+    "pluralName": "global-configs",
+    "displayName": "GlobalConfig"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "cin_number": {
+      "type": "string"
+    },
+    "irdai_reg_number": {
+      "type": "string",
+      "required": true
+    },
+    "registered_address": {
+      "type": "text",
+      "required": true
+    },
+    "section_41_warning": {
+      "type": "blocks"
+    },
+    "irdai_url": {
+      "type": "string"
+    },
+    "gic_url": {
+      "type": "string"
+    },
+    "bima_bharosa_url": {
+      "type": "string"
+    },
+    "header_logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "header_phone_number": {
+      "type": "string"
+    },
+    "header_email_address": {
+      "type": "string"
+    },
+    "footer_description": {
+      "type": "text"
+    },
+    "footer_logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "privacy_policy_url": {
+      "type": "string"
+    },
+    "terms_of_service_url": {
+      "type": "string"
+    },
+    "support_email": {
+      "type": "string"
+    },
+    "social_links": {
+      "type": "component",
+      "component": "shared.social-link",
+      "repeatable": true
+    },
+    "app_links": {
+      "type": "component",
+      "component": "shared.app-links",
+      "repeatable": false
+    },
+    "footer_copyright": {
+      "type": "text"
+    }
+  }
+}

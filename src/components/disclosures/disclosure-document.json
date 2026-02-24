@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_disclosures_disclosure_documents",
+  "info": {
+    "displayName": "DisclosureDocument"
+  },
+  "options": {},
+  "attributes": {
+    "form_name": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "description": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

@@ -9,18 +9,35 @@
   "options": {},
   "attributes": {
     "metaTitle": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "metaDescription": {
-      "type": "text",
-      "required": true
+      "type": "text"
     },
     "shareImage": {
       "type": "media",
       "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "canonical_url": {
+      "type": "string"
+    },
+    "metaRobots": {
+      "type": "string"
+    },
+    "keywords": {
+      "type": "string"
+    },
+    "ogTitle": {
+      "type": "string"
+    },
+    "ogDescription": {
+      "type": "string"
     }
   }
 }

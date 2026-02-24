@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_shared_app_links",
+  "info": {
+    "displayName": "app_links"
+  },
+  "options": {},
+  "attributes": {
+    "app_store_url": {
+      "type": "string"
+    },
+    "play_store_url": {
+      "type": "string"
+    },
+    "play_store_badge": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "app_store_badge": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  },
+  "config": {}
+}

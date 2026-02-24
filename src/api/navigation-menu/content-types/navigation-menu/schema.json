@@ -1,0 +1,62 @@
+{
+  "kind": "collectionType",
+  "collectionName": "navigation_menus",
+  "info": {
+    "singularName": "navigation-menu",
+    "pluralName": "navigation-menus",
+    "displayName": "NavigationMenu"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "location": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "header",
+        "footer_products",
+        "footer_company",
+        "footer_resources",
+        "footer_legal"
+      ]
+    },
+    "display_order": {
+      "type": "integer"
+    },
+    "is_external": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "open_in_new_tab": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "children": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::navigation-menu.navigation-menu",
+      "inversedBy": "parent"
+    },
+    "parent": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::navigation-menu.navigation-menu",
+      "mappedBy": "children"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "insurance_products",
+  "info": {
+    "singularName": "insurance-product",
+    "pluralName": "insurance-products",
+    "displayName": "InsuranceProduct"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "productName": {
+      "type": "string"
+    },
+    "productDescription": {
+      "type": "blocks"
+    },
+    "startingPrice": {
+      "type": "decimal"
+    },
+    "isFeatured": {
+      "type": "boolean"
+    },
+    "Tagline": {
+      "type": "string",
+      "required": true
+    },
+    "badge": {
+      "type": "string"
+    },
+    "cta_text": {
+      "type": "string",
+      "required": true
+    },
+    "cta_url": {
+      "type": "string",
+      "required": true
+    },
+    "is_active": {
+      "type": "boolean",
+      "required": true
+    },
+    "sort_order": {
+      "type": "integer",
+      "required": true
+    },
+    "icon": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

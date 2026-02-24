@@ -1,0 +1,96 @@
+{
+  "kind": "singleType",
+  "collectionName": "homepages",
+  "info": {
+    "singularName": "homepage",
+    "pluralName": "homepages",
+    "displayName": "Homepage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "shared.slider",
+        "shared.rich-text",
+        "shared.quote",
+        "shared.media"
+      ]
+    },
+    "featured_content": {
+      "type": "dynamiczone",
+      "components": [
+        "shared.slider",
+        "shared.rich-text",
+        "shared.quote",
+        "shared.media"
+      ]
+    },
+    "cta_section": {
+      "type": "blocks"
+    },
+    "insurance_products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::insurance-product.insurance-product"
+    },
+    "hero_title": {
+      "type": "string",
+      "required": true
+    },
+    "hero_subtitle": {
+      "type": "string",
+      "required": true
+    },
+    "hero_badge": {
+      "type": "string",
+      "required": true
+    },
+    "hero_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "hero_cta_text": {
+      "type": "string",
+      "required": true
+    },
+    "hero_cta_url": {
+      "type": "string",
+      "required": true
+    },
+    "Stats": {
+      "type": "component",
+      "component": "shared.stats",
+      "repeatable": true
+    },
+    "promo_cards": {
+      "type": "component",
+      "component": "shared.promo-card",
+      "repeatable": true
+    },
+    "SEO_HOMEPAGE": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
+    },
+    "navigation_headers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::navigation-menu.navigation-menu"
+    },
+    "navigation_footers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::navigation-menu.navigation-menu"
+    }
+  }
+}
