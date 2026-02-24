@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tool_categories",
+  "info": {
+    "singularName": "tool-category",
+    "pluralName": "tool-categories",
+    "displayName": "toolCategory"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid"
+    },
+    "description": {
+      "type": "string"
+    },
+    "displayOrder": {
+      "type": "integer"
+    },
+    "tools": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tool.tool",
+      "mappedBy": "tool_category"
+    }
+  }
+}

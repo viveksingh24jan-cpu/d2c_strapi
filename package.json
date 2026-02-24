@@ -27,6 +27,7 @@
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
     "strapi-plugin-all-in-one-accessibility": "^1.0.26",
+    "strapi-plugin-populate-deep": "^3.0.1",
     "styled-components": "^6.0.0",
     "zod": "^4.3.6"
   },

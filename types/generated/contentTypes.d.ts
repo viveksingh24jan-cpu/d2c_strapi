@@ -502,36 +502,6 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiCalculatorCalculator extends Struct.CollectionTypeSchema {
-  collectionName: 'calculators';
-  info: {
-    displayName: 'Calculator';
-    pluralName: 'calculators';
-    singularName: 'calculator';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    calculatorName: Schema.Attribute.String;
-    calculatorUrl: Schema.Attribute.String;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    isActive: Schema.Attribute.Boolean;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::calculator.calculator'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
@@ -735,6 +705,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     featured_content: Schema.Attribute.DynamicZone<
       ['shared.slider', 'shared.rich-text', 'shared.quote', 'shared.media']
     >;
+    featuredTools: Schema.Attribute.DynamicZone<['shared.featured-tools']>;
     hero_badge: Schema.Attribute.String & Schema.Attribute.Required;
     hero_cta_text: Schema.Attribute.String & Schema.Attribute.Required;
     hero_cta_url: Schema.Attribute.String & Schema.Attribute.Required;
@@ -801,6 +772,7 @@ export interface ApiInsuranceProductInsuranceProduct
     productDescription: Schema.Attribute.Blocks;
     productName: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     sortOrder: Schema.Attribute.Integer & Schema.Attribute.Required;
     startingPrice: Schema.Attribute.Decimal;
     Tagline: Schema.Attribute.String & Schema.Attribute.Required;
@@ -965,6 +937,107 @@ export interface ApiTestimonialTestimonial extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiToolCategoryToolCategory
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'tool_categories';
+  info: {
+    displayName: 'toolCategory';
+    pluralName: 'tool-categories';
+    singularName: 'tool-category';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String;
+    displayOrder: Schema.Attribute.Integer;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::tool-category.tool-category'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID;
+    tools: Schema.Attribute.Relation<'oneToMany', 'api::tool.tool'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiToolHubPageToolHubPage extends Struct.SingleTypeSchema {
+  collectionName: 'tool_hub_pages';
+  info: {
+    displayName: 'toolHubPage';
+    pluralName: 'tool-hub-pages';
+    singularName: 'tool-hub-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    featuredSection: Schema.Attribute.Component<'shared.featured-tools', false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::tool-hub-page.tool-hub-page'
+    > &
+      Schema.Attribute.Private;
+    pageSubtitle: Schema.Attribute.String;
+    pageTitle: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiToolTool extends Struct.CollectionTypeSchema {
+  collectionName: 'tools';
+  info: {
+    displayName: 'tools';
+    pluralName: 'tools';
+    singularName: 'tool';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    badge: Schema.Attribute.Enumeration<['New', 'Popular', 'Trending', 'Free']>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    isActive: Schema.Attribute.Boolean;
+    isExternal: Schema.Attribute.Boolean;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::tool.tool'> &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    shortDescription: Schema.Attribute.Text;
+    slug: Schema.Attribute.UID;
+    tool_category: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::tool-category.tool-category'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    url: Schema.Attribute.String;
   };
 }
 
@@ -1543,7 +1616,6 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::about.about': ApiAboutAbout;
       'api::article.article': ApiArticleArticle;
-      'api::calculator.calculator': ApiCalculatorCalculator;
       'api::category.category': ApiCategoryCategory;
       'api::financial-quarter.financial-quarter': ApiFinancialQuarterFinancialQuarter;
       'api::financial-year.financial-year': ApiFinancialYearFinancialYear;
@@ -1555,6 +1627,9 @@ declare module '@strapi/strapi' {
       'api::legal-page.legal-page': ApiLegalPageLegalPage;
       'api::navigation-menu.navigation-menu': ApiNavigationMenuNavigationMenu;
       'api::testimonial.testimonial': ApiTestimonialTestimonial;
+      'api::tool-category.tool-category': ApiToolCategoryToolCategory;
+      'api::tool-hub-page.tool-hub-page': ApiToolHubPageToolHubPage;
+      'api::tool.tool': ApiToolTool;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

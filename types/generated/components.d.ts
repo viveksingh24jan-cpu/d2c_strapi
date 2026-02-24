@@ -30,6 +30,18 @@ export interface SharedAppLinks extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedFeaturedTools extends Struct.ComponentSchema {
+  collectionName: 'components_shared_featured_tools';
+  info: {
+    displayName: 'Featured Tools';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
+    tools: Schema.Attribute.Relation<'oneToMany', 'api::tool.tool'>;
+  };
+}
+
 export interface SharedMedia extends Struct.ComponentSchema {
   collectionName: 'components_shared_media';
   info: {
@@ -146,6 +158,7 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'disclosures.disclosure-document': DisclosuresDisclosureDocument;
       'shared.app-links': SharedAppLinks;
+      'shared.featured-tools': SharedFeaturedTools;
       'shared.media': SharedMedia;
       'shared.promo-card': SharedPromoCard;
       'shared.quote': SharedQuote;

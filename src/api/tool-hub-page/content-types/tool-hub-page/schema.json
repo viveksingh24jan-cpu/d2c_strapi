@@ -1,0 +1,31 @@
+{
+  "kind": "singleType",
+  "collectionName": "tool_hub_pages",
+  "info": {
+    "singularName": "tool-hub-page",
+    "pluralName": "tool-hub-pages",
+    "displayName": "toolHubPage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "pageTitle": {
+      "type": "string"
+    },
+    "pageSubtitle": {
+      "type": "string"
+    },
+    "featuredSection": {
+      "type": "component",
+      "component": "shared.featured-tools",
+      "repeatable": false
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
+    }
+  }
+}
