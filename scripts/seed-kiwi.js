@@ -1106,6 +1106,352 @@ async function seedInsuranceProducts() {
   }
 }
 
+// ─── Categories (Blog) ───────────────────────────────────────────────────────
+
+async function seedCategories() {
+  console.log('  Seeding blog categories...');
+  await deleteAll('api::category.category');
+
+  const cats = [
+    { name: 'Car Insurance', slug: 'car-insurance', description: 'Tips, guides, and news about car insurance in India.' },
+    { name: 'Health Insurance', slug: 'health-insurance', description: 'Everything you need to know about health insurance plans and claims.' },
+    { name: 'Two Wheeler Insurance', slug: 'two-wheeler-insurance', description: 'Guides on bike and scooter insurance in India.' },
+    { name: 'Travel Insurance', slug: 'travel-insurance', description: 'Travel smart with the right insurance coverage.' },
+    { name: 'Home Insurance', slug: 'home-insurance', description: 'Protect your home and belongings with home insurance.' },
+    { name: 'Insurance Guide', slug: 'insurance-guide', description: 'Beginner-friendly insurance concepts and how-to guides.' },
+  ];
+
+  const created = {};
+  for (const cat of cats) {
+    const entry = await createEntry('api::category.category', cat);
+    created[cat.slug] = entry;
+  }
+  return created;
+}
+
+// ─── Articles (Blog) ──────────────────────────────────────────────────────────
+
+async function seedArticles(categories) {
+  console.log('  Seeding blog articles...');
+  await deleteAll('api::article.article');
+
+  const articles = [
+    {
+      title: 'Car Insurance Renewal: 5 Things You Must Check Before Renewing',
+      slug: 'car-insurance-renewal-checklist',
+      excerpt: "Renewing your car insurance? Don't just click \"renew\". Here are 5 critical things every car owner must check before renewing their policy.",
+      authorName: 'Kiwi Editorial Team',
+      readTime: 5,
+      isFeatured: true,
+      categories: { connect: [{ documentId: categories['car-insurance'].documentId }] },
+      blocks: [
+        {
+          __component: 'shared.rich-text',
+          body: "## Why Renewal Is More Than a Formality\n\nMost Indian car owners simply renew the same policy year after year without reviewing it. This can cost you dearly at the time of a claim.\n\n### 1. Check Your No Claim Bonus (NCB)\nIf you haven't filed a claim in the past year, you're entitled to a No Claim Bonus discount of 20-50% on your Own Damage premium. Make sure it's applied.\n\n### 2. Verify the IDV (Insured Declared Value)\nThe IDV is the current market value of your car. A lower IDV means a lower premium but lower compensation in case of total loss. Don't let the insurer depreciate your IDV too aggressively.\n\n### 3. Review Your Add-Ons\nDo you have Zero Depreciation cover? Engine Protection? Roadside Assistance? Review which add-ons are worth continuing and which can be dropped.\n\n### 4. Compare Before You Renew\nDon't auto-renew without comparing. A quick comparison on Kiwi can save you 20-40% on premiums.\n\n### 5. Update Personal Details\nHave you moved? Changed your car's CNG kit status? Update these or your claims might be rejected.",
+        },
+      ],
+      publishedAt: new Date().toISOString(),
+      seo: {
+        metaTitle: 'Car Insurance Renewal Checklist – 5 Things to Check | Kiwi Insurance',
+        metaDescription: 'Renewing your car insurance? Check these 5 things: NCB, IDV, add-ons, comparison, and personal details. Save up to 40% on renewal.',
+        keywords: 'car insurance renewal, NCB, IDV, car insurance India',
+      },
+    },
+    {
+      title: 'Health Insurance Explained: Deductibles, Co-pay, and Sub-limits',
+      slug: 'health-insurance-deductible-copay-sublimit',
+      excerpt: 'Confused by health insurance jargon? We explain deductibles, co-pay, sub-limits, and room rent caps in plain English.',
+      authorName: 'Dr. Meera Iyer',
+      readTime: 7,
+      isFeatured: true,
+      categories: { connect: [{ documentId: categories['health-insurance'].documentId }] },
+      blocks: [
+        {
+          __component: 'shared.rich-text',
+          body: '## Decoding Health Insurance Terms\n\nHealth insurance policies are packed with terms that can be confusing. Here\'s a plain-language guide.\n\n### Deductible\nA deductible is the amount you pay out-of-pocket before your insurer pays anything. For example, if your deductible is Rs. 5,000 and your hospital bill is Rs. 50,000, you pay Rs. 5,000 and the insurer pays Rs. 45,000.\n\n### Co-payment (Co-pay)\nCo-pay is a percentage of the claim you always pay, regardless of the total amount. A 10% co-pay on a Rs. 1 lakh bill means you pay Rs. 10,000.\n\n### Sub-limits\nMany policies put caps on specific expenses. For example, a policy might cover Rs. 5 lakh total but limit room rent to Rs. 3,000/day and cataract surgery to Rs. 40,000.\n\n### Room Rent Cap\nOne of the most misunderstood clauses. If your policy has a room rent cap of Rs. 3,000/day and you take a room at Rs. 5,000/day, your insurer proportionally reduces ALL charges — not just the room rent.\n\n### Kiwi Tip\nKiwi\'s health insurance plans have minimal sub-limits and zero co-pay options. Get a quote today.',
+        },
+      ],
+      publishedAt: new Date().toISOString(),
+      seo: {
+        metaTitle: 'Health Insurance Deductible, Co-pay & Sub-limits Explained | Kiwi',
+        metaDescription: 'Understand health insurance deductibles, co-pay, sub-limits and room rent caps in plain language. Make better insurance decisions.',
+        keywords: 'health insurance deductible, co-pay, sub-limits, room rent cap India',
+      },
+    },
+    {
+      title: 'Third Party vs Comprehensive Car Insurance: Which One Do You Need?',
+      slug: 'third-party-vs-comprehensive-car-insurance',
+      excerpt: 'Third party insurance is mandatory by law, but is it enough? We compare third party and comprehensive car insurance to help you decide.',
+      authorName: 'Kiwi Editorial Team',
+      readTime: 4,
+      isFeatured: false,
+      categories: { connect: [{ documentId: categories['car-insurance'].documentId }] },
+      blocks: [
+        {
+          __component: 'shared.rich-text',
+          body: '## Third Party vs Comprehensive: The Key Difference\n\nThird Party Insurance covers damage or injury caused to a **third person** by your vehicle. It does NOT cover damage to your own car.\n\nComprehensive Insurance covers:\n- Damage to your own car (own damage)\n- Third party liability (mandatory)\n- Personal accident cover\n- Optional add-ons like zero depreciation, engine protection, etc.\n\n## When Should You Choose Third Party?\n- Your car is very old (10+ years) and its market value is low\n- You park in a safe area and rarely drive long distances\n- Budget is very tight\n\n## When Should You Choose Comprehensive?\n- Your car is less than 5 years old\n- You drive in heavy traffic or flood-prone areas\n- You have a car loan (most banks require comprehensive cover)\n\n## Our Recommendation\nFor cars less than 7 years old, always go comprehensive. The premium difference is often less than Rs. 3,000–5,000 per year.',
+        },
+      ],
+      publishedAt: new Date().toISOString(),
+      seo: {
+        metaTitle: 'Third Party vs Comprehensive Car Insurance – Which to Choose? | Kiwi',
+        metaDescription: 'Third party or comprehensive? Compare coverage, price, and benefits to pick the right car insurance for your needs.',
+        keywords: 'third party car insurance, comprehensive car insurance, difference, India',
+      },
+    },
+    {
+      title: 'Travel Insurance for Schengen Visa: Everything You Need to Know',
+      slug: 'travel-insurance-schengen-visa-guide',
+      excerpt: 'Applying for a Schengen visa? Travel insurance is mandatory. Here\'s exactly what coverage you need and how to get it right.',
+      authorName: 'Arjun Kapoor',
+      readTime: 6,
+      isFeatured: false,
+      categories: { connect: [{ documentId: categories['travel-insurance'].documentId }] },
+      blocks: [
+        {
+          __component: 'shared.rich-text',
+          body: '## Schengen Travel Insurance: The Basics\n\nAll 27 Schengen countries require visitors to have travel insurance that covers at least **€30,000 in medical emergencies** including repatriation.\n\n## What Must the Policy Cover?\n1. Emergency medical expenses — minimum €30,000\n2. Emergency repatriation to India\n3. Coverage valid throughout the entire Schengen zone\n4. Coverage for the entire duration of your trip\n\n## What Kiwi\'s Schengen Travel Insurance Covers\n- Medical emergencies: up to $5,00,000\n- Trip cancellation / curtailment\n- Lost baggage and passport\n- Personal liability\n- Flight delays\n\n## Common Mistakes to Avoid\n- **Don\'t buy the cheapest plan** — the embassy checks the coverage amount\n- **Start date must match your travel date** — not earlier\n- **Cover all Schengen countries you\'ll visit** — even if only in transit\n\n## How to Get Your Kiwi Schengen Insurance Certificate\nPurchase online at kiwiinsurance.in and download the policy document instantly. Most embassies accept it.',
+        },
+      ],
+      publishedAt: new Date().toISOString(),
+      seo: {
+        metaTitle: 'Schengen Visa Travel Insurance Guide for Indians | Kiwi Insurance',
+        metaDescription: 'Need travel insurance for Schengen visa? Learn the mandatory requirements, coverage minimums, and get your policy in minutes.',
+        keywords: 'schengen travel insurance India, schengen visa insurance, travel insurance Europe',
+      },
+    },
+    {
+      title: 'How to File a Motor Insurance Claim with Kiwi: Step-by-Step Guide',
+      slug: 'how-to-file-motor-insurance-claim-kiwi',
+      excerpt: 'Got into an accident? Don\'t panic. Here\'s a simple step-by-step guide to filing your motor insurance claim with Kiwi and getting your car repaired quickly.',
+      authorName: 'Kiwi Claims Team',
+      readTime: 5,
+      isFeatured: true,
+      categories: { connect: [{ documentId: categories['car-insurance'].documentId }, { documentId: categories['insurance-guide'].documentId }] },
+      blocks: [
+        {
+          __component: 'shared.rich-text',
+          body: '## Step 1: Stay Calm and Ensure Safety\nMove your vehicle to a safe spot if possible. Check for injuries. Call 108 (ambulance) or 100 (police) if needed.\n\n## Step 2: Document the Damage\nTake clear photos and videos of:\n- All damaged parts of your car\n- The other vehicle(s) involved\n- The accident scene\n- Road conditions\n\n## Step 3: Inform Kiwi Immediately\nCall our 24/7 claims helpline: **1800-123-4567** or use the Kiwi app.\nDon\'t delay — most policies require intimation within 24–48 hours.\n\n## Step 4: Get a Claim Reference Number\nNote your Claim Reference Number — you\'ll need it to track your claim.\n\n## Step 5: Choose Cashless or Reimbursement\n**Cashless:** Take your car to a Kiwi network garage. We pay the garage directly.\n**Reimbursement:** Get it repaired anywhere, pay out of pocket, submit bills to us.\n\n## Step 6: Survey and Approval\nA Kiwi surveyor will inspect the damage (usually within 24 hours at cashless garages).\n\n## Step 7: Repair and Delivery\nFor cashless claims at network garages, repairs begin immediately after surveyor approval. No payment needed at delivery (except deductible/depreciation if applicable).\n\n## Documents Required\n- Copy of your Kiwi policy\n- Driving licence\n- Vehicle RC\n- FIR (for theft or third-party accidents)',
+        },
+      ],
+      publishedAt: new Date().toISOString(),
+      seo: {
+        metaTitle: 'How to File a Motor Insurance Claim with Kiwi | Step-by-Step',
+        metaDescription: 'File your motor insurance claim with Kiwi in 7 simple steps. 24/7 helpline, cashless garages, fast claim settlement.',
+        keywords: 'motor insurance claim process, how to file car insurance claim, kiwi insurance claim',
+      },
+    },
+  ];
+
+  for (const article of articles) {
+    await createEntry('api::article.article', article);
+  }
+}
+
+// ─── Testimonials ─────────────────────────────────────────────────────────────
+
+async function seedTestimonials() {
+  console.log('  Seeding testimonials...');
+  await deleteAll('api::testimonial.testimonial');
+
+  const testimonials = [
+    {
+      customerName: 'Rahul Verma, Delhi',
+      testimonialContent: txtMulti(
+        '"My car was damaged in a flood last monsoon. I filed the claim on the Kiwi app at 11 PM, and by next morning a surveyor was at my doorstep. The cashless repair was done at a nearby garage within 4 days. 10/10 experience."'
+      ),
+      publishedAt: new Date().toISOString(),
+    },
+    {
+      customerName: 'Sunita Rao, Bengaluru',
+      testimonialContent: txtMulti(
+        '"I was sceptical about buying insurance online, but Kiwi made it so simple. Got my health insurance in 10 minutes, policy document in my inbox immediately. When my mother was hospitalised, the cashless process was seamless."'
+      ),
+      publishedAt: new Date().toISOString(),
+    },
+    {
+      customerName: 'Amar Singh, Mumbai',
+      testimonialContent: txtMulti(
+        '"Switched from my old insurer to Kiwi for car insurance. Saved Rs. 4,200 on the same coverage and got Zero Depreciation add-on included. The premium calculator on their website is super transparent — no hidden fees."'
+      ),
+      publishedAt: new Date().toISOString(),
+    },
+    {
+      customerName: 'Priya Mehta, Pune',
+      testimonialContent: txtMulti(
+        '"The Kiwi travel insurance I bought for my Europe trip was accepted by the French embassy without any issues. When my luggage was delayed in Paris, I filed a claim online and got reimbursed within a week of returning. Highly recommended."'
+      ),
+      publishedAt: new Date().toISOString(),
+    },
+    {
+      customerName: 'Venkat Krishnan, Chennai',
+      testimonialContent: txtMulti(
+        '"Got a Kiwi POSP licence and it has been a great side income. The app makes it easy to generate quotes and share policies with clients. The commission payouts are on time. Proud to be a Kiwi partner."'
+      ),
+      publishedAt: new Date().toISOString(),
+    },
+  ];
+
+  for (const t of testimonials) {
+    await createEntry('api::testimonial.testimonial', t);
+  }
+}
+
+// ─── Tool Categories & Tools ──────────────────────────────────────────────────
+
+async function seedTools() {
+  console.log('  Seeding tool categories and tools...');
+  await deleteAll('api::tool.tool');
+  await deleteAll('api::tool-category.tool-category');
+
+  const vehicleCat = await createEntry('api::tool-category.tool-category', {
+    name: 'Vehicle Tools',
+    slug: 'vehicle-tools',
+    description: 'Free tools to check vehicle-related information.',
+    displayOrder: 1,
+  });
+
+  const healthCat = await createEntry('api::tool-category.tool-category', {
+    name: 'Health Tools',
+    slug: 'health-tools',
+    description: 'Free health and insurance calculation tools.',
+    displayOrder: 2,
+  });
+
+  const financialCat = await createEntry('api::tool-category.tool-category', {
+    name: 'Financial Tools',
+    slug: 'financial-tools',
+    description: 'Check your financial health for free.',
+    displayOrder: 3,
+  });
+
+  const vehicleTools = [
+    { name: 'Check Pending Challans', slug: 'check-pending-challans', shortDescription: 'Instantly check all pending traffic challans linked to any vehicle registration number.', url: '/tools/check-challans', badge: 'Free', isActive: true },
+    { name: 'Check PUC Expiry', slug: 'check-puc-expiry', shortDescription: 'Check when your vehicle\'s Pollution Under Control (PUC) certificate expires.', url: '/tools/puc-expiry', badge: 'Free', isActive: true },
+    { name: 'Vehicle Owner Details (VAHAN)', slug: 'vehicle-owner-details', shortDescription: 'Look up vehicle owner details, RTO registration, and insurance status using the vehicle number.', url: '/tools/vahan', badge: 'Free', isActive: true },
+    { name: 'Vehicle Report Card', slug: 'vehicle-report-card', shortDescription: 'Get a complete history report for any vehicle — accidents, ownership transfers, blacklisting.', url: '/tools/vehicle-report', badge: 'Popular', isActive: true },
+    { name: 'Documents in DigiLocker', slug: 'documents-digilocker', shortDescription: 'Access your driving licence, RC, and other vehicle documents stored in DigiLocker.', url: '/tools/digilocker', badge: 'New', isActive: true },
+  ];
+
+  const healthTools = [
+    { name: 'Generate ABHA ID', slug: 'generate-abha-id', shortDescription: 'Create your Ayushman Bharat Health Account (ABHA) ID to store and access your health records digitally.', url: '/tools/abha-id', badge: 'New', isActive: true },
+    { name: 'Health Insurance Premium Calculator', slug: 'health-insurance-calculator', shortDescription: 'Calculate your health insurance premium based on age, sum insured, and family composition.', url: '/tools/health-calculator', badge: 'Popular', isActive: true },
+  ];
+
+  const financialTools = [
+    { name: 'Check Credit Score for FREE', slug: 'check-credit-score', shortDescription: 'Check your CIBIL credit score for free instantly. No impact on your credit score.', url: '/tools/credit-score', badge: 'Free', isActive: true },
+    { name: 'Insurance Premium Calculator', slug: 'insurance-premium-calculator', shortDescription: 'Compare insurance premium across car, bike, health and home insurance products.', url: '/tools/premium-calculator', badge: 'Trending', isActive: true },
+  ];
+
+  for (const t of vehicleTools) {
+    await createEntry('api::tool.tool', { ...t, isExternal: false, tool_category: { connect: [{ documentId: vehicleCat.documentId }] }, publishedAt: new Date().toISOString() });
+  }
+  for (const t of healthTools) {
+    await createEntry('api::tool.tool', { ...t, isExternal: false, tool_category: { connect: [{ documentId: healthCat.documentId }] }, publishedAt: new Date().toISOString() });
+  }
+  for (const t of financialTools) {
+    await createEntry('api::tool.tool', { ...t, isExternal: false, tool_category: { connect: [{ documentId: financialCat.documentId }] }, publishedAt: new Date().toISOString() });
+  }
+
+  return { vehicleCat, healthCat, financialCat };
+}
+
+// ─── Tool Hub Page ────────────────────────────────────────────────────────────
+
+async function seedToolHubPage(toolCategories) {
+  console.log('  Seeding tool hub page...');
+  const allTools = await strapi.documents('api::tool.tool').findMany({ status: 'published' });
+  const featuredDocIds = allTools.slice(0, 4).map((t) => ({ documentId: t.documentId }));
+
+  await updateSingle('api::tool-hub-page.tool-hub-page', {
+    pageTitle: 'Free Insurance & Vehicle Tools',
+    pageSubtitle: 'Powerful free tools for every Indian — check challans, credit score, PUC expiry, ABHA ID, and more.',
+    featuredSection: {
+      title: 'Most Used Tools',
+      description: 'Quick access to our most popular free tools.',
+      tools: { connect: featuredDocIds },
+    },
+    publishedAt: new Date().toISOString(),
+    seo: {
+      metaTitle: 'Free Insurance & Vehicle Tools | Kiwi General Insurance',
+      metaDescription: 'Use Kiwi\'s free tools: check pending challans, credit score, PUC expiry, ABHA ID, vehicle details and more. 100% free, no login required.',
+      keywords: 'check challans, PUC expiry, vehicle details, ABHA ID, credit score free India',
+    },
+  });
+}
+
+// ─── Homepage ─────────────────────────────────────────────────────────────────
+
+async function seedHomepage() {
+  console.log('  Seeding homepage...');
+
+  await updateSingle('api::homepage.homepage', {
+    heroTitle: 'Insurance Made Simple.\nGet Covered in Minutes.',
+    heroSubtitle: 'Affordable car, health, home & travel insurance. Instant policy, 10-minute claim filing, 99.2% claim settlement ratio.',
+    heroBadge: 'IRDAI Approved • Reg. No. 190',
+    heroCtaText: 'Get Your Free Quote',
+    heroCtaUrl: '/products',
+    stats: [
+      { label: 'Happy Customers', value: '50 Lakh+' },
+      { label: 'Claim Settlement Ratio', value: '99.2%' },
+      { label: 'Cashless Garages', value: '10,000+' },
+      { label: 'Cashless Hospitals', value: '10,000+' },
+      { label: 'App Rating', value: '4.5 ★' },
+      { label: 'Products', value: '40+' },
+    ],
+    promoCards: [
+      {
+        title: 'Monsoon Motor Protection',
+        description: 'Protect your car against flood damage this monsoon. Add Engine Protection cover for just Rs. 500 extra.',
+        ctaText: 'Add Engine Protection',
+        ctaUrl: '/car-insurance?addon=engine-protection',
+        promoImage: null,
+      },
+      {
+        title: 'Health Insurance Tax Benefit',
+        description: 'Save up to Rs. 25,000 in taxes u/s 80D. Buy health insurance before March 31st.',
+        ctaText: 'Buy Health Insurance',
+        ctaUrl: '/health-insurance',
+        promoImage: null,
+      },
+    ],
+    ctaSection: txtMulti(
+      'Still not sure? Talk to our insurance experts.',
+      'Call 1800-123-4567 (Toll-Free, 24/7) | Email: care@kiwiinsurance.in'
+    ),
+    publishedAt: new Date().toISOString(),
+    seo: {
+      metaTitle: 'Kiwi General Insurance – Buy Car, Health, Home & Travel Insurance Online',
+      metaDescription: 'India\'s most trusted general insurance company. Buy car, health, home, travel & two-wheeler insurance online. Instant policy, 99.2% claim settlement, IRDAI Reg. 190.',
+      keywords: 'car insurance, health insurance, home insurance, travel insurance, general insurance India, buy insurance online',
+      ogTitle: 'Kiwi General Insurance – Simple, Fast, Affordable',
+      ogDescription: 'Get insured in 10 minutes. 50 Lakh+ happy customers. IRDAI Approved. Car, Health, Home & Travel Insurance.',
+      metaRobots: 'index, follow',
+    },
+  });
+}
+
+// ─── About Page ───────────────────────────────────────────────────────────────
+
+async function seedAbout() {
+  console.log('  Seeding about page...');
+
+  await updateSingle('api::about.about', {
+    title: 'About Kiwi General Insurance',
+    blocks: [
+      {
+        __component: 'shared.rich-text',
+        body: '## Our Story\n\nKiwi General Insurance Company Limited was founded in 2024 with a simple mission: make insurance simple, transparent, and accessible for every Indian.\n\nWe are a Mumbai-based, IRDAI-licensed general insurance company (Registration No. 190) offering car, two-wheeler, health, home, travel, and commercial insurance products entirely online.\n\n## Our Mission\n\nTo build India\'s most trusted insurance brand by combining technology, transparency, and genuine care for our customers.\n\n## Why Kiwi?\n\n**Simple**: Buy any insurance in under 10 minutes. No agent visits, no paperwork, no phone calls needed.\n\n**Transparent**: Every policy detail, price, and exclusion is clearly explained. No hidden clauses.\n\n**Fast Claims**: File a claim in 5 minutes on our app. Our AI-powered claims system processes most claims within 24 hours.\n\n**Affordable**: By cutting out middlemen and using technology, we pass the savings directly to you.\n\n## Our Numbers\n\n- 50 Lakh+ insured customers\n- 99.2% claim settlement ratio\n- 10,000+ cashless garages across India\n- 10,000+ cashless hospitals across India\n- 40+ insurance products\n- Present in 500+ cities\n\n## Regulatory Information\n\nKiwi General Insurance Company Limited is registered with and regulated by the Insurance Regulatory and Development Authority of India (IRDAI).\n\n- **IRDAI Registration No.**: 190\n- **CIN**: U66010MH2024PLC000001\n- **Registered Office**: Kiwi House, 12th Floor, Bandra Kurla Complex, Mumbai – 400 051\n',
+      },
+      {
+        __component: 'shared.quote',
+        title: 'Our Promise',
+        body: '"At Kiwi, we believe insurance should be a source of comfort, not confusion. We are committed to being there for you at every step — from purchase to claim." — Deepa Krishnamurthy, MD & CEO',
+      },
+    ],
+  });
+}
+
 // ─── Public Permissions ───────────────────────────────────────────────────────
 
 async function setAllPublicPermissions() {
@@ -1162,6 +1508,13 @@ async function main() {
     await seedJobs();
     await seedAnnualReports();
     await seedInsuranceProducts();
+    const categories = await seedCategories();
+    await seedArticles(categories);
+    await seedTestimonials();
+    const toolCategories = await seedTools();
+    await seedToolHubPage(toolCategories);
+    await seedHomepage();
+    await seedAbout();
     await setAllPublicPermissions();
     console.log('\n✅ Seed complete!\n');
   } catch (err) {
