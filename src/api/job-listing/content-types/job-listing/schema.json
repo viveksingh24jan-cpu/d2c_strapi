@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "job_listings",
+  "info": {
+    "singularName": "job-listing",
+    "pluralName": "job-listings",
+    "displayName": "JobListing"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "jobTitle": { "type": "string", "required": true },
+    "department": { "type": "string" },
+    "location": { "type": "string" },
+    "jobType": {
+      "type": "enumeration",
+      "enum": ["full-time", "part-time", "contract", "pos-agent", "imd"]
+    },
+    "description": { "type": "blocks" },
+    "requirements": { "type": "blocks" },
+    "applyLink": { "type": "string" },
+    "isActive": { "type": "boolean", "default": true },
+    "postedOn": { "type": "date" }
+  }
+}

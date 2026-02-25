@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "download_documents",
+  "info": {
+    "singularName": "download-document",
+    "pluralName": "download-documents",
+    "displayName": "DownloadDocument"
+  },
+  "options": { "draftAndPublish": false },
+  "pluginOptions": {},
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "documentType": {
+      "type": "enumeration",
+      "enum": ["proposal-form", "claim-form", "policy-wording", "customer-information-sheet"],
+      "required": true
+    },
+    "productCategory": {
+      "type": "enumeration",
+      "enum": ["health", "motor", "property", "travel", "commercial"],
+      "required": true
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["files"]
+    },
+    "version": { "type": "string" },
+    "uploadedOn": { "type": "date" }
+  }
+}

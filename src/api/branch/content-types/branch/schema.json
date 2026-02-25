@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "branches",
+  "info": {
+    "singularName": "branch",
+    "pluralName": "branches",
+    "displayName": "Branch"
+  },
+  "options": { "draftAndPublish": false },
+  "pluginOptions": {},
+  "attributes": {
+    "branchName": { "type": "string", "required": true },
+    "branchType": {
+      "type": "enumeration",
+      "enum": ["head-office", "regional-office", "branch-office"],
+      "required": true
+    },
+    "address": { "type": "blocks" },
+    "city": { "type": "string" },
+    "state": { "type": "string" },
+    "pincode": { "type": "string" },
+    "phone": { "type": "string" },
+    "email": { "type": "email" },
+    "workingHours": { "type": "string" }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "kind": "singleType",
+  "collectionName": "grievance_page",
+  "info": {
+    "singularName": "grievance-page",
+    "pluralName": "grievance-pages",
+    "displayName": "GrievancePage"
+  },
+  "options": { "draftAndPublish": false },
+  "pluginOptions": {},
+  "attributes": {
+    "introText": { "type": "blocks" },
+    "bimaBharosaLink": { "type": "string" },
+    "levels": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::grievance-level.grievance-level"
+    }
+  }
+}

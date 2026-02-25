@@ -459,6 +459,41 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiAnnualReportAnnualReport
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'annual_reports';
+  info: {
+    displayName: 'AnnualReport';
+    pluralName: 'annual-reports';
+    singularName: 'annual-report';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    file: Schema.Attribute.Media<'files'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::annual-report.annual-report'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    publishedOn: Schema.Attribute.Date;
+    reportType: Schema.Attribute.Enumeration<
+      ['annual-report', 'esg-report', 'stewardship-policy']
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    year: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   collectionName: 'articles';
   info: {
@@ -509,6 +544,45 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBranchBranch extends Struct.CollectionTypeSchema {
+  collectionName: 'branches';
+  info: {
+    displayName: 'Branch';
+    pluralName: 'branches';
+    singularName: 'branch';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    address: Schema.Attribute.Blocks;
+    branchName: Schema.Attribute.String & Schema.Attribute.Required;
+    branchType: Schema.Attribute.Enumeration<
+      ['head-office', 'regional-office', 'branch-office']
+    > &
+      Schema.Attribute.Required;
+    city: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.Email;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::branch.branch'
+    > &
+      Schema.Attribute.Private;
+    phone: Schema.Attribute.String;
+    pincode: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    state: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    workingHours: Schema.Attribute.String;
+  };
+}
+
 export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
@@ -538,6 +612,51 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiDownloadDocumentDownloadDocument
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'download_documents';
+  info: {
+    displayName: 'DownloadDocument';
+    pluralName: 'download-documents';
+    singularName: 'download-document';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    documentType: Schema.Attribute.Enumeration<
+      [
+        'proposal-form',
+        'claim-form',
+        'policy-wording',
+        'customer-information-sheet',
+      ]
+    > &
+      Schema.Attribute.Required;
+    file: Schema.Attribute.Media<'files'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::download-document.download-document'
+    > &
+      Schema.Attribute.Private;
+    productCategory: Schema.Attribute.Enumeration<
+      ['health', 'motor', 'property', 'travel', 'commercial']
+    > &
+      Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    uploadedOn: Schema.Attribute.Date;
+    version: Schema.Attribute.String;
   };
 }
 
@@ -659,6 +778,73 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiGrievanceLevelGrievanceLevel
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'grievance_levels';
+  info: {
+    displayName: 'GrievanceLevel';
+    pluralName: 'grievance-levels';
+    singularName: 'grievance-level';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Blocks;
+    email: Schema.Attribute.Email;
+    escalationTimeline: Schema.Attribute.String;
+    levelName: Schema.Attribute.String & Schema.Attribute.Required;
+    levelNumber: Schema.Attribute.Integer & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::grievance-level.grievance-level'
+    > &
+      Schema.Attribute.Private;
+    phone: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiGrievancePageGrievancePage extends Struct.SingleTypeSchema {
+  collectionName: 'grievance_page';
+  info: {
+    displayName: 'GrievancePage';
+    pluralName: 'grievance-pages';
+    singularName: 'grievance-page';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    bimaBharosaLink: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    introText: Schema.Attribute.Blocks;
+    levels: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::grievance-level.grievance-level'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::grievance-page.grievance-page'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
   collectionName: 'homepages';
   info: {
@@ -740,6 +926,44 @@ export interface ApiInsuranceProductInsuranceProduct
     sortOrder: Schema.Attribute.Integer & Schema.Attribute.Required;
     startingPrice: Schema.Attribute.Decimal;
     tagline: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiJobListingJobListing extends Struct.CollectionTypeSchema {
+  collectionName: 'job_listings';
+  info: {
+    displayName: 'JobListing';
+    pluralName: 'job-listings';
+    singularName: 'job-listing';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    applyLink: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    department: Schema.Attribute.String;
+    description: Schema.Attribute.Blocks;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    jobTitle: Schema.Attribute.String & Schema.Attribute.Required;
+    jobType: Schema.Attribute.Enumeration<
+      ['full-time', 'part-time', 'contract', 'pos-agent', 'imd']
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::job-listing.job-listing'
+    > &
+      Schema.Attribute.Private;
+    location: Schema.Attribute.String;
+    postedOn: Schema.Attribute.Date;
+    publishedAt: Schema.Attribute.DateTime;
+    requirements: Schema.Attribute.Blocks;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -869,6 +1093,85 @@ export interface ApiNavigationMenuNavigationMenu
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     url: Schema.Attribute.String;
+  };
+}
+
+export interface ApiOmbudsmanOfficeOmbudsmanOffice
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'ombudsman_offices';
+  info: {
+    displayName: 'OmbudsmanOffice';
+    pluralName: 'ombudsman-offices';
+    singularName: 'ombudsman-office';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    address: Schema.Attribute.Blocks;
+    city: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.Email;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::ombudsman-office.ombudsman-office'
+    > &
+      Schema.Attribute.Private;
+    phone: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    territorialJurisdiction: Schema.Attribute.Text;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiStandardProductStandardProduct
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'standard_products';
+  info: {
+    displayName: 'StandardProduct';
+    pluralName: 'standard-products';
+    singularName: 'standard-product';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    cisDocument: Schema.Attribute.Media<'files'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    eligibility: Schema.Attribute.Blocks;
+    features: Schema.Attribute.Blocks;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::standard-product.standard-product'
+    > &
+      Schema.Attribute.Private;
+    policyWording: Schema.Attribute.Media<'files'>;
+    premiumRange: Schema.Attribute.String;
+    productName: Schema.Attribute.String & Schema.Attribute.Required;
+    productType: Schema.Attribute.Enumeration<
+      [
+        'arogya-sanjeevani',
+        'saral-suraksha-bima',
+        'bharat-griha-raksha',
+        'bharat-sookshma-udyam',
+        'bharat-laghu-udyam',
+      ]
+    > &
+      Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    sumInsuredRange: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1579,16 +1882,24 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::about.about': ApiAboutAbout;
+      'api::annual-report.annual-report': ApiAnnualReportAnnualReport;
       'api::article.article': ApiArticleArticle;
+      'api::branch.branch': ApiBranchBranch;
       'api::category.category': ApiCategoryCategory;
+      'api::download-document.download-document': ApiDownloadDocumentDownloadDocument;
       'api::financial-quarter.financial-quarter': ApiFinancialQuarterFinancialQuarter;
       'api::financial-year.financial-year': ApiFinancialYearFinancialYear;
       'api::global-config.global-config': ApiGlobalConfigGlobalConfig;
+      'api::grievance-level.grievance-level': ApiGrievanceLevelGrievanceLevel;
+      'api::grievance-page.grievance-page': ApiGrievancePageGrievancePage;
       'api::homepage.homepage': ApiHomepageHomepage;
       'api::insurance-product.insurance-product': ApiInsuranceProductInsuranceProduct;
+      'api::job-listing.job-listing': ApiJobListingJobListing;
       'api::leadership-profile.leadership-profile': ApiLeadershipProfileLeadershipProfile;
       'api::legal-page.legal-page': ApiLegalPageLegalPage;
       'api::navigation-menu.navigation-menu': ApiNavigationMenuNavigationMenu;
+      'api::ombudsman-office.ombudsman-office': ApiOmbudsmanOfficeOmbudsmanOffice;
+      'api::standard-product.standard-product': ApiStandardProductStandardProduct;
       'api::testimonial.testimonial': ApiTestimonialTestimonial;
       'api::tool-category.tool-category': ApiToolCategoryToolCategory;
       'api::tool-hub-page.tool-hub-page': ApiToolHubPageToolHubPage;

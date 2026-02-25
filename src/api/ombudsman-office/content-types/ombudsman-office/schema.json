@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ombudsman_offices",
+  "info": {
+    "singularName": "ombudsman-office",
+    "pluralName": "ombudsman-offices",
+    "displayName": "OmbudsmanOffice"
+  },
+  "options": { "draftAndPublish": false },
+  "pluginOptions": {},
+  "attributes": {
+    "city": { "type": "string", "required": true },
+    "territorialJurisdiction": { "type": "text" },
+    "address": { "type": "blocks" },
+    "phone": { "type": "string" },
+    "email": { "type": "email" }
+  }
+}

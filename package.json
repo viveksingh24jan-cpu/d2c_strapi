@@ -9,6 +9,7 @@
     "deploy": "strapi deploy",
     "dev": "strapi develop",
     "seed:example": "node ./scripts/seed.js",
+    "seed:kiwi": "node ./scripts/seed-kiwi.js",
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
