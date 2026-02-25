@@ -35,12 +35,22 @@ async function createEntry(uid, data) {
 
 async function updateSingle(uid, data) {
   try {
-    const entries = await strapi.documents(uid).findMany({});
-    if (entries && entries.length > 0) {
-      return await strapi.documents(uid).update({ documentId: entries[0].documentId, data });
-    } else {
-      return await strapi.documents(uid).create({ data });
+    // Look for any version (draft or published)
+    let entries = await strapi.documents(uid).findMany({ status: 'draft' });
+    if (!entries || entries.length === 0) {
+      entries = await strapi.documents(uid).findMany({ status: 'published' });
     }
+    let entry;
+    if (entries && entries.length > 0) {
+      entry = await strapi.documents(uid).update({ documentId: entries[0].documentId, data });
+    } else {
+      entry = await strapi.documents(uid).create({ data });
+    }
+    // Publish — silently ignored for non-draftAndPublish types
+    if (entry) {
+      try { await strapi.documents(uid).publish({ documentId: entry.documentId }); } catch {}
+    }
+    return entry;
   } catch (e) {
     console.error(`Error updating single ${uid}:`, e.message);
     return null;
@@ -280,6 +290,7 @@ async function seedLegalPages() {
   const pages = [
     {
       title: 'Privacy Policy',
+      slug: 'privacy-policy',
       isMandatory: true,
       lastUpdated: '2025-01-01T00:00:00.000Z',
       content: txtMulti(
@@ -295,6 +306,7 @@ async function seedLegalPages() {
     },
     {
       title: 'Terms of Use',
+      slug: 'terms-of-use',
       isMandatory: true,
       lastUpdated: '2025-01-01T00:00:00.000Z',
       content: txtMulti(
@@ -309,6 +321,7 @@ async function seedLegalPages() {
     },
     {
       title: "Policyholder's Protection Policy",
+      slug: 'policyholders-protection-policy',
       isMandatory: true,
       lastUpdated: '2025-01-01T00:00:00.000Z',
       content: txtMulti(
@@ -321,6 +334,7 @@ async function seedLegalPages() {
     },
     {
       title: 'Anti-Money Laundering (AML) Policy',
+      slug: 'anti-money-laundering-aml-policy',
       isMandatory: true,
       lastUpdated: '2025-01-01T00:00:00.000Z',
       content: txtMulti(
@@ -334,6 +348,7 @@ async function seedLegalPages() {
     },
     {
       title: 'Whistle Blower / Anti-Fraud Policy',
+      slug: 'whistle-blower-anti-fraud-policy',
       isMandatory: true,
       lastUpdated: '2025-01-01T00:00:00.000Z',
       content: txtMulti(
@@ -347,6 +362,7 @@ async function seedLegalPages() {
     },
     {
       title: 'Disclaimer',
+      slug: 'disclaimer',
       isMandatory: true,
       lastUpdated: '2025-01-01T00:00:00.000Z',
       content: txtMulti(

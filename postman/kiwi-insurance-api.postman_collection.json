@@ -169,7 +169,7 @@
           "request": {
             "method": "GET",
             "url": { "raw": "{{baseUrl}}/legal-pages?filters[slug][$eq]=privacy-policy&populate=*", "host": ["{{baseUrl}}"], "path": ["legal-pages"] },
-            "description": "Change the slug value to: terms-of-use, privacy-policy, aml-policy, disclaimer, etc."
+            "description": "Available slugs: privacy-policy, terms-of-use, policyholders-protection-policy, anti-money-laundering-aml-policy, whistle-blower-anti-fraud-policy, disclaimer"
           }
         },
         {
