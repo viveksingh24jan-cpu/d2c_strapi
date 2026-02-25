@@ -98,16 +98,6 @@
     },
     "footerCopyright": {
       "type": "text"
-    },
-    "navigationHeaders": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::navigation-menu.navigation-menu"
-    },
-    "navigationFooters": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::navigation-menu.navigation-menu"
     }
   }
 }

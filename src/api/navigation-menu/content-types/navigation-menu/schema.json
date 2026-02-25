@@ -4,7 +4,8 @@
   "info": {
     "singularName": "navigation-menu",
     "pluralName": "navigation-menus",
-    "displayName": "NavigationMenu"
+    "displayName": "NavigationMenu",
+    "description": "Set location only on top-level items. Children inherit location through the parent tree. Supports unlimited nesting: parent → child → subchild → ..."
   },
   "options": {
     "draftAndPublish": false
@@ -16,12 +17,11 @@
       "required": true
     },
     "url": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "location": {
       "type": "enumeration",
-      "required": true,
+      "required": false,
       "enum": [
         "header",
         "footer_products",
@@ -31,7 +31,8 @@
       ]
     },
     "displayOrder": {
-      "type": "integer"
+      "type": "integer",
+      "default": 0
     },
     "isExternal": {
       "type": "boolean",
@@ -43,20 +44,19 @@
     },
     "openInNewTab": {
       "type": "boolean",
-      "required": true,
       "default": false
-    },
-    "children": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::navigation-menu.navigation-menu",
-      "mappedBy": "parent"
     },
     "parent": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::navigation-menu.navigation-menu",
       "inversedBy": "children"
+    },
+    "children": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::navigation-menu.navigation-menu",
+      "mappedBy": "parent"
     }
   }
 }
