@@ -705,7 +705,6 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     featured_content: Schema.Attribute.DynamicZone<
       ['shared.slider', 'shared.rich-text', 'shared.quote', 'shared.media']
     >;
-    featuredTools: Schema.Attribute.DynamicZone<['shared.featured-tools']>;
     hero_badge: Schema.Attribute.String & Schema.Attribute.Required;
     hero_cta_text: Schema.Attribute.String & Schema.Attribute.Required;
     hero_cta_url: Schema.Attribute.String & Schema.Attribute.Required;
@@ -870,7 +869,7 @@ export interface ApiNavigationMenuNavigationMenu
   };
   attributes: {
     children: Schema.Attribute.Relation<
-      'manyToOne',
+      'oneToMany',
       'api::navigation-menu.navigation-menu'
     >;
     createdAt: Schema.Attribute.DateTime;
@@ -900,7 +899,7 @@ export interface ApiNavigationMenuNavigationMenu
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<false>;
     parent: Schema.Attribute.Relation<
-      'oneToMany',
+      'manyToOne',
       'api::navigation-menu.navigation-menu'
     >;
     publishedAt: Schema.Attribute.DateTime;

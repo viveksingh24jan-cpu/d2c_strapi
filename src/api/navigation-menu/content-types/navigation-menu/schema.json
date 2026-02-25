@@ -48,15 +48,15 @@
     },
     "children": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToMany",
       "target": "api::navigation-menu.navigation-menu",
-      "inversedBy": "parent"
+      "mappedBy": "parent"
     },
     "parent": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToOne",
       "target": "api::navigation-menu.navigation-menu",
-      "mappedBy": "children"
+      "inversedBy": "children"
     }
   }
 }

@@ -91,12 +91,6 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::navigation-menu.navigation-menu"
-    },
-    "featuredTools": {
-      "type": "dynamiczone",
-      "components": [
-        "shared.featured-tools"
-      ]
     }
   }
 }
