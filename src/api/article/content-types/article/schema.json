@@ -5,7 +5,7 @@
     "singularName": "article",
     "pluralName": "articles",
     "displayName": "Article",
-    "description": "Create your blog content"
+    "description": "Blog posts and articles"
   },
   "options": {
     "draftAndPublish": true
@@ -13,25 +13,34 @@
   "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string"
-    },
-    "description": {
-      "type": "text",
-      "maxLength": 80
+      "type": "string",
+      "required": true,
+      "maxLength": 200
     },
     "slug": {
       "type": "uid",
       "targetField": "title"
     },
+    "excerpt": {
+      "type": "text",
+      "maxLength": 300
+    },
     "cover": {
       "type": "media",
       "multiple": false,
-      "required": false,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos"
+        "images"
       ]
+    },
+    "authorName": {
+      "type": "string"
+    },
+    "readTime": {
+      "type": "integer"
+    },
+    "isFeatured": {
+      "type": "boolean",
+      "default": false
     },
     "categories": {
       "type": "relation",
