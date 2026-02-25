@@ -4,7 +4,7 @@
   "info": {
     "singularName": "tool",
     "pluralName": "tools",
-    "displayName": "tools"
+    "displayName": "Tool"
   },
   "options": {
     "draftAndPublish": true
@@ -12,32 +12,34 @@
   "pluginOptions": {},
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "slug": {
-      "type": "uid"
+      "type": "uid",
+      "targetField": "name"
     },
     "shortDescription": {
-      "type": "text"
+      "type": "text",
+      "maxLength": 300
     },
     "icon": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "images"
       ]
     },
     "url": {
       "type": "string"
     },
     "isExternal": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "isActive": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "badge": {
       "type": "enumeration",

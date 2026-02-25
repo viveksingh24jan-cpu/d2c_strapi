@@ -1,7 +1,7 @@
 {
   "collectionName": "components_shared_app_links",
   "info": {
-    "displayName": "app_links"
+    "displayName": "AppLinks"
   },
   "options": {},
   "attributes": {
@@ -15,20 +15,14 @@
       "type": "media",
       "multiple": false,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "images"
       ]
     },
     "appStoreBadge": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "images"
       ]
     }
   },

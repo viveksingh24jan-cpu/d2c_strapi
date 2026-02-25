@@ -17,12 +17,13 @@
       "required": true
     },
     "slug": {
-      "type": "uid"
+      "type": "uid",
+      "targetField": "title"
     },
-    "Content": {
+    "content": {
       "type": "blocks"
     },
-    "IsMandatory": {
+    "isMandatory": {
       "type": "boolean"
     },
     "lastUpdated": {
@@ -32,10 +33,7 @@
       "type": "media",
       "multiple": false,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "files"
       ]
     },
     "seo": {

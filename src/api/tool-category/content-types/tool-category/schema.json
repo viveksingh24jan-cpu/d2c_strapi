@@ -7,18 +7,20 @@
     "displayName": "toolCategory"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "slug": {
-      "type": "uid"
+      "type": "uid",
+      "targetField": "name"
     },
     "description": {
-      "type": "string"
+      "type": "text"
     },
     "displayOrder": {
       "type": "integer"

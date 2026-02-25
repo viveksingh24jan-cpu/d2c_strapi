@@ -11,6 +11,43 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "heroTitle": {
+      "type": "string",
+      "required": true
+    },
+    "heroSubtitle": {
+      "type": "string",
+      "required": true
+    },
+    "heroBadge": {
+      "type": "string",
+      "required": true
+    },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "heroCtaText": {
+      "type": "string",
+      "required": true
+    },
+    "heroCtaUrl": {
+      "type": "string",
+      "required": true
+    },
+    "stats": {
+      "type": "component",
+      "component": "shared.stats",
+      "repeatable": true
+    },
+    "promoCards": {
+      "type": "component",
+      "component": "shared.promo-card",
+      "repeatable": true
+    },
     "blocks": {
       "type": "dynamiczone",
       "components": [
@@ -20,7 +57,7 @@
         "shared.media"
       ]
     },
-    "featured_content": {
+    "featuredContent": {
       "type": "dynamiczone",
       "components": [
         "shared.slider",
@@ -29,68 +66,18 @@
         "shared.media"
       ]
     },
-    "cta_section": {
+    "ctaSection": {
       "type": "blocks"
     },
-    "insurance_products": {
+    "insuranceProducts": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::insurance-product.insurance-product"
-    },
-    "hero_title": {
-      "type": "string",
-      "required": true
-    },
-    "hero_subtitle": {
-      "type": "string",
-      "required": true
-    },
-    "hero_badge": {
-      "type": "string",
-      "required": true
-    },
-    "hero_image": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
-    },
-    "hero_cta_text": {
-      "type": "string",
-      "required": true
-    },
-    "hero_cta_url": {
-      "type": "string",
-      "required": true
-    },
-    "Stats": {
-      "type": "component",
-      "component": "shared.stats",
-      "repeatable": true
-    },
-    "promo_cards": {
-      "type": "component",
-      "component": "shared.promo-card",
-      "repeatable": true
     },
     "seo": {
       "type": "component",
       "component": "shared.seo",
       "repeatable": false
-    },
-    "navigationHeaders": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::navigation-menu.navigation-menu"
-    },
-    "navigationFooters": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::navigation-menu.navigation-menu"
     }
   }
 }

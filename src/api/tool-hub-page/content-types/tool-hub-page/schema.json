@@ -12,7 +12,8 @@
   "pluginOptions": {},
   "attributes": {
     "pageTitle": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "pageSubtitle": {
       "type": "string"

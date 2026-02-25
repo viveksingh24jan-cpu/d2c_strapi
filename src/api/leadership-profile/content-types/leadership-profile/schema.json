@@ -21,6 +21,7 @@
     },
     "category": {
       "type": "enumeration",
+      "required": true,
       "enum": [
         "Board",
         "KMP"
@@ -33,16 +34,13 @@
       "type": "media",
       "multiple": false,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "images"
       ]
     },
     "bio": {
       "type": "blocks"
     },
-    "displayrder": {
+    "displayOrder": {
       "type": "integer"
     }
   }

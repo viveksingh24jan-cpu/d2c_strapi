@@ -23,7 +23,7 @@
     "isFeatured": {
       "type": "boolean"
     },
-    "Tagline": {
+    "tagline": {
       "type": "string",
       "required": true
     },

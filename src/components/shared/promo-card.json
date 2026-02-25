@@ -1,7 +1,7 @@
 {
   "collectionName": "components_shared_promo_cards",
   "info": {
-    "displayName": "promo_card"
+    "displayName": "PromoCard"
   },
   "options": {},
   "attributes": {
@@ -26,10 +26,7 @@
       "multiple": false,
       "required": true,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "images"
       ]
     }
   },

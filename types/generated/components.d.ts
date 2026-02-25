@@ -16,16 +16,12 @@ export interface DisclosuresDisclosureDocument extends Struct.ComponentSchema {
 export interface SharedAppLinks extends Struct.ComponentSchema {
   collectionName: 'components_shared_app_links';
   info: {
-    displayName: 'app_links';
+    displayName: 'AppLinks';
   };
   attributes: {
-    appStoreBadge: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
+    appStoreBadge: Schema.Attribute.Media<'images'>;
     appStoreUrl: Schema.Attribute.String;
-    playStoreBadge: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
+    playStoreBadge: Schema.Attribute.Media<'images'>;
     playStoreUrl: Schema.Attribute.String;
   };
 }
@@ -56,16 +52,13 @@ export interface SharedMedia extends Struct.ComponentSchema {
 export interface SharedPromoCard extends Struct.ComponentSchema {
   collectionName: 'components_shared_promo_cards';
   info: {
-    displayName: 'promo_card';
+    displayName: 'PromoCard';
   };
   attributes: {
     ctaText: Schema.Attribute.String & Schema.Attribute.Required;
     ctaUrl: Schema.Attribute.String & Schema.Attribute.Required;
     description: Schema.Attribute.String & Schema.Attribute.Required;
-    promoImage: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    > &
-      Schema.Attribute.Required;
+    promoImage: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -110,9 +103,7 @@ export interface SharedSeo extends Struct.ComponentSchema {
     metaTitle: Schema.Attribute.String;
     ogDescription: Schema.Attribute.String;
     ogTitle: Schema.Attribute.String;
-    shareImage: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
+    shareImage: Schema.Attribute.Media<'images'>;
   };
 }
 
@@ -131,10 +122,10 @@ export interface SharedSlider extends Struct.ComponentSchema {
 export interface SharedSocialLink extends Struct.ComponentSchema {
   collectionName: 'components_shared_social_links';
   info: {
-    displayName: 'social_link';
+    displayName: 'SocialLink';
   };
   attributes: {
-    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    icon: Schema.Attribute.Media<'images'>;
     platform: Schema.Attribute.Enumeration<
       ['facebook', 'twitter', 'linkedin', 'instagram', 'youtube']
     >;
@@ -149,7 +140,7 @@ export interface SharedStats extends Struct.ComponentSchema {
   };
   attributes: {
     label: Schema.Attribute.String & Schema.Attribute.Required;
-    Values: Schema.Attribute.String & Schema.Attribute.Required;
+    value: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 

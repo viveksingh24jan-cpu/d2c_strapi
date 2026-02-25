@@ -543,7 +543,7 @@ export interface ApiFinancialQuarterFinancialQuarter
     singularName: 'financial-quarter';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -554,7 +554,7 @@ export interface ApiFinancialQuarterFinancialQuarter
       true
     >;
     financialYear: Schema.Attribute.Relation<
-      'oneToOne',
+      'manyToOne',
       'api::financial-year.financial-year'
     >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -581,13 +581,13 @@ export interface ApiFinancialYearFinancialYear
     singularName: 'financial-year';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    is_active: Schema.Attribute.Boolean;
+    isActive: Schema.Attribute.Boolean;
     label: Schema.Attribute.String & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -596,7 +596,7 @@ export interface ApiFinancialYearFinancialYear
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    startYear: Schema.Attribute.Integer;
+    startYear: Schema.Attribute.Integer & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -611,25 +611,23 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
     singularName: 'global-config';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     appLinks: Schema.Attribute.Component<'shared.app-links', false>;
     bimaBharosaUrl: Schema.Attribute.String;
-    cin_number: Schema.Attribute.String;
+    cinNumber: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    defaultSeo: Schema.Attribute.Component<'shared.seo', false>;
+    favicon: Schema.Attribute.Media<'images'>;
     footerCopyright: Schema.Attribute.Text;
     footerDescription: Schema.Attribute.Text;
-    footerLogo: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
+    footerLogo: Schema.Attribute.Media<'images'>;
     gicUrl: Schema.Attribute.String;
     headerEmailAddress: Schema.Attribute.String;
-    headerLogo: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
+    headerLogo: Schema.Attribute.Media<'images'>;
     headerPhoneNumber: Schema.Attribute.String;
     irdaiRegNumber: Schema.Attribute.String & Schema.Attribute.Required;
     irdaiUrl: Schema.Attribute.String;
@@ -639,10 +637,20 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
       'api::global-config.global-config'
     > &
       Schema.Attribute.Private;
+    navigationFooters: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::navigation-menu.navigation-menu'
+    >;
+    navigationHeaders: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::navigation-menu.navigation-menu'
+    >;
     privacyPolicyUrl: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     registeredAddress: Schema.Attribute.Text & Schema.Attribute.Required;
     section41Warning: Schema.Attribute.Blocks;
+    siteDescription: Schema.Attribute.Text & Schema.Attribute.Required;
+    siteName: Schema.Attribute.String & Schema.Attribute.Required;
     socialLinks: Schema.Attribute.Component<'shared.social-link', true>;
     supportEmail: Schema.Attribute.String;
     termsOfServiceUrl: Schema.Attribute.String;
@@ -701,19 +709,17 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    cta_section: Schema.Attribute.Blocks;
-    featured_content: Schema.Attribute.DynamicZone<
+    ctaSection: Schema.Attribute.Blocks;
+    featuredContent: Schema.Attribute.DynamicZone<
       ['shared.slider', 'shared.rich-text', 'shared.quote', 'shared.media']
     >;
-    hero_badge: Schema.Attribute.String & Schema.Attribute.Required;
-    hero_cta_text: Schema.Attribute.String & Schema.Attribute.Required;
-    hero_cta_url: Schema.Attribute.String & Schema.Attribute.Required;
-    hero_image: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
-    hero_subtitle: Schema.Attribute.String & Schema.Attribute.Required;
-    hero_title: Schema.Attribute.String & Schema.Attribute.Required;
-    insurance_products: Schema.Attribute.Relation<
+    heroBadge: Schema.Attribute.String & Schema.Attribute.Required;
+    heroCtaText: Schema.Attribute.String & Schema.Attribute.Required;
+    heroCtaUrl: Schema.Attribute.String & Schema.Attribute.Required;
+    heroImage: Schema.Attribute.Media<'images'>;
+    heroSubtitle: Schema.Attribute.String & Schema.Attribute.Required;
+    heroTitle: Schema.Attribute.String & Schema.Attribute.Required;
+    insuranceProducts: Schema.Attribute.Relation<
       'oneToMany',
       'api::insurance-product.insurance-product'
     >;
@@ -723,18 +729,10 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
       'api::homepage.homepage'
     > &
       Schema.Attribute.Private;
-    navigationFooters: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::navigation-menu.navigation-menu'
-    >;
-    navigationHeaders: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::navigation-menu.navigation-menu'
-    >;
-    promo_cards: Schema.Attribute.Component<'shared.promo-card', true>;
+    promoCards: Schema.Attribute.Component<'shared.promo-card', true>;
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
-    Stats: Schema.Attribute.Component<'shared.stats', true>;
+    stats: Schema.Attribute.Component<'shared.stats', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -774,7 +772,7 @@ export interface ApiInsuranceProductInsuranceProduct
     seo: Schema.Attribute.Component<'shared.seo', false>;
     sortOrder: Schema.Attribute.Integer & Schema.Attribute.Required;
     startingPrice: Schema.Attribute.Decimal;
-    Tagline: Schema.Attribute.String & Schema.Attribute.Required;
+    tagline: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -794,13 +792,14 @@ export interface ApiLeadershipProfileLeadershipProfile
   };
   attributes: {
     bio: Schema.Attribute.Blocks;
-    category: Schema.Attribute.Enumeration<['Board', 'KMP']>;
+    category: Schema.Attribute.Enumeration<['Board', 'KMP']> &
+      Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     designation: Schema.Attribute.String & Schema.Attribute.Required;
     din: Schema.Attribute.String;
-    displayrder: Schema.Attribute.Integer;
+    displayOrder: Schema.Attribute.Integer;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -808,7 +807,7 @@ export interface ApiLeadershipProfileLeadershipProfile
     > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
-    photo: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    photo: Schema.Attribute.Media<'images'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -827,14 +826,12 @@ export interface ApiLegalPageLegalPage extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    attachmentPdf: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
-    Content: Schema.Attribute.Blocks;
+    attachmentPdf: Schema.Attribute.Media<'files'>;
+    content: Schema.Attribute.Blocks;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    IsMandatory: Schema.Attribute.Boolean;
+    isMandatory: Schema.Attribute.Boolean;
     lastUpdated: Schema.Attribute.DateTime;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -844,7 +841,7 @@ export interface ApiLegalPageLegalPage extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
-    slug: Schema.Attribute.UID;
+    slug: Schema.Attribute.UID<'title'>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
@@ -865,7 +862,7 @@ export interface ApiNavigationMenuNavigationMenu
     singularName: 'navigation-menu';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     children: Schema.Attribute.Relation<
@@ -924,7 +921,7 @@ export interface ApiTestimonialTestimonial extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    customerName: Schema.Attribute.String;
+    customerName: Schema.Attribute.String & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -948,13 +945,13 @@ export interface ApiToolCategoryToolCategory
     singularName: 'tool-category';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.String;
+    description: Schema.Attribute.Text;
     displayOrder: Schema.Attribute.Integer;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -962,9 +959,9 @@ export interface ApiToolCategoryToolCategory
       'api::tool-category.tool-category'
     > &
       Schema.Attribute.Private;
-    name: Schema.Attribute.String;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID;
+    slug: Schema.Attribute.UID<'name'>;
     tools: Schema.Attribute.Relation<'oneToMany', 'api::tool.tool'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -994,7 +991,7 @@ export interface ApiToolHubPageToolHubPage extends Struct.SingleTypeSchema {
     > &
       Schema.Attribute.Private;
     pageSubtitle: Schema.Attribute.String;
-    pageTitle: Schema.Attribute.String;
+    pageTitle: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
     updatedAt: Schema.Attribute.DateTime;
@@ -1006,7 +1003,7 @@ export interface ApiToolHubPageToolHubPage extends Struct.SingleTypeSchema {
 export interface ApiToolTool extends Struct.CollectionTypeSchema {
   collectionName: 'tools';
   info: {
-    displayName: 'tools';
+    displayName: 'Tool';
     pluralName: 'tools';
     singularName: 'tool';
   };
@@ -1018,17 +1015,20 @@ export interface ApiToolTool extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    isActive: Schema.Attribute.Boolean;
-    isExternal: Schema.Attribute.Boolean;
+    icon: Schema.Attribute.Media<'images'>;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    isExternal: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::tool.tool'> &
       Schema.Attribute.Private;
-    name: Schema.Attribute.String;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
-    shortDescription: Schema.Attribute.Text;
-    slug: Schema.Attribute.UID;
+    shortDescription: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 300;
+      }>;
+    slug: Schema.Attribute.UID<'name'>;
     tool_category: Schema.Attribute.Relation<
       'manyToOne',
       'api::tool-category.tool-category'

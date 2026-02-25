@@ -9,7 +9,7 @@
       "type": "string",
       "required": true
     },
-    "Values": {
+    "value": {
       "type": "string",
       "required": true
     }

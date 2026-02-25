@@ -12,7 +12,8 @@
   "pluginOptions": {},
   "attributes": {
     "customerName": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "testimonialContent": {
       "type": "blocks"
