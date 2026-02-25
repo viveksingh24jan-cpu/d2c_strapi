@@ -644,14 +644,6 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
       'api::global-config.global-config'
     > &
       Schema.Attribute.Private;
-    navigationFooters: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::navigation-menu.navigation-menu'
-    >;
-    navigationHeaders: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::navigation-menu.navigation-menu'
-    >;
     privacyPolicyUrl: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     registeredAddress: Schema.Attribute.Text & Schema.Attribute.Required;
@@ -832,6 +824,7 @@ export interface ApiNavigationMenuNavigationMenu
   extends Struct.CollectionTypeSchema {
   collectionName: 'navigation_menus';
   info: {
+    description: 'Set location only on top-level items. Children inherit location through the parent tree. Supports unlimited nesting: parent \u2192 child \u2192 subchild \u2192 ...';
     displayName: 'NavigationMenu';
     pluralName: 'navigation-menus';
     singularName: 'navigation-menu';
@@ -847,7 +840,7 @@ export interface ApiNavigationMenuNavigationMenu
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    displayOrder: Schema.Attribute.Integer;
+    displayOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     isExternal: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     label: Schema.Attribute.String & Schema.Attribute.Required;
@@ -865,11 +858,8 @@ export interface ApiNavigationMenuNavigationMenu
         'footer_resources',
         'footer_legal',
       ]
-    > &
-      Schema.Attribute.Required;
-    openInNewTab: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
+    >;
+    openInNewTab: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     parent: Schema.Attribute.Relation<
       'manyToOne',
       'api::navigation-menu.navigation-menu'
@@ -878,7 +868,7 @@ export interface ApiNavigationMenuNavigationMenu
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    url: Schema.Attribute.String & Schema.Attribute.Required;
+    url: Schema.Attribute.String;
   };
 }
 
