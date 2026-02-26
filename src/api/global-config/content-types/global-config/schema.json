@@ -4,7 +4,8 @@
   "info": {
     "singularName": "global-config",
     "pluralName": "global-configs",
-    "displayName": "GlobalConfig"
+    "displayName": "Global Site Configuration",
+    "description": "Master settings for branding, regulatory info, and global conversion tools"
   },
   "options": {
     "draftAndPublish": false
@@ -103,24 +104,21 @@
     "footerCopyright": {
       "type": "text"
     },
-    "announcementBanner": {
+    "analytics": {
       "type": "component",
-      "component": "shared.announcement-banner",
-      "repeatable": false
+      "component": "shared.scripts",
+      "repeatable": false,
+      "description": "GTM, Facebook Pixel, and other tracking scripts"
     },
-    "stickyCtaText": {
-      "type": "string"
-    },
-    "stickyCtaUrl": {
-      "type": "string"
-    },
-    "stickyCtaIsActive": {
-      "type": "boolean",
-      "default": false
+    "stickyCta": {
+      "type": "component",
+      "component": "page-builder.sticky-cta-bar",
+      "repeatable": false,
+      "description": "Global sticky CTA visible across the site"
     },
     "trustMetrics": {
       "type": "component",
-      "component": "shared.stats",
+      "component": "shared.stats-item",
       "repeatable": true,
       "description": "Global stats like Claim Settlement Ratio, Cashless Network size, etc."
     }

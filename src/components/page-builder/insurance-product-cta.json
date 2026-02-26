@@ -1,7 +1,7 @@
 {
-  "collectionName": "components_shared_product_ctas",
+  "collectionName": "components_page_builder_insurance_product_ctas",
   "info": {
-    "displayName": "Product CTA",
+    "displayName": "Insurance Product CTA",
     "icon": "shopping-cart",
     "description": "Dynamic product card that pulls data from the Product Registry (Single Source of Truth)"
   },

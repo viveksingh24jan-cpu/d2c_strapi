@@ -5,7 +5,7 @@
     "singularName": "page",
     "pluralName": "pages",
     "displayName": "Dynamic Landing Pages",
-    "description": "Unified page model for Home, About, Legal, and Custom landing pages"
+    "description": "Enterprise-grade unified page model with high-conversion builder sections"
   },
   "options": {
     "draftAndPublish": true
@@ -21,12 +21,14 @@
   "attributes": {
     "title": {
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Internal page title for management"
     },
     "slug": {
       "type": "uid",
       "targetField": "title",
-      "required": true
+      "required": true,
+      "description": "URL path (e.g. 'about-us')"
     },
     "template": {
       "type": "enumeration",
@@ -36,14 +38,17 @@
         "legal",
         "tool-hub",
         "grievance",
-        "about"
+        "about",
+        "product-landing"
       ],
-      "default": "default"
+      "default": "default",
+      "description": "Select a template for specific frontend layout logic"
     },
     "metadata": {
       "type": "component",
       "component": "shared.page-metadata",
-      "repeatable": false
+      "repeatable": false,
+      "description": "Page-level settings like redirection or mandatory labels"
     },
     "content": {
       "type": "dynamiczone",
@@ -57,27 +62,25 @@
         "page-builder.video-block",
         "page-builder.comparison-table",
         "page-builder.app-banner",
-        "page-builder.sticky-cta-bar",
         "page-builder.banner",
         "page-builder.progress-steps",
         "page-builder.stats-bar",
         "page-builder.product-showcase",
+        "page-builder.insurance-product-cta",
         "page-builder.featured-content",
         "page-builder.grievance-levels",
-        "shared.rich-text",
-        "shared.media",
-        "shared.slider",
-        "shared.alert",
-        "shared.product-cta"
-      ]
+        "page-builder.sticky-cta-bar"
+      ],
+      "description": "High-conversion building blocks for creating visual layouts"
     },
     "seo": {
       "type": "component",
-      "component": "shared.seo"
+      "component": "shared.seo",
+      "description": "SEO & Social Sharing configuration"
     },
     "internalNotes": {
       "type": "text",
-      "description": "Internal notes for CM/Marketing team (not visible on frontend)."
+      "description": "Internal notes for Content/Marketing team (not visible on frontend)."
     }
   }
 }

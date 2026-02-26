@@ -17,6 +17,8 @@ export default factories.createCoreController('api::global-config.global-config'
           socialLinks: true,
           appLinks: true,
           trustMetrics: true,
+          analytics: true,
+          stickyCta: { populate: { link: { populate: '*' } } },
         } as any,
       });
 
@@ -40,7 +42,12 @@ export default factories.createCoreController('api::global-config.global-config'
         populate: { 
           content: {
             filters: { __component: 'page-builder.hero-section' },
-            limit: 1
+            limit: 1,
+            populate: {
+              backgroundImage: true,
+              heroImage: true,
+              ctaPrimary: { populate: '*' }
+            }
           }
         } as any
       });

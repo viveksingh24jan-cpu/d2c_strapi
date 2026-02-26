@@ -430,42 +430,6 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiAnnualReportAnnualReport
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'annual_reports';
-  info: {
-    displayName: 'AnnualReport';
-    pluralName: 'annual-reports';
-    singularName: 'annual-report';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    file: Schema.Attribute.Media<'files'>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::annual-report.annual-report'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    publishedOn: Schema.Attribute.Date;
-    reportName: Schema.Attribute.String & Schema.Attribute.Required;
-    reportType: Schema.Attribute.Enumeration<
-      ['annual-report', 'esg-report', 'stewardship-policy']
-    > &
-      Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    year: Schema.Attribute.String & Schema.Attribute.Required;
-  };
-}
-
 export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   collectionName: 'articles';
   info: {
@@ -478,6 +442,7 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    author: Schema.Attribute.Relation<'manyToOne', 'api::author.author'>;
     authorName: Schema.Attribute.String;
     blocks: Schema.Attribute.DynamicZone<
       [
@@ -527,6 +492,40 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 200;
       }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiAuthorAuthor extends Struct.CollectionTypeSchema {
+  collectionName: 'authors';
+  info: {
+    description: 'Article and content authors';
+    displayName: 'Author';
+    pluralName: 'authors';
+    singularName: 'author';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    articles: Schema.Attribute.Relation<'oneToMany', 'api::article.article'>;
+    avatar: Schema.Attribute.Media<'images'>;
+    bio: Schema.Attribute.Text;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::author.author'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'>;
+    socialLinks: Schema.Attribute.JSON;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -649,13 +648,14 @@ export interface ApiDownloadDocumentDownloadDocument
   };
 }
 
-export interface ApiFinancialQuarterFinancialQuarter
+export interface ApiFinancialDisclosureFinancialDisclosure
   extends Struct.CollectionTypeSchema {
-  collectionName: 'financial_quarters';
+  collectionName: 'financial_disclosures';
   info: {
-    displayName: 'FinancialQuarter';
-    pluralName: 'financial-quarters';
-    singularName: 'financial-quarter';
+    description: 'Quarterly results, annual reports, ESG reports, and public disclosures';
+    displayName: 'Financial Disclosure';
+    pluralName: 'financial-disclosures';
+    singularName: 'financial-disclosure';
   };
   options: {
     draftAndPublish: false;
@@ -664,54 +664,31 @@ export interface ApiFinancialQuarterFinancialQuarter
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    disclosureType: Schema.Attribute.Enumeration<
+      [
+        'quarterly-result',
+        'annual-report',
+        'esg-report',
+        'stewardship-policy',
+        'public-disclosure',
+      ]
+    > &
+      Schema.Attribute.Required;
     documents: Schema.Attribute.Component<
       'disclosures.disclosure-document',
       true
     >;
-    financialYear: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::financial-year.financial-year'
-    >;
+    financialYear: Schema.Attribute.String & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::financial-quarter.financial-quarter'
+      'api::financial-disclosure.financial-disclosure'
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    quarter: Schema.Attribute.Enumeration<['Q1', 'Q2', 'Q3', 'Q4']> &
-      Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiFinancialYearFinancialYear
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'financial_years';
-  info: {
-    displayName: 'FinancialYear';
-    pluralName: 'financial-years';
-    singularName: 'financial-year';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    isActive: Schema.Attribute.Boolean;
-    label: Schema.Attribute.String & Schema.Attribute.Required;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::financial-year.financial-year'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    startYear: Schema.Attribute.Integer & Schema.Attribute.Required;
+    publishedOn: Schema.Attribute.Date;
+    quarter: Schema.Attribute.Enumeration<['Q1', 'Q2', 'Q3', 'Q4']>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1042,32 +1019,34 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    blocks: Schema.Attribute.DynamicZone<
+    content: Schema.Attribute.DynamicZone<
       [
-        'shared.slider',
+        'page-builder.hero-section',
+        'page-builder.text-block',
+        'page-builder.card-grid',
+        'page-builder.media-block',
+        'page-builder.accordion',
+        'page-builder.testimonial-grid',
+        'page-builder.video-block',
+        'page-builder.comparison-table',
+        'page-builder.app-banner',
+        'page-builder.sticky-cta-bar',
+        'page-builder.banner',
+        'page-builder.progress-steps',
+        'page-builder.stats-bar',
+        'page-builder.product-showcase',
+        'page-builder.featured-content',
+        'page-builder.grievance-levels',
         'shared.rich-text',
-        'shared.quote',
         'shared.media',
-        'shared.faq-item',
-        'shared.process-step',
-        'shared.award',
-        'shared.lottie',
+        'shared.slider',
         'shared.alert',
-        'shared.modal',
         'shared.product-cta',
-        'shared.dynamic-comparison',
-        'shared.compliance-banner',
-        'shared.section-reference',
-        'shared.featured-tools',
-        'shared.comparison-table',
-        'shared.stats',
-        'shared.promo-card',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    hero: Schema.Attribute.Component<'shared.hero', false>;
     internalNotes: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::page.page'> &
@@ -1908,13 +1887,12 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::annual-report.annual-report': ApiAnnualReportAnnualReport;
       'api::article.article': ApiArticleArticle;
+      'api::author.author': ApiAuthorAuthor;
       'api::branch.branch': ApiBranchBranch;
       'api::category.category': ApiCategoryCategory;
       'api::download-document.download-document': ApiDownloadDocumentDownloadDocument;
-      'api::financial-quarter.financial-quarter': ApiFinancialQuarterFinancialQuarter;
-      'api::financial-year.financial-year': ApiFinancialYearFinancialYear;
+      'api::financial-disclosure.financial-disclosure': ApiFinancialDisclosureFinancialDisclosure;
       'api::global-config.global-config': ApiGlobalConfigGlobalConfig;
       'api::grievance-level.grievance-level': ApiGrievanceLevelGrievanceLevel;
       'api::insurance-product.insurance-product': ApiInsuranceProductInsuranceProduct;

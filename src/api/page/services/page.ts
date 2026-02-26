@@ -33,6 +33,7 @@ export default factories.createCoreService('api::page.page', ({ strapi }) => ({
 
   /**
    * Centralized population object for reuse across Page and Bootstrap services
+   * Expertly tuned for performance and depth.
    */
   getCommonPopulation() {
     return {
@@ -43,27 +44,51 @@ export default factories.createCoreService('api::page.page', ({ strapi }) => ({
       },
       content: {
         on: {
-          'page-builder.hero-section': { populate: '*' },
-          'page-builder.text-block': { populate: '*' },
-          'page-builder.card-grid': { populate: { cards: { populate: '*' } } },
-          'page-builder.media-block': { populate: '*' },
+          'page-builder.hero-section': { 
+            populate: {
+              backgroundImage: true,
+              heroImage: true,
+              ctaPrimary: { populate: '*' },
+              ctaSecondary: { populate: '*' }
+            }
+          },
+          'page-builder.text-block': true,
+          'page-builder.card-grid': { 
+            populate: { 
+              cards: { 
+                populate: {
+                  image: true,
+                  link: { populate: '*' }
+                } 
+              } 
+            } 
+          },
+          'page-builder.media-block': { populate: { file: true } },
           'page-builder.accordion': { populate: { items: true } },
-          'page-builder.testimonial-grid': { populate: { testimonials: true } },
-          'page-builder.video-block': { populate: '*' },
-          'page-builder.comparison-table': { populate: '*' },
-          'page-builder.app-banner': { populate: '*' },
-          'page-builder.sticky-cta-bar': { populate: '*' },
-          'page-builder.banner': { populate: '*' },
+          'page-builder.testimonial-grid': { 
+            populate: { 
+              testimonials: { populate: { avatar: true } } 
+            } 
+          },
+          'page-builder.video-block': { populate: { thumbnail: true } },
+          'page-builder.comparison-table': true,
+          'page-builder.app-banner': { populate: { appImage: true } },
+          'page-builder.banner': { populate: { ctaButton: { populate: '*' } } },
           'page-builder.progress-steps': { populate: { steps: true } },
           'page-builder.stats-bar': { populate: { stats: true } },
-          'page-builder.product-showcase': { populate: { products: true } },
+          'page-builder.product-showcase': { 
+            populate: { 
+              products: { populate: { image: true } } 
+            } 
+          },
+          'page-builder.insurance-product-cta': { 
+            populate: { 
+              product: { populate: { cover: true } } 
+            } 
+          },
+          'page-builder.sticky-cta-bar': { populate: { link: { populate: '*' } } },
           'page-builder.featured-content': { populate: '*' },
-          'page-builder.grievance-levels': { populate: '*' },
-          'shared.rich-text': true,
-          'shared.media': { populate: '*' },
-          'shared.slider': { populate: '*' },
-          'shared.alert': true,
-          'shared.product-cta': { populate: '*' }
+          'page-builder.grievance-levels': { populate: '*' }
         },
       },
       seo: {
