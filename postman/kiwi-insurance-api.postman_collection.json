@@ -1,1539 +1,261 @@
 {
   "info": {
-    "name": "Kiwi General Insurance – Strapi API",
-    "description": "Full API collection for Kiwi General Insurance Strapi v5 backend.\nBase URL: http://localhost:1337/api\n\nAll filter/sort/pagination params are visible in the Params tab.\nDisabled params (unchecked) show available options — enable them as needed.\n\nStrapi v5 filter operators: $eq, $ne, $lt, $lte, $gt, $gte, $in, $notIn, $contains, $containsi, $null, $notNull, $startsWith, $endsWith",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_postman_id": "kiwi-general-insurance-v2"
+    "name": "Kiwi General Insurance – COMPLETE API",
+    "description": "Comprehensive API collection for all endpoints, including deep population, auth, and CRUD operations.\nBase URL: http://localhost:1337/api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:1337/api", "type": "string" },
-    { "key": "documentId", "value": "REPLACE_WITH_ACTUAL_DOCUMENT_ID", "type": "string" }
+    { "key": "documentId", "value": "REPLACE_WITH_ID", "type": "string" },
+    { "key": "jwt", "value": "REPLACE_WITH_JWT_TOKEN", "type": "string" }
   ],
   "item": [
-
     {
-      "name": "🏠 Homepage",
+      "name": "🔐 Authentication",
       "item": [
         {
-          "name": "Get Homepage",
+          "name": "Login (Local)",
           "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/homepage?populate=*",
-              "host": ["{{baseUrl}}"], "path": ["homepage"],
-              "query": [
-                { "key": "populate", "value": "*", "description": "Populate all relations. Options: *, seo, stats, promoCards, insuranceProducts, blocks" },
-                { "key": "populate[seo]", "value": "*", "disabled": true },
-                { "key": "populate[stats]", "value": "*", "disabled": true },
-                { "key": "populate[promoCards]", "value": "*", "disabled": true },
-                { "key": "populate[insuranceProducts][populate]", "value": "*", "disabled": true }
-              ]
-            }
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"user@example.com\",\n  \"password\": \"your-password\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/local", "host": ["{{baseUrl}}"], "path": ["auth", "local"] },
+            "description": "Exchange credentials for a JWT token."
           }
         },
         {
-          "name": "Get Homepage (Deep Populate)",
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"newuser\",\n  \"email\": \"newuser@example.com\",\n  \"password\": \"newpassword123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/local/register", "host": ["{{baseUrl}}"], "path": ["auth", "local", "register"] }
+          }
+        },
+        {
+          "name": "Get Me (Authenticated User)",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{jwt}}" } ],
+            "url": { "raw": "{{baseUrl}}/users/me", "host": ["{{baseUrl}}"], "path": ["users", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🚀 System Init",
+      "item": [
+        {
+          "name": "Bootstrap (Global Init Data)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/bootstrap", "host": ["{{baseUrl}}"], "path": ["bootstrap"] },
+            "description": "Custom endpoint that returns global config, navigation menus, and homepage light-meta in a single call."
+          }
+        },
+        {
+          "name": "Global Config",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/homepage?populate[seo]=*&populate[stats]=*&populate[promoCards]=*&populate[insuranceProducts][populate]=*",
-              "host": ["{{baseUrl}}"], "path": ["homepage"],
+              "raw": "{{baseUrl}}/global-config?populate[0]=favicon&populate[1]=headerLogo&populate[2]=footerLogo&populate[3]=defaultSeo&populate[4]=socialLinks&populate[5]=appLinks&populate[6]=trustMetrics",
+              "host": ["{{baseUrl}}"],
+              "path": ["global-config"],
               "query": [
-                { "key": "populate[seo]", "value": "*" },
-                { "key": "populate[stats]", "value": "*" },
-                { "key": "populate[promoCards]", "value": "*" },
-                { "key": "populate[insuranceProducts][populate]", "value": "*" }
+                { "key": "populate[0]", "value": "favicon" },
+                { "key": "populate[1]", "value": "headerLogo" },
+                { "key": "populate[2]", "value": "footerLogo" },
+                { "key": "populate[3]", "value": "defaultSeo" },
+                { "key": "populate[4]", "value": "socialLinks" },
+                { "key": "populate[5]", "value": "appLinks" },
+                { "key": "populate[6]", "value": "trustMetrics" }
               ]
             }
           }
         }
       ]
     },
-
     {
-      "name": "🧭 Navigation Menus",
+      "name": "📄 Pages (Deep Populated)",
       "item": [
+        { "name": "Get All Pages (Light)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/pages", "host": ["{{baseUrl}}"], "path": ["pages"] } } },
         {
-          "name": "Get All Nav Items",
+          "name": "Get Page by Slug (Fully Populated)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/navigation-menus?populate=*&sort=displayOrder:asc&pagination[pageSize]=200",
-              "host": ["{{baseUrl}}"], "path": ["navigation-menus"],
+              "raw": "{{baseUrl}}/pages?filters[slug][$eq]=home&populate[hero][populate]=*&populate[metadata][populate]=*&populate[blocks][on][shared.media][populate]=*&populate[blocks][on][shared.slider][populate]=*&populate[blocks][on][shared.award][populate]=*&populate[blocks][on][shared.product-cta][populate]=*&populate[blocks][on][shared.section-reference][populate]=*&populate[blocks][on][shared.featured-tools][populate]=*&populate[blocks][on][shared.promo-card][populate]=*&populate[seo][populate]=*",
+              "host": ["{{baseUrl}}"],
+              "path": ["pages"],
               "query": [
-                { "key": "populate", "value": "*", "description": "Options: *, parent, children" },
-                { "key": "sort", "value": "displayOrder:asc", "description": "Options: displayOrder:asc, label:asc" },
-                { "key": "pagination[pageSize]", "value": "200", "description": "Max results per page" },
-                { "key": "pagination[page]", "value": "1", "disabled": true },
-                { "key": "filters[isActive][$eq]", "value": "true", "disabled": true, "description": "Filter active items only" },
-                { "key": "filters[location][$eq]", "value": "header", "disabled": true, "description": "Options: header, footer_products, footer_company, footer_resources, footer_legal" },
-                { "key": "filters[label][$containsi]", "value": "insurance", "disabled": true, "description": "Search by label (case-insensitive)" }
+                { "key": "filters[slug][$eq]", "value": "home" },
+                { "key": "populate[hero][populate]", "value": "*" },
+                { "key": "populate[metadata][populate]", "value": "*" },
+                { "key": "populate[blocks][on][shared.media][populate]", "value": "*" },
+                { "key": "populate[blocks][on][shared.slider][populate]", "value": "*" },
+                { "key": "populate[blocks][on][shared.award][populate]", "value": "*" },
+                { "key": "populate[blocks][on][shared.product-cta][populate]", "value": "*" },
+                { "key": "populate[blocks][on][shared.section-reference][populate]", "value": "*" },
+                { "key": "populate[blocks][on][shared.featured-tools][populate]", "value": "*" },
+                { "key": "populate[blocks][on][shared.promo-card][populate]", "value": "*" },
+                { "key": "populate[seo][populate]", "value": "*" }
               ]
-            }
-          }
-        },
-        {
-          "name": "Get Header Top-Level Items",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/navigation-menus?filters[location][$eq]=header&sort=displayOrder:asc&populate[children]=*",
-              "host": ["{{baseUrl}}"], "path": ["navigation-menus"],
-              "query": [
-                { "key": "filters[location][$eq]", "value": "header", "description": "Options: header, footer_products, footer_company, footer_resources, footer_legal" },
-                { "key": "sort", "value": "displayOrder:asc" },
-                { "key": "populate[children]", "value": "*", "description": "Include immediate children" },
-                { "key": "filters[isActive][$eq]", "value": "true", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Full Header Mega-Menu (3 levels)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/navigation-menus?filters[location][$eq]=header&sort=displayOrder:asc&populate[children][populate][children][populate]=*",
-              "host": ["{{baseUrl}}"], "path": ["navigation-menus"],
-              "query": [
-                { "key": "filters[location][$eq]", "value": "header" },
-                { "key": "sort", "value": "displayOrder:asc" },
-                { "key": "populate[children][populate][children][populate]", "value": "*", "description": "3-level deep: top → category → sub-links" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Footer – Products Column",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/navigation-menus?filters[location][$eq]=footer_products&sort=displayOrder:asc",
-              "host": ["{{baseUrl}}"], "path": ["navigation-menus"],
-              "query": [
-                { "key": "filters[location][$eq]", "value": "footer_products", "description": "Options: footer_products, footer_company, footer_resources, footer_legal" },
-                { "key": "sort", "value": "displayOrder:asc" },
-                { "key": "filters[isActive][$eq]", "value": "true", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Footer – Company Column",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/navigation-menus?filters[location][$eq]=footer_company&sort=displayOrder:asc",
-              "host": ["{{baseUrl}}"], "path": ["navigation-menus"],
-              "query": [
-                { "key": "filters[location][$eq]", "value": "footer_company" },
-                { "key": "sort", "value": "displayOrder:asc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Footer – Resources Column",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/navigation-menus?filters[location][$eq]=footer_resources&sort=displayOrder:asc",
-              "host": ["{{baseUrl}}"], "path": ["navigation-menus"],
-              "query": [
-                { "key": "filters[location][$eq]", "value": "footer_resources" },
-                { "key": "sort", "value": "displayOrder:asc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Footer – Legal Column",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/navigation-menus?filters[location][$eq]=footer_legal&sort=displayOrder:asc",
-              "host": ["{{baseUrl}}"], "path": ["navigation-menus"],
-              "query": [
-                { "key": "filters[location][$eq]", "value": "footer_legal" },
-                { "key": "sort", "value": "displayOrder:asc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Children by Parent Label",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/navigation-menus?filters[parent][label][$eq]=Products&sort=displayOrder:asc&populate[children]=*",
-              "host": ["{{baseUrl}}"], "path": ["navigation-menus"],
-              "query": [
-                { "key": "filters[parent][label][$eq]", "value": "Products", "description": "Options: Products, Claims, Resources, Car Insurance, Health Insurance, etc." },
-                { "key": "sort", "value": "displayOrder:asc" },
-                { "key": "populate[children]", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter – Active Items Only",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/navigation-menus?filters[isActive][$eq]=true&sort=displayOrder:asc",
-              "host": ["{{baseUrl}}"], "path": ["navigation-menus"],
-              "query": [
-                { "key": "filters[isActive][$eq]", "value": "true" },
-                { "key": "sort", "value": "displayOrder:asc" },
-                { "key": "filters[location][$eq]", "value": "header", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter – External Links Only",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/navigation-menus?filters[isExternal][$eq]=true",
-              "host": ["{{baseUrl}}"], "path": ["navigation-menus"],
-              "query": [
-                { "key": "filters[isExternal][$eq]", "value": "true", "description": "true = external links only, false = internal links only" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search by Label",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/navigation-menus?filters[label][$containsi]=insurance&sort=displayOrder:asc",
-              "host": ["{{baseUrl}}"], "path": ["navigation-menus"],
-              "query": [
-                { "key": "filters[label][$containsi]", "value": "insurance", "description": "Case-insensitive search in label field" },
-                { "key": "sort", "value": "displayOrder:asc" },
-                { "key": "filters[url][$containsi]", "value": "/car", "disabled": true, "description": "Search by URL path" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Nav Item",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/navigation-menus/{{documentId}}?populate[parent]=*&populate[children]=*",
-              "host": ["{{baseUrl}}"], "path": ["navigation-menus", "{{documentId}}"],
-              "query": [
-                { "key": "populate[parent]", "value": "*" },
-                { "key": "populate[children]", "value": "*" }
-              ]
-            }
+            },
+            "description": "Uses deep population strategy to retrieve Dynamic Zone blocks and nested components."
           }
         }
       ]
     },
-
     {
-      "name": "⚙️ Global Config",
+      "name": "📰 Blog & Content",
       "item": [
         {
-          "name": "Get Global Config",
+          "name": "Articles (with blocks)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/global-config?populate=*",
-              "host": ["{{baseUrl}}"], "path": ["global-config"],
+              "raw": "{{baseUrl}}/articles?populate[cover]=*&populate[categories]=*&populate[blocks][on][shared.rich-text][populate]=*&populate[blocks][on][shared.media][populate]=*&populate[blocks][on][shared.faq-item][populate]=*&populate[seo][populate]=*",
+              "host": ["{{baseUrl}}"],
+              "path": ["articles"],
               "query": [
-                { "key": "populate", "value": "*", "description": "Options: *, defaultSeo, socialLinks, appLinks, headerLogo, footerLogo, favicon" },
-                { "key": "populate[defaultSeo]", "value": "*", "disabled": true },
-                { "key": "populate[socialLinks]", "value": "*", "disabled": true },
-                { "key": "populate[appLinks]", "value": "*", "disabled": true }
-              ]
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "🛡️ Insurance Products",
-      "item": [
-        {
-          "name": "Get All Products",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/insurance-products?sort=sortOrder:asc&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["insurance-products"],
-              "query": [
-                { "key": "sort", "value": "sortOrder:asc", "description": "Options: sortOrder:asc, productName:asc, startingPrice:asc" },
-                { "key": "populate", "value": "*", "description": "Options: *, icon, seo" },
-                { "key": "pagination[pageSize]", "value": "25", "disabled": true },
-                { "key": "filters[isActive][$eq]", "value": "true", "disabled": true },
-                { "key": "filters[isFeatured][$eq]", "value": "true", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter – Featured Products",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/insurance-products?filters[isFeatured][$eq]=true&sort=sortOrder:asc&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["insurance-products"],
-              "query": [
-                { "key": "filters[isFeatured][$eq]", "value": "true" },
-                { "key": "sort", "value": "sortOrder:asc" },
-                { "key": "populate", "value": "*" },
-                { "key": "filters[isActive][$eq]", "value": "true", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter – Active Products",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/insurance-products?filters[isActive][$eq]=true&sort=sortOrder:asc",
-              "host": ["{{baseUrl}}"], "path": ["insurance-products"],
-              "query": [
-                { "key": "filters[isActive][$eq]", "value": "true" },
-                { "key": "sort", "value": "sortOrder:asc" },
-                { "key": "filters[isFeatured][$eq]", "value": "true", "disabled": true },
-                { "key": "filters[startingPrice][$lte]", "value": "3000", "disabled": true, "description": "Products priced at or below amount" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search Products by Name",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/insurance-products?filters[productName][$containsi]=health&sort=sortOrder:asc",
-              "host": ["{{baseUrl}}"], "path": ["insurance-products"],
-              "query": [
-                { "key": "filters[productName][$containsi]", "value": "health", "description": "Case-insensitive search. Try: car, health, travel, home, two-wheeler" },
-                { "key": "sort", "value": "sortOrder:asc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Field Selection (name + price + url only)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/insurance-products?fields[0]=productName&fields[1]=startingPrice&fields[2]=ctaUrl&fields[3]=tagline&sort=sortOrder:asc",
-              "host": ["{{baseUrl}}"], "path": ["insurance-products"],
-              "query": [
-                { "key": "fields[0]", "value": "productName" },
-                { "key": "fields[1]", "value": "startingPrice" },
-                { "key": "fields[2]", "value": "ctaUrl" },
-                { "key": "fields[3]", "value": "tagline" },
-                { "key": "sort", "value": "sortOrder:asc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Product",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/insurance-products/{{documentId}}?populate=*",
-              "host": ["{{baseUrl}}"], "path": ["insurance-products", "{{documentId}}"],
-              "query": [
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "📄 Legal Pages",
-      "item": [
-        {
-          "name": "Get All Legal Pages",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/legal-pages?sort=title:asc&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["legal-pages"],
-              "query": [
-                { "key": "sort", "value": "title:asc", "description": "Options: title:asc, lastUpdated:desc" },
-                { "key": "populate", "value": "*", "description": "Options: *, seo, attachmentPdf" },
-                { "key": "filters[isMandatory][$eq]", "value": "true", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter – Mandatory Pages",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/legal-pages?filters[isMandatory][$eq]=true&sort=title:asc",
-              "host": ["{{baseUrl}}"], "path": ["legal-pages"],
-              "query": [
-                { "key": "filters[isMandatory][$eq]", "value": "true" },
-                { "key": "sort", "value": "title:asc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get by Slug",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/legal-pages?filters[slug][$eq]=privacy-policy&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["legal-pages"],
-              "query": [
-                { "key": "filters[slug][$eq]", "value": "privacy-policy", "description": "Available: privacy-policy | terms-of-use | policyholders-protection-policy | anti-money-laundering-aml-policy | whistle-blower-anti-fraud-policy | disclaimer" },
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search by Title",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/legal-pages?filters[title][$containsi]=policy",
-              "host": ["{{baseUrl}}"], "path": ["legal-pages"],
-              "query": [
-                { "key": "filters[title][$containsi]", "value": "policy", "description": "Case-insensitive title search" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Legal Page",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/legal-pages/{{documentId}}?populate=*",
-              "host": ["{{baseUrl}}"], "path": ["legal-pages", "{{documentId}}"],
-              "query": [
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "⚖️ Grievance",
-      "item": [
-        {
-          "name": "Get All Grievance Levels",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/grievance-levels?sort=levelNumber:asc",
-              "host": ["{{baseUrl}}"], "path": ["grievance-levels"],
-              "query": [
-                { "key": "sort", "value": "levelNumber:asc", "description": "Options: levelNumber:asc, levelName:asc" },
-                { "key": "filters[levelNumber][$eq]", "value": "1", "disabled": true, "description": "Filter by level: 1, 2, or 3" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Level Number",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/grievance-levels?filters[levelNumber][$eq]=1",
-              "host": ["{{baseUrl}}"], "path": ["grievance-levels"],
-              "query": [
-                { "key": "filters[levelNumber][$eq]", "value": "1", "description": "Options: 1, 2, 3" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Grievance Page (with Levels)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/grievance-page?populate[levels][sort]=levelNumber:asc",
-              "host": ["{{baseUrl}}"], "path": ["grievance-page"],
-              "query": [
-                { "key": "populate[levels][sort]", "value": "levelNumber:asc" },
-                { "key": "populate[levels][filters][levelNumber][$lte]", "value": "3", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Grievance Level",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/grievance-levels/{{documentId}}",
-              "host": ["{{baseUrl}}"], "path": ["grievance-levels", "{{documentId}}"],
-              "query": []
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "🏛️ Ombudsman Offices",
-      "item": [
-        {
-          "name": "Get All Ombudsman Offices",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/ombudsman-offices?sort=city:asc",
-              "host": ["{{baseUrl}}"], "path": ["ombudsman-offices"],
-              "query": [
-                { "key": "sort", "value": "city:asc", "description": "Options: city:asc, city:desc" },
-                { "key": "pagination[pageSize]", "value": "25", "disabled": true },
-                { "key": "filters[city][$eq]", "value": "Mumbai", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by City",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/ombudsman-offices?filters[city][$eq]=Mumbai",
-              "host": ["{{baseUrl}}"], "path": ["ombudsman-offices"],
-              "query": [
-                { "key": "filters[city][$eq]", "value": "Mumbai", "description": "Options: Mumbai | Delhi | Chennai | Kolkata | Bengaluru | Hyderabad | Ahmedabad | Pune | Jaipur | Lucknow" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search by City or Jurisdiction",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/ombudsman-offices?filters[city][$containsi]=ban&sort=city:asc",
-              "host": ["{{baseUrl}}"], "path": ["ombudsman-offices"],
-              "query": [
-                { "key": "filters[city][$containsi]", "value": "ban", "description": "Partial city name search (case-insensitive)" },
-                { "key": "filters[territorialJurisdiction][$containsi]", "value": "Maharashtra", "disabled": true, "description": "Search by jurisdiction" },
-                { "key": "sort", "value": "city:asc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Ombudsman Office",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/ombudsman-offices/{{documentId}}",
-              "host": ["{{baseUrl}}"], "path": ["ombudsman-offices", "{{documentId}}"],
-              "query": []
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "📥 Downloads",
-      "item": [
-        {
-          "name": "Get All Download Documents",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/download-documents?sort=uploadedOn:desc&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["download-documents"],
-              "query": [
-                { "key": "sort", "value": "uploadedOn:desc", "description": "Options: uploadedOn:desc, title:asc" },
-                { "key": "populate", "value": "*", "description": "Includes file media" },
-                { "key": "filters[productCategory][$eq]", "value": "health", "disabled": true, "description": "Options: health | motor | property | travel | commercial" },
-                { "key": "filters[documentType][$eq]", "value": "claim-form", "disabled": true, "description": "Options: proposal-form | claim-form | policy-wording | customer-information-sheet" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Product Category",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/download-documents?filters[productCategory][$eq]=health&sort=uploadedOn:desc&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["download-documents"],
-              "query": [
-                { "key": "filters[productCategory][$eq]", "value": "health", "description": "Options: health | motor | property | travel | commercial" },
-                { "key": "sort", "value": "uploadedOn:desc" },
-                { "key": "populate", "value": "*" },
-                { "key": "filters[documentType][$eq]", "value": "claim-form", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Document Type",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/download-documents?filters[documentType][$eq]=claim-form&sort=uploadedOn:desc&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["download-documents"],
-              "query": [
-                { "key": "filters[documentType][$eq]", "value": "claim-form", "description": "Options: proposal-form | claim-form | policy-wording | customer-information-sheet" },
-                { "key": "sort", "value": "uploadedOn:desc" },
-                { "key": "populate", "value": "*" },
-                { "key": "filters[productCategory][$eq]", "value": "health", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter – Category + Type Combined",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/download-documents?filters[productCategory][$eq]=motor&filters[documentType][$eq]=proposal-form&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["download-documents"],
-              "query": [
-                { "key": "filters[productCategory][$eq]", "value": "motor" },
-                { "key": "filters[documentType][$eq]", "value": "proposal-form" },
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search by Title",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/download-documents?filters[title][$containsi]=health",
-              "host": ["{{baseUrl}}"], "path": ["download-documents"],
-              "query": [
-                { "key": "filters[title][$containsi]", "value": "health", "description": "Case-insensitive title search" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Download Document",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/download-documents/{{documentId}}?populate=*",
-              "host": ["{{baseUrl}}"], "path": ["download-documents", "{{documentId}}"],
-              "query": [
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "📍 Branch Locator",
-      "item": [
-        {
-          "name": "Get All Branches",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/branches?sort=branchType:asc",
-              "host": ["{{baseUrl}}"], "path": ["branches"],
-              "query": [
-                { "key": "sort", "value": "branchType:asc", "description": "Options: branchType:asc, city:asc, branchName:asc" },
-                { "key": "filters[branchType][$eq]", "value": "head-office", "disabled": true, "description": "Options: head-office | regional-office | branch-office" },
-                { "key": "filters[city][$eq]", "value": "Mumbai", "disabled": true },
-                { "key": "filters[state][$eq]", "value": "Maharashtra", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Branch Type",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/branches?filters[branchType][$eq]=head-office",
-              "host": ["{{baseUrl}}"], "path": ["branches"],
-              "query": [
-                { "key": "filters[branchType][$eq]", "value": "head-office", "description": "Options: head-office | regional-office | branch-office" },
-                { "key": "sort", "value": "branchName:asc", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by City",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/branches?filters[city][$eq]=Mumbai",
-              "host": ["{{baseUrl}}"], "path": ["branches"],
-              "query": [
-                { "key": "filters[city][$eq]", "value": "Mumbai", "description": "Options: Mumbai | New Delhi | Bengaluru | Chennai | Hyderabad | Pune" },
-                { "key": "filters[branchType][$eq]", "value": "head-office", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by State",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/branches?filters[state][$eq]=Maharashtra",
-              "host": ["{{baseUrl}}"], "path": ["branches"],
-              "query": [
-                { "key": "filters[state][$eq]", "value": "Maharashtra", "description": "Options: Maharashtra | Delhi | Karnataka | Tamil Nadu | Telangana" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search by City or Branch Name",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/branches?filters[city][$containsi]=mumbai&sort=branchType:asc",
-              "host": ["{{baseUrl}}"], "path": ["branches"],
-              "query": [
-                { "key": "filters[city][$containsi]", "value": "mumbai", "description": "Partial city name (case-insensitive)" },
-                { "key": "filters[branchName][$containsi]", "value": "kiwi", "disabled": true },
-                { "key": "sort", "value": "branchType:asc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Branch",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/branches/{{documentId}}",
-              "host": ["{{baseUrl}}"], "path": ["branches", "{{documentId}}"],
-              "query": []
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "📋 Standard Products (IRDAI Mandatory)",
-      "item": [
-        {
-          "name": "Get All Standard Products",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/standard-products?filters[isActive][$eq]=true&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["standard-products"],
-              "query": [
-                { "key": "filters[isActive][$eq]", "value": "true" },
-                { "key": "populate", "value": "*", "description": "Options: *, cisDocument, policyWording" },
-                { "key": "filters[productType][$eq]", "value": "arogya-sanjeevani", "disabled": true, "description": "Options: arogya-sanjeevani | saral-suraksha-bima | bharat-griha-raksha | bharat-sookshma-udyam | bharat-laghu-udyam" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Product Type",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/standard-products?filters[productType][$eq]=arogya-sanjeevani&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["standard-products"],
-              "query": [
-                { "key": "filters[productType][$eq]", "value": "arogya-sanjeevani", "description": "Options: arogya-sanjeevani | saral-suraksha-bima | bharat-griha-raksha | bharat-sookshma-udyam | bharat-laghu-udyam" },
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search by Product Name",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/standard-products?filters[productName][$containsi]=arogya",
-              "host": ["{{baseUrl}}"], "path": ["standard-products"],
-              "query": [
-                { "key": "filters[productName][$containsi]", "value": "arogya", "description": "Case-insensitive search. Try: bharat, saral, suraksha" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Standard Product",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/standard-products/{{documentId}}?populate=*",
-              "host": ["{{baseUrl}}"], "path": ["standard-products", "{{documentId}}"],
-              "query": [
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "👔 Board of Directors & KMP",
-      "item": [
-        {
-          "name": "Get All Members",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/leadership-profiles?sort=displayOrder:asc&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["leadership-profiles"],
-              "query": [
-                { "key": "sort", "value": "displayOrder:asc", "description": "Options: displayOrder:asc, name:asc" },
-                { "key": "populate", "value": "*", "description": "Options: *, photo" },
-                { "key": "filters[category][$eq]", "value": "Board", "disabled": true, "description": "Options: Board | KMP" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Category – Board",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/leadership-profiles?filters[category][$eq]=Board&sort=displayOrder:asc",
-              "host": ["{{baseUrl}}"], "path": ["leadership-profiles"],
-              "query": [
-                { "key": "filters[category][$eq]", "value": "Board", "description": "Options: Board | KMP" },
-                { "key": "sort", "value": "displayOrder:asc" },
-                { "key": "populate", "value": "*", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Category – KMP",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/leadership-profiles?filters[category][$eq]=KMP&sort=displayOrder:asc",
-              "host": ["{{baseUrl}}"], "path": ["leadership-profiles"],
-              "query": [
-                { "key": "filters[category][$eq]", "value": "KMP", "description": "Options: Board | KMP" },
-                { "key": "sort", "value": "displayOrder:asc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search by Name",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/leadership-profiles?filters[name][$containsi]=sharma&sort=displayOrder:asc",
-              "host": ["{{baseUrl}}"], "path": ["leadership-profiles"],
-              "query": [
-                { "key": "filters[name][$containsi]", "value": "sharma", "description": "Case-insensitive name search" },
-                { "key": "filters[designation][$containsi]", "value": "director", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Member",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/leadership-profiles/{{documentId}}?populate=*",
-              "host": ["{{baseUrl}}"], "path": ["leadership-profiles", "{{documentId}}"],
-              "query": [
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "📊 Public Disclosures",
-      "item": [
-        {
-          "name": "Get All Financial Years",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/financial-years?sort=startYear:desc",
-              "host": ["{{baseUrl}}"], "path": ["financial-years"],
-              "query": [
-                { "key": "sort", "value": "startYear:desc", "description": "Options: startYear:desc, label:asc" },
-                { "key": "filters[isActive][$eq]", "value": "true", "disabled": true },
-                { "key": "filters[label][$eq]", "value": "2024-25", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter – Active Financial Year",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/financial-years?filters[isActive][$eq]=true",
-              "host": ["{{baseUrl}}"], "path": ["financial-years"],
-              "query": [
-                { "key": "filters[isActive][$eq]", "value": "true" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get All Quarters (with Documents)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/financial-quarters?sort=quarter:asc&populate[financialYear]=*&populate[documents]=*",
-              "host": ["{{baseUrl}}"], "path": ["financial-quarters"],
-              "query": [
-                { "key": "sort", "value": "quarter:asc" },
-                { "key": "populate[financialYear]", "value": "*" },
-                { "key": "populate[documents]", "value": "*" },
-                { "key": "filters[quarter][$eq]", "value": "Q1", "disabled": true, "description": "Options: Q1 | Q2 | Q3 | Q4" },
-                { "key": "filters[financialYear][label][$eq]", "value": "2024-25", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Quarter",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/financial-quarters?filters[quarter][$eq]=Q1&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["financial-quarters"],
-              "query": [
-                { "key": "filters[quarter][$eq]", "value": "Q1", "description": "Options: Q1 | Q2 | Q3 | Q4" },
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Financial Year",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/financial-quarters?filters[financialYear][label][$eq]=2024-25&sort=quarter:asc&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["financial-quarters"],
-              "query": [
-                { "key": "filters[financialYear][label][$eq]", "value": "2024-25", "description": "Filter by FY label e.g. 2024-25" },
-                { "key": "sort", "value": "quarter:asc" },
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "📰 Annual Reports",
-      "item": [
-        {
-          "name": "Get All Annual Reports",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/annual-reports?sort=year:desc&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["annual-reports"],
-              "query": [
-                { "key": "sort", "value": "year:desc", "description": "Options: year:desc, publishedOn:desc" },
-                { "key": "populate", "value": "*", "description": "Includes file media" },
-                { "key": "filters[reportType][$eq]", "value": "annual-report", "disabled": true, "description": "Options: annual-report | esg-report | stewardship-policy" },
-                { "key": "filters[year][$eq]", "value": "2023-24", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Report Type",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/annual-reports?filters[reportType][$eq]=annual-report&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["annual-reports"],
-              "query": [
-                { "key": "filters[reportType][$eq]", "value": "annual-report", "description": "Options: annual-report | esg-report | stewardship-policy" },
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Year",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/annual-reports?filters[year][$eq]=2023-24&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["annual-reports"],
-              "query": [
-                { "key": "filters[year][$eq]", "value": "2023-24" },
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Annual Report",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/annual-reports/{{documentId}}?populate=*",
-              "host": ["{{baseUrl}}"], "path": ["annual-reports", "{{documentId}}"],
-              "query": [
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "💼 Careers",
-      "item": [
-        {
-          "name": "Get All Active Jobs",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/job-listings?filters[isActive][$eq]=true&sort=postedOn:desc",
-              "host": ["{{baseUrl}}"], "path": ["job-listings"],
-              "query": [
-                { "key": "filters[isActive][$eq]", "value": "true" },
-                { "key": "sort", "value": "postedOn:desc", "description": "Options: postedOn:desc, jobTitle:asc" },
-                { "key": "filters[department][$eq]", "value": "Technology", "disabled": true, "description": "Options: Product | Technology | Claims | Distribution | Marketing" },
-                { "key": "filters[location][$eq]", "value": "Mumbai", "disabled": true, "description": "Options: Mumbai | Bengaluru | Delhi | Pan India" },
-                { "key": "filters[jobType][$eq]", "value": "full-time", "disabled": true, "description": "Options: full-time | part-time | contract | pos-agent | imd" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Department",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/job-listings?filters[department][$eq]=Technology&filters[isActive][$eq]=true&sort=postedOn:desc",
-              "host": ["{{baseUrl}}"], "path": ["job-listings"],
-              "query": [
-                { "key": "filters[department][$eq]", "value": "Technology", "description": "Options: Product | Technology | Claims | Distribution | Marketing" },
-                { "key": "filters[isActive][$eq]", "value": "true" },
-                { "key": "sort", "value": "postedOn:desc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Job Type",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/job-listings?filters[jobType][$eq]=full-time&filters[isActive][$eq]=true&sort=postedOn:desc",
-              "host": ["{{baseUrl}}"], "path": ["job-listings"],
-              "query": [
-                { "key": "filters[jobType][$eq]", "value": "full-time", "description": "Options: full-time | part-time | contract | pos-agent | imd" },
-                { "key": "filters[isActive][$eq]", "value": "true" },
-                { "key": "sort", "value": "postedOn:desc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Location",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/job-listings?filters[location][$eq]=Mumbai&filters[isActive][$eq]=true",
-              "host": ["{{baseUrl}}"], "path": ["job-listings"],
-              "query": [
-                { "key": "filters[location][$eq]", "value": "Mumbai", "description": "Options: Mumbai | Bengaluru | Delhi | Pan India" },
-                { "key": "filters[isActive][$eq]", "value": "true" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter – POSP / Agent Jobs",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/job-listings?filters[jobType][$eq]=pos-agent&filters[isActive][$eq]=true",
-              "host": ["{{baseUrl}}"], "path": ["job-listings"],
-              "query": [
-                { "key": "filters[jobType][$eq]", "value": "pos-agent" },
-                { "key": "filters[isActive][$eq]", "value": "true" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search by Job Title",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/job-listings?filters[jobTitle][$containsi]=manager&filters[isActive][$eq]=true",
-              "host": ["{{baseUrl}}"], "path": ["job-listings"],
-              "query": [
-                { "key": "filters[jobTitle][$containsi]", "value": "manager", "description": "Case-insensitive job title search" },
-                { "key": "filters[isActive][$eq]", "value": "true" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Multiple Filters – Full-time in Mumbai",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/job-listings?filters[isActive][$eq]=true&filters[location][$eq]=Mumbai&filters[jobType][$eq]=full-time",
-              "host": ["{{baseUrl}}"], "path": ["job-listings"],
-              "query": [
-                { "key": "filters[isActive][$eq]", "value": "true" },
-                { "key": "filters[location][$eq]", "value": "Mumbai" },
-                { "key": "filters[jobType][$eq]", "value": "full-time" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Job",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/job-listings/{{documentId}}",
-              "host": ["{{baseUrl}}"], "path": ["job-listings", "{{documentId}}"],
-              "query": []
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "🛠️ Tools Hub",
-      "item": [
-        {
-          "name": "Get Tool Hub Page",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/tool-hub-page?populate[featuredSection][populate][tools]=*&populate[seo]=*",
-              "host": ["{{baseUrl}}"], "path": ["tool-hub-page"],
-              "query": [
-                { "key": "populate[featuredSection][populate][tools]", "value": "*" },
-                { "key": "populate[seo]", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get All Tool Categories",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/tool-categories?sort=displayOrder:asc&populate[tools]=*",
-              "host": ["{{baseUrl}}"], "path": ["tool-categories"],
-              "query": [
-                { "key": "sort", "value": "displayOrder:asc" },
-                { "key": "populate[tools]", "value": "*", "description": "Include tools within each category" },
-                { "key": "filters[name][$containsi]", "value": "vehicle", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Category by Slug",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/tool-categories?filters[slug][$eq]=vehicle-tools&populate[tools]=*",
-              "host": ["{{baseUrl}}"], "path": ["tool-categories"],
-              "query": [
-                { "key": "filters[slug][$eq]", "value": "vehicle-tools", "description": "Options: vehicle-tools | health-tools | financial-tools" },
-                { "key": "populate[tools]", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get All Active Tools",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/tools?filters[isActive][$eq]=true&populate[tool_category]=*&sort=name:asc",
-              "host": ["{{baseUrl}}"], "path": ["tools"],
-              "query": [
-                { "key": "filters[isActive][$eq]", "value": "true" },
-                { "key": "populate[tool_category]", "value": "*" },
-                { "key": "sort", "value": "name:asc" },
-                { "key": "filters[badge][$eq]", "value": "Popular", "disabled": true, "description": "Options: New | Popular | Trending | Free" },
-                { "key": "filters[tool_category][slug][$eq]", "value": "vehicle-tools", "disabled": true, "description": "Options: vehicle-tools | health-tools | financial-tools" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Category Slug",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/tools?filters[tool_category][slug][$eq]=vehicle-tools&filters[isActive][$eq]=true&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["tools"],
-              "query": [
-                { "key": "filters[tool_category][slug][$eq]", "value": "vehicle-tools", "description": "Options: vehicle-tools | health-tools | financial-tools" },
-                { "key": "filters[isActive][$eq]", "value": "true" },
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Badge",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/tools?filters[badge][$eq]=Popular&filters[isActive][$eq]=true",
-              "host": ["{{baseUrl}}"], "path": ["tools"],
-              "query": [
-                { "key": "filters[badge][$eq]", "value": "Popular", "description": "Options: New | Popular | Trending | Free" },
-                { "key": "filters[isActive][$eq]", "value": "true" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Tool by Slug",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/tools?filters[slug][$eq]=check-pending-challans&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["tools"],
-              "query": [
-                { "key": "filters[slug][$eq]", "value": "check-pending-challans", "description": "Available: check-pending-challans | check-puc-expiry | vehicle-owner-details | vehicle-report-card | documents-digilocker | generate-abha-id | health-insurance-calculator | check-credit-score | insurance-premium-calculator" },
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search Tools by Name",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/tools?filters[name][$containsi]=vehicle&filters[isActive][$eq]=true",
-              "host": ["{{baseUrl}}"], "path": ["tools"],
-              "query": [
-                { "key": "filters[name][$containsi]", "value": "vehicle", "description": "Case-insensitive name search" },
-                { "key": "filters[isActive][$eq]", "value": "true" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Tool",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/tools/{{documentId}}?populate=*",
-              "host": ["{{baseUrl}}"], "path": ["tools", "{{documentId}}"],
-              "query": [
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        }
-      ]
-    },
-
-    {
-      "name": "📝 Blog Articles",
-      "item": [
-        {
-          "name": "Get All Published Articles",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/articles?sort=publishedAt:desc&populate[categories]=*",
-              "host": ["{{baseUrl}}"], "path": ["articles"],
-              "query": [
-                { "key": "sort", "value": "publishedAt:desc", "description": "Options: publishedAt:desc, title:asc, readTime:asc" },
+                { "key": "populate[cover]", "value": "*" },
                 { "key": "populate[categories]", "value": "*" },
-                { "key": "pagination[pageSize]", "value": "10", "disabled": true },
-                { "key": "pagination[page]", "value": "1", "disabled": true },
-                { "key": "filters[isFeatured][$eq]", "value": "true", "disabled": true },
-                { "key": "filters[categories][slug][$eq]", "value": "car-insurance", "disabled": true },
-                { "key": "filters[authorName][$eq]", "value": "Kiwi Editorial Team", "disabled": true }
+                { "key": "populate[blocks][on][shared.rich-text][populate]", "value": "*" },
+                { "key": "populate[blocks][on][shared.media][populate]", "value": "*" },
+                { "key": "populate[blocks][on][shared.faq-item][populate]", "value": "*" },
+                { "key": "populate[seo][populate]", "value": "*" }
               ]
             }
           }
         },
+        { "name": "Categories", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] } } },
+        { "name": "Testimonials", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/testimonials", "host": ["{{baseUrl}}"], "path": ["testimonials"] } } }
+      ]
+    },
+    {
+      "name": "🛡️ Insurance",
+      "item": [
+        { "name": "Insurance Products", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products?populate=*", "host": ["{{baseUrl}}"], "path": ["insurance-products"], "query": [{ "key": "populate", "value": "*" }] } } },
+        { "name": "Standard Products (Mandatory)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/standard-products?populate=*", "host": ["{{baseUrl}}"], "path": ["standard-products"], "query": [{ "key": "populate", "value": "*" }] } } }
+      ]
+    },
+    {
+      "name": "🛠️ Tools",
+      "item": [
+        { "name": "Tools", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/tools?populate=*", "host": ["{{baseUrl}}"], "path": ["tools"], "query": [{ "key": "populate", "value": "*" }] } } },
+        { "name": "Tool Categories", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/tool-categories", "host": ["{{baseUrl}}"], "path": ["tool-categories"] } } }
+      ]
+    },
+    {
+      "name": "📂 Media Management",
+      "item": [
         {
-          "name": "Filter – Featured Articles",
+          "name": "List All Files",
           "request": {
             "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/articles?filters[isFeatured][$eq]=true&sort=publishedAt:desc&populate[categories]=*",
-              "host": ["{{baseUrl}}"], "path": ["articles"],
-              "query": [
-                { "key": "filters[isFeatured][$eq]", "value": "true" },
-                { "key": "sort", "value": "publishedAt:desc" },
-                { "key": "populate[categories]", "value": "*" }
-              ]
-            }
+            "header": [ { "key": "Authorization", "value": "Bearer {{jwt}}" } ],
+            "url": { "raw": "{{baseUrl}}/upload/files", "host": ["{{baseUrl}}"], "path": ["upload", "files"] }
           }
         },
         {
-          "name": "Filter by Category Slug",
+          "name": "Upload File",
           "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/articles?filters[categories][slug][$eq]=car-insurance&sort=publishedAt:desc&populate[categories]=*",
-              "host": ["{{baseUrl}}"], "path": ["articles"],
-              "query": [
-                { "key": "filters[categories][slug][$eq]", "value": "car-insurance", "description": "Options: car-insurance | health-insurance | two-wheeler-insurance | travel-insurance | home-insurance | insurance-guide" },
-                { "key": "sort", "value": "publishedAt:desc" },
-                { "key": "populate[categories]", "value": "*" }
+            "method": "POST",
+            "header": [ { "key": "Authorization", "value": "Bearer {{jwt}}" } ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "files", "type": "file", "src": [] },
+                { "key": "refId", "value": "{{documentId}}", "type": "text" },
+                { "key": "ref", "value": "api::article.article", "type": "text" },
+                { "key": "field", "value": "cover", "type": "text" }
               ]
-            }
-          }
-        },
-        {
-          "name": "Get Article by Slug (Full Content)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/articles?filters[slug][$eq]=car-insurance-renewal-checklist&populate=*",
-              "host": ["{{baseUrl}}"], "path": ["articles"],
-              "query": [
-                { "key": "filters[slug][$eq]", "value": "car-insurance-renewal-checklist", "description": "Available: car-insurance-renewal-checklist | health-insurance-deductible-copay-sublimit | third-party-vs-comprehensive-car-insurance | travel-insurance-schengen-visa-guide | how-to-file-motor-insurance-claim-kiwi" },
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Author",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/articles?filters[authorName][$eq]=Kiwi Editorial Team&sort=publishedAt:desc",
-              "host": ["{{baseUrl}}"], "path": ["articles"],
-              "query": [
-                { "key": "filters[authorName][$eq]", "value": "Kiwi Editorial Team", "description": "Options: Kiwi Editorial Team | Dr. Meera Iyer | Arjun Kapoor | Kiwi Claims Team" },
-                { "key": "sort", "value": "publishedAt:desc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Filter by Read Time",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/articles?filters[readTime][$lte]=5&sort=readTime:asc",
-              "host": ["{{baseUrl}}"], "path": ["articles"],
-              "query": [
-                { "key": "filters[readTime][$lte]", "value": "5", "description": "Articles with read time <= 5 mins. Operators: $lt, $lte, $gt, $gte, $eq" },
-                { "key": "sort", "value": "readTime:asc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search by Title",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/articles?filters[title][$containsi]=car&populate[categories]=*",
-              "host": ["{{baseUrl}}"], "path": ["articles"],
-              "query": [
-                { "key": "filters[title][$containsi]", "value": "car", "description": "Case-insensitive search in title. Try: health, travel, insurance, claim" },
-                { "key": "populate[categories]", "value": "*" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Articles with Pagination",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/articles?sort=publishedAt:desc&populate[categories]=*&pagination[page]=1&pagination[pageSize]=3",
-              "host": ["{{baseUrl}}"], "path": ["articles"],
-              "query": [
-                { "key": "sort", "value": "publishedAt:desc" },
-                { "key": "populate[categories]", "value": "*" },
-                { "key": "pagination[page]", "value": "1" },
-                { "key": "pagination[pageSize]", "value": "3" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Article",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/articles/{{documentId}}?populate=*",
-              "host": ["{{baseUrl}}"], "path": ["articles", "{{documentId}}"],
-              "query": [
-                { "key": "populate", "value": "*" }
-              ]
-            }
+            },
+            "url": { "raw": "{{baseUrl}}/upload", "host": ["{{baseUrl}}"], "path": ["upload"] }
           }
         }
       ]
     },
-
     {
-      "name": "🏷️ Blog Categories",
+      "name": "✍️ Content Operations (CRUD)",
       "item": [
         {
-          "name": "Get All Categories",
+          "name": "Create Article",
           "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/categories?sort=name:asc",
-              "host": ["{{baseUrl}}"], "path": ["categories"],
-              "query": [
-                { "key": "sort", "value": "name:asc" },
-                { "key": "filters[name][$containsi]", "value": "insurance", "disabled": true },
-                { "key": "filters[slug][$eq]", "value": "car-insurance", "disabled": true }
-              ]
-            }
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"title\": \"New Blog Post\",\n    \"slug\": \"new-blog-post\",\n    \"excerpt\": \"This is a post created via API\",\n    \"content\": \"Full body content here...\",\n    \"status\": \"published\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/articles", "host": ["{{baseUrl}}"], "path": ["articles"] }
           }
         },
         {
-          "name": "Get Category by Slug",
+          "name": "Update Article",
           "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/categories?filters[slug][$eq]=car-insurance",
-              "host": ["{{baseUrl}}"], "path": ["categories"],
-              "query": [
-                { "key": "filters[slug][$eq]", "value": "car-insurance", "description": "Options: car-insurance | health-insurance | two-wheeler-insurance | travel-insurance | home-insurance | insurance-guide" }
-              ]
-            }
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{jwt}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"title\": \"Updated Title\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/articles/{{documentId}}", "host": ["{{baseUrl}}"], "path": ["articles", "{{documentId}}"] }
           }
         },
         {
-          "name": "Get Single Category",
+          "name": "Delete Article",
           "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/categories/{{documentId}}",
-              "host": ["{{baseUrl}}"], "path": ["categories", "{{documentId}}"],
-              "query": []
-            }
+            "method": "DELETE",
+            "header": [ { "key": "Authorization", "value": "Bearer {{jwt}}" } ],
+            "url": { "raw": "{{baseUrl}}/articles/{{documentId}}", "host": ["{{baseUrl}}"], "path": ["articles", "{{documentId}}"] }
           }
         }
       ]
     },
-
     {
-      "name": "💬 Testimonials",
+      "name": "📍 Locations & Branches",
       "item": [
-        {
-          "name": "Get All Testimonials",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/testimonials?sort=publishedAt:desc",
-              "host": ["{{baseUrl}}"], "path": ["testimonials"],
-              "query": [
-                { "key": "sort", "value": "publishedAt:desc", "description": "Options: publishedAt:desc, customerName:asc" },
-                { "key": "pagination[pageSize]", "value": "5", "disabled": true },
-                { "key": "filters[customerName][$containsi]", "value": "delhi", "disabled": true }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search by Customer Name",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/testimonials?filters[customerName][$containsi]=mumbai",
-              "host": ["{{baseUrl}}"], "path": ["testimonials"],
-              "query": [
-                { "key": "filters[customerName][$containsi]", "value": "mumbai", "description": "Search by customer name (case-insensitive)" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Paginated Testimonials",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/testimonials?pagination[pageSize]=3&pagination[page]=1&sort=publishedAt:desc",
-              "host": ["{{baseUrl}}"], "path": ["testimonials"],
-              "query": [
-                { "key": "pagination[pageSize]", "value": "3" },
-                { "key": "pagination[page]", "value": "1" },
-                { "key": "sort", "value": "publishedAt:desc" }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Single Testimonial",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/testimonials/{{documentId}}",
-              "host": ["{{baseUrl}}"], "path": ["testimonials", "{{documentId}}"],
-              "query": []
-            }
-          }
-        }
+        { "name": "Branches", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/branches", "host": ["{{baseUrl}}"], "path": ["branches"] } } },
+        { "name": "Ombudsman Offices", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/ombudsman-offices", "host": ["{{baseUrl}}"], "path": ["ombudsman-offices"] } } }
       ]
     },
-
     {
-      "name": "ℹ️ About",
+      "name": "📊 Financials & Disclosures",
       "item": [
-        {
-          "name": "Get About Page",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/about?populate=*",
-              "host": ["{{baseUrl}}"], "path": ["about"],
-              "query": [
-                { "key": "populate", "value": "*", "description": "Options: *, blocks" }
-              ]
-            }
-          }
-        }
+        { "name": "Financial Years", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/financial-years", "host": ["{{baseUrl}}"], "path": ["financial-years"] } } },
+        { "name": "Financial Quarters", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/financial-quarters?populate=*", "host": ["{{baseUrl}}"], "path": ["financial-quarters"], "query": [{ "key": "populate", "value": "*" }] } } },
+        { "name": "Annual Reports", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/annual-reports?populate=*", "host": ["{{baseUrl}}"], "path": ["annual-reports"], "query": [{ "key": "populate", "value": "*" }] } } },
+        { "name": "Download Documents", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/download-documents?populate=*", "host": ["{{baseUrl}}"], "path": ["download-documents"], "query": [{ "key": "populate", "value": "*" }] } } }
+      ]
+    },
+    {
+      "name": "👔 Corporate",
+      "item": [
+        { "name": "Leadership Profiles", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/leadership-profiles?populate=*", "host": ["{{baseUrl}}"], "path": ["leadership-profiles"], "query": [{ "key": "populate", "value": "*" }] } } },
+        { "name": "Job Listings", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/job-listings", "host": ["{{baseUrl}}"], "path": ["job-listings"] } } },
+        { "name": "Grievance Levels", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/grievance-levels", "host": ["{{baseUrl}}"], "path": ["grievance-levels"] } } }
+      ]
+    },
+    {
+      "name": "⚙️ System & Utils",
+      "item": [
+        { "name": "Navigation Menus", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/navigation-menus?populate=*", "host": ["{{baseUrl}}"], "path": ["navigation-menus"], "query": [{ "key": "populate", "value": "*" }] } } },
+        { "name": "Redirects", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/redirects", "host": ["{{baseUrl}}"], "path": ["redirects"] } } },
+        { "name": "Shared Sections", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/shared-sections?populate=*", "host": ["{{baseUrl}}"], "path": ["shared-sections"], "query": [{ "key": "populate", "value": "*" }] } } }
       ]
     }
-
   ]
 }
