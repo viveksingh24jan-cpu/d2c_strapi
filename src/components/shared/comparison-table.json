@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_shared_comparison_tables",
+  "info": {
+    "displayName": "Comparison Table",
+    "icon": "grid"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "columnHeaders": {
+      "type": "json"
+    },
+    "rows": {
+      "type": "json"
+    }
+  }
+}

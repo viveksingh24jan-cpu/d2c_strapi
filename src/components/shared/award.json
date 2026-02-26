@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_shared_awards",
+  "info": {
+    "displayName": "Award",
+    "icon": "trophy"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "year": {
+      "type": "string"
+    },
+    "issuer": {
+      "type": "string"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

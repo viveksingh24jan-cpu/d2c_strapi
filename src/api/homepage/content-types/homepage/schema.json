@@ -54,7 +54,14 @@
         "shared.slider",
         "shared.rich-text",
         "shared.quote",
-        "shared.media"
+        "shared.media",
+        "shared.faq-item",
+        "shared.process-step",
+        "shared.comparison-table",
+        "shared.award",
+        "shared.lottie",
+        "shared.alert",
+        "shared.modal"
       ]
     },
     "featuredContent": {
@@ -63,7 +70,14 @@
         "shared.slider",
         "shared.rich-text",
         "shared.quote",
-        "shared.media"
+        "shared.media",
+        "shared.faq-item",
+        "shared.process-step",
+        "shared.comparison-table",
+        "shared.award",
+        "shared.lottie",
+        "shared.alert",
+        "shared.modal"
       ]
     },
     "ctaSection": {

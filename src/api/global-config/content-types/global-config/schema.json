@@ -77,11 +77,15 @@
         "images"
       ]
     },
-    "privacyPolicyUrl": {
-      "type": "string"
+    "privacyPage": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::legal-page.legal-page"
     },
-    "termsOfServiceUrl": {
-      "type": "string"
+    "termsPage": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::legal-page.legal-page"
     },
     "supportEmail": {
       "type": "string"
@@ -98,6 +102,21 @@
     },
     "footerCopyright": {
       "type": "text"
+    },
+    "announcementBanner": {
+      "type": "component",
+      "component": "shared.announcement-banner",
+      "repeatable": false
+    },
+    "stickyCtaText": {
+      "type": "string"
+    },
+    "stickyCtaUrl": {
+      "type": "string"
+    },
+    "stickyCtaIsActive": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

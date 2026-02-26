@@ -13,6 +13,41 @@ export interface DisclosuresDisclosureDocument extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedAlert extends Struct.ComponentSchema {
+  collectionName: 'components_shared_alerts';
+  info: {
+    displayName: 'Alert';
+    icon: 'exclamation-triangle';
+  };
+  attributes: {
+    isDismissible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    message: Schema.Attribute.Text & Schema.Attribute.Required;
+    title: Schema.Attribute.String;
+    variant: Schema.Attribute.Enumeration<
+      ['info', 'warning', 'error', 'success']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'info'>;
+  };
+}
+
+export interface SharedAnnouncementBanner extends Struct.ComponentSchema {
+  collectionName: 'components_shared_announcement_banners';
+  info: {
+    displayName: 'Announcement Banner';
+    icon: 'bullhorn';
+  };
+  attributes: {
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    text: Schema.Attribute.String & Schema.Attribute.Required;
+    url: Schema.Attribute.String;
+    variant: Schema.Attribute.Enumeration<
+      ['info', 'warning', 'promo', 'alert']
+    > &
+      Schema.Attribute.DefaultTo<'info'>;
+  };
+}
+
 export interface SharedAppLinks extends Struct.ComponentSchema {
   collectionName: 'components_shared_app_links';
   info: {
@@ -23,6 +58,46 @@ export interface SharedAppLinks extends Struct.ComponentSchema {
     appStoreUrl: Schema.Attribute.String;
     playStoreBadge: Schema.Attribute.Media<'images'>;
     playStoreUrl: Schema.Attribute.String;
+  };
+}
+
+export interface SharedAward extends Struct.ComponentSchema {
+  collectionName: 'components_shared_awards';
+  info: {
+    displayName: 'Award';
+    icon: 'trophy';
+  };
+  attributes: {
+    issuer: Schema.Attribute.String;
+    logo: Schema.Attribute.Media<'images'>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    year: Schema.Attribute.String;
+  };
+}
+
+export interface SharedComparisonTable extends Struct.ComponentSchema {
+  collectionName: 'components_shared_comparison_tables';
+  info: {
+    displayName: 'Comparison Table';
+    icon: 'grid';
+  };
+  attributes: {
+    columnHeaders: Schema.Attribute.JSON;
+    rows: Schema.Attribute.JSON;
+    subtitle: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface SharedFaqItem extends Struct.ComponentSchema {
+  collectionName: 'components_shared_faq_items';
+  info: {
+    displayName: 'FAQ Item';
+    icon: 'question-circle';
+  };
+  attributes: {
+    answer: Schema.Attribute.Blocks;
+    question: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -38,6 +113,20 @@ export interface SharedFeaturedTools extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedLottie extends Struct.ComponentSchema {
+  collectionName: 'components_shared_lotties';
+  info: {
+    displayName: 'Lottie Animation';
+    icon: 'play-circle';
+  };
+  attributes: {
+    autoplay: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    fallbackImage: Schema.Attribute.Media<'images'>;
+    loop: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    lottieUrl: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SharedMedia extends Struct.ComponentSchema {
   collectionName: 'components_shared_media';
   info: {
@@ -46,6 +135,33 @@ export interface SharedMedia extends Struct.ComponentSchema {
   };
   attributes: {
     file: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
+  };
+}
+
+export interface SharedModal extends Struct.ComponentSchema {
+  collectionName: 'components_shared_modals';
+  info: {
+    displayName: 'Modal';
+    icon: 'window-maximize';
+  };
+  attributes: {
+    content: Schema.Attribute.Blocks;
+    title: Schema.Attribute.String;
+    triggerLabel: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedProcessStep extends Struct.ComponentSchema {
+  collectionName: 'components_shared_process_steps';
+  info: {
+    displayName: 'Process Step';
+    icon: 'arrow-right';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    icon: Schema.Attribute.Media<'images'>;
+    stepNumber: Schema.Attribute.Integer & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -148,9 +264,17 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'disclosures.disclosure-document': DisclosuresDisclosureDocument;
+      'shared.alert': SharedAlert;
+      'shared.announcement-banner': SharedAnnouncementBanner;
       'shared.app-links': SharedAppLinks;
+      'shared.award': SharedAward;
+      'shared.comparison-table': SharedComparisonTable;
+      'shared.faq-item': SharedFaqItem;
       'shared.featured-tools': SharedFeaturedTools;
+      'shared.lottie': SharedLottie;
       'shared.media': SharedMedia;
+      'shared.modal': SharedModal;
+      'shared.process-step': SharedProcessStep;
       'shared.promo-card': SharedPromoCard;
       'shared.quote': SharedQuote;
       'shared.rich-text': SharedRichText;

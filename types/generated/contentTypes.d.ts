@@ -740,6 +740,10 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    announcementBanner: Schema.Attribute.Component<
+      'shared.announcement-banner',
+      false
+    >;
     appLinks: Schema.Attribute.Component<'shared.app-links', false>;
     bimaBharosaUrl: Schema.Attribute.String;
     cinNumber: Schema.Attribute.String;
@@ -763,15 +767,25 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
       'api::global-config.global-config'
     > &
       Schema.Attribute.Private;
-    privacyPolicyUrl: Schema.Attribute.String;
+    privacyPage: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::legal-page.legal-page'
+    >;
     publishedAt: Schema.Attribute.DateTime;
     registeredAddress: Schema.Attribute.Text & Schema.Attribute.Required;
     section41Warning: Schema.Attribute.Blocks;
     siteDescription: Schema.Attribute.Text & Schema.Attribute.Required;
     siteName: Schema.Attribute.String & Schema.Attribute.Required;
     socialLinks: Schema.Attribute.Component<'shared.social-link', true>;
+    stickyCtaIsActive: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    stickyCtaText: Schema.Attribute.String;
+    stickyCtaUrl: Schema.Attribute.String;
     supportEmail: Schema.Attribute.String;
-    termsOfServiceUrl: Schema.Attribute.String;
+    termsPage: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::legal-page.legal-page'
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -857,14 +871,38 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
   };
   attributes: {
     blocks: Schema.Attribute.DynamicZone<
-      ['shared.slider', 'shared.rich-text', 'shared.quote', 'shared.media']
+      [
+        'shared.slider',
+        'shared.rich-text',
+        'shared.quote',
+        'shared.media',
+        'shared.faq-item',
+        'shared.process-step',
+        'shared.comparison-table',
+        'shared.award',
+        'shared.lottie',
+        'shared.alert',
+        'shared.modal',
+      ]
     >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     ctaSection: Schema.Attribute.Blocks;
     featuredContent: Schema.Attribute.DynamicZone<
-      ['shared.slider', 'shared.rich-text', 'shared.quote', 'shared.media']
+      [
+        'shared.slider',
+        'shared.rich-text',
+        'shared.quote',
+        'shared.media',
+        'shared.faq-item',
+        'shared.process-step',
+        'shared.comparison-table',
+        'shared.award',
+        'shared.lottie',
+        'shared.alert',
+        'shared.modal',
+      ]
     >;
     heroBadge: Schema.Attribute.String & Schema.Attribute.Required;
     heroCtaText: Schema.Attribute.String & Schema.Attribute.Required;
