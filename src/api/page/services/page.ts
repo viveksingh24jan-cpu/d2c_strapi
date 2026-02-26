@@ -9,12 +9,23 @@ export default factories.createCoreService('api::page.page', ({ strapi }) => ({
    * Returns a fully populated page based on slug or ID
    */
   async getPopulatedPage(idOrSlug: string, query = {}) {
-    const isSlug = isNaN(Number(idOrSlug));
-    
+    // 1. Try by documentId first (Strapi 5 standard)
+    try {
+      const entry = await strapi.documents('api::page.page').findOne({
+        documentId: idOrSlug,
+        ...query,
+        populate: this.getCommonPopulation() as any,
+      });
+      if (entry) return entry;
+    } catch (e) {
+      // ignore and try by slug
+    }
+
+    // 2. Fallback to slug search
     return await strapi.documents('api::page.page').findFirst({
       ...query,
       filters: {
-        ...(isSlug ? { slug: idOrSlug } : { id: idOrSlug }),
+        slug: idOrSlug,
       },
       populate: this.getCommonPopulation() as any,
     });
@@ -32,7 +43,7 @@ export default factories.createCoreService('api::page.page', ({ strapi }) => ({
       },
       metadata: {
         populate: {
-          attachment: true,
+          attachmentForDownload: true,
         },
       },
       blocks: {
