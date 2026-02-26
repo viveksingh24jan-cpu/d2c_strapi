@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "Kiwi General Insurance – COMPLETE API (Architect Optimized)",
-    "description": "Comprehensive API collection for all endpoints, including deep population strategy for reusable components and SSOT product registry.\nBase URL: http://localhost:1337/api",
+    "name": "Kiwi General Insurance – ULTIMATE API (Architect Level)",
+    "description": "Exhaustive API coverage for every Collection, Single Type, and Component permutation in the Kiwi CMS.\nIncludes Deep Population patterns (`on` syntax), Filtering, Sorting, and CRUD operations.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -11,20 +11,50 @@
   ],
   "item": [
     {
-      "name": "🚀 System Brain",
+      "name": "🔐 Authentication & Users",
       "item": [
         {
-          "name": "Global Config (Branding & Regulatory)",
+          "name": "Login (Get Token)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"identifier\": \"admin@kiwiinsurance.in\",\n  \"password\": \"password123\"\n}" },
+            "url": { "raw": "{{baseUrl}}/auth/local", "host": ["{{baseUrl}}"], "path": ["auth", "local"] }
+          }
+        },
+        { "name": "Register User", "request": { "method": "POST", "body": { "mode": "raw", "raw": "{\n  \"username\": \"new_user\",\n  \"email\": \"test@test.com\",\n  \"password\": \"Password123!\"\n}" }, "url": { "raw": "{{baseUrl}}/auth/local/register", "host": ["{{baseUrl}}"], "path": ["auth", "local", "register"] } } },
+        { "name": "Get Me (Profile)", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }], "url": { "raw": "{{baseUrl}}/users/me", "host": ["{{baseUrl}}"], "path": ["users", "me"] } } },
+        { "name": "List All Users", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }], "url": { "raw": "{{baseUrl}}/users", "host": ["{{baseUrl}}"], "path": ["users"] } } }
+      ]
+    },
+    {
+      "name": "🌍 Global Configuration",
+      "item": [
+        {
+          "name": "Get Global Config (Full Site Brain)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/global-config?populate=*",
+              "raw": "{{baseUrl}}/global-config?populate[defaultSeo][populate]=*&populate[favicon]=*&populate[headerLogo]=*&populate[footerLogo]=*&populate[socialLinks][populate]=*&populate[appLinks][populate]=*&populate[trustMetrics][populate]=*&populate[stickyCta][populate]=*&populate[privacyPage][fields]=slug,title&populate[termsPage][fields]=slug,title",
               "host": ["{{baseUrl}}"],
               "path": ["global-config"],
               "query": [
-                { "key": "populate", "value": "*" }
+                { "key": "populate[defaultSeo][populate]", "value": "*" },
+                { "key": "populate[socialLinks][populate]", "value": "*" },
+                { "key": "populate[stickyCta][populate]", "value": "*" },
+                { "key": "populate[privacyPage][fields]", "value": "slug,title" }
               ]
-            }
+            },
+            "description": "Fetches the Single Type defining site-wide rules, branding, and navigation links."
+          }
+        },
+        {
+          "name": "Update Global Config",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }],
+            "body": { "mode": "raw", "raw": "{\"data\": {\"siteName\": \"Kiwi Updated\"}}" },
+            "url": { "raw": "{{baseUrl}}/global-config", "host": ["{{baseUrl}}"], "path": ["global-config"] }
           }
         }
       ]
@@ -33,59 +63,163 @@
       "name": "📄 Dynamic Landing Pages",
       "item": [
         {
-          "name": "Home Page (Deep Population)",
+          "name": "List All Pages",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/pages", "host": ["{{baseUrl}}"], "path": ["pages"] } }
+        },
+        {
+          "name": "Get Page (MASTER COMPONENT QUERY)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/pages?filters[slug][$eq]=home&populate[content][on][page-builder.insurance-product-cta][populate]=product&populate[content][on][shared.section-reference][populate]=shared_section&populate[content][on][page-builder.hero-section][populate]=*&populate[content][on][page-builder.card-grid][populate]=*&populate[content][on][page-builder.accordion][populate]=*",
+              "raw": "{{baseUrl}}/pages?filters[slug][$eq]=home&populate[content][on][page-builder.hero-section][populate]=*&populate[content][on][page-builder.stats-bar][populate]=*&populate[content][on][page-builder.card-grid][populate]=*&populate[content][on][page-builder.accordion][populate]=*&populate[content][on][page-builder.text-block][populate]=*&populate[content][on][page-builder.media-block][populate]=*&populate[content][on][page-builder.testimonial-grid][populate]=*&populate[content][on][page-builder.comparison-table][populate]=*&populate[content][on][page-builder.insurance-product-cta][populate]=product&populate[content][on][shared.section-reference][populate]=shared_section&populate[seo][populate]=*",
               "host": ["{{baseUrl}}"],
               "path": ["pages"],
               "query": [
-                { "key": "filters[slug][$eq]", "value": "home" },
+                { "key": "filters[slug][$eq]", "value": "home", "description": "Target specific page" },
+                { "key": "populate[content][on][page-builder.hero-section][populate]", "value": "*" },
                 { "key": "populate[content][on][page-builder.insurance-product-cta][populate]", "value": "product" },
                 { "key": "populate[content][on][shared.section-reference][populate]", "value": "shared_section" },
-                { "key": "populate[content][on][page-builder.hero-section][populate]", "value": "*" },
-                { "key": "populate[content][on][page-builder.card-grid][populate]", "value": "*" },
-                { "key": "populate[content][on][page-builder.accordion][populate]", "value": "*" }
+                { "key": "populate[seo][populate]", "value": "*" }
               ]
             },
-            "description": "Retrieves the Home page with all dynamic blocks, including reusable shared sections and dynamic product pricing."
+            "description": "The Holy Grail query. Uses specific `on` population to retrieve every possible component type (Hero, CTA, Shared Reference) with their nested relations."
+          }
+        },
+        {
+          "name": "Create Page",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }],
+            "body": { "mode": "raw", "raw": "{\"data\":{\"title\":\"New Page\",\"slug\":\"new-page\",\"template\":\"default\"}}" },
+            "url": { "raw": "{{baseUrl}}/pages", "host": ["{{baseUrl}}"], "path": ["pages"] }
           }
         }
       ]
     },
     {
-      "name": "📰 Articles & Authors",
+      "name": "🛡️ Products (SSOT)",
       "item": [
         {
-          "name": "All Articles (with Author & Category)",
+          "name": "List Insurance Products",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products?populate=icon", "host": ["{{baseUrl}}"], "path": ["insurance-products"], "query": [{ "key": "populate", "value": "icon" }] } }
+        },
+        {
+          "name": "Get Product Detail (with Description Blocks)",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products?filters[productName][$eq]=Car Insurance&populate[blocks][on][page-builder.accordion][populate]=*", "host": ["{{baseUrl}}"], "path": ["insurance-products"] } }
+        },
+        {
+          "name": "List Standard Products (IRDAI)",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/standard-products", "host": ["{{baseUrl}}"], "path": ["standard-products"] } }
+        }
+      ]
+    },
+    {
+      "name": "📰 Content Engine",
+      "item": [
+        {
+          "name": "List Articles",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/articles?populate=cover,author,categories", "host": ["{{baseUrl}}"], "path": ["articles"] } }
+        },
+        {
+          "name": "List Authors",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/authors?populate=avatar", "host": ["{{baseUrl}}"], "path": ["authors"] } }
+        },
+        {
+          "name": "List Categories",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] } }
+        },
+        {
+          "name": "List Testimonials",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/testimonials", "host": ["{{baseUrl}}"], "path": ["testimonials"] } }
+        }
+      ]
+    },
+    {
+      "name": "📊 Corporate & Finance",
+      "item": [
+        {
+          "name": "Financial Disclosures (Years/Quarters)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/articles?populate=author,categories",
+              "raw": "{{baseUrl}}/financial-disclosures?populate[documents][populate]=*",
               "host": ["{{baseUrl}}"],
-              "path": ["articles"],
-              "query": [
-                { "key": "populate", "value": "author,categories" }
-              ]
-            }
+              "path": ["financial-disclosures"],
+              "query": [{ "key": "populate[documents][populate]", "value": "*" }]
+            },
+            "description": "Retrieves annual reports and quarterly results with nested document links."
           }
+        },
+        {
+          "name": "Leadership Profiles (Board/KMP)",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/leadership-profiles?sort=displayOrder:asc&populate=photo", "host": ["{{baseUrl}}"], "path": ["leadership-profiles"] } }
+        },
+        {
+          "name": "Job Listings",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/job-listings?filters[isActive][$eq]=true", "host": ["{{baseUrl}}"], "path": ["job-listings"] } }
+        },
+        {
+          "name": "Download Documents",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/download-documents?populate=file", "host": ["{{baseUrl}}"], "path": ["download-documents"] } }
         }
       ]
     },
     {
-      "name": "🛡️ Product Registry (SSOT)",
+      "name": "📍 Infrastructure & Support",
       "item": [
-        { "name": "Insurance Products", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products", "host": ["{{baseUrl}}"], "path": ["insurance-products"] } } },
-        { "name": "Standard IRDAI Products", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/standard-products", "host": ["{{baseUrl}}"], "path": ["standard-products"] } } }
+        {
+          "name": "List Branches",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/branches?filters[branchType][$eq]=head-office", "host": ["{{baseUrl}}"], "path": ["branches"] } }
+        },
+        {
+          "name": "Ombudsman Offices",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/ombudsman-offices", "host": ["{{baseUrl}}"], "path": ["ombudsman-offices"] } }
+        },
+        {
+          "name": "Grievance Levels",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/grievance-levels?sort=levelNumber:asc", "host": ["{{baseUrl}}"], "path": ["grievance-levels"] } }
+        }
       ]
     },
     {
-      "name": "📍 Infrastructure",
+      "name": "🛠️ Tools & Utils",
       "item": [
-        { "name": "Branches", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/branches", "host": ["{{baseUrl}}"], "path": ["branches"] } } },
-        { "name": "Ombudsman Offices", "request": { "method": { "raw": "GET" }, "url": { "raw": "{{baseUrl}}/ombudsman-offices", "host": ["{{baseUrl}}"], "path": ["ombudsman-offices"] } } },
-        { "name": "Grievance Levels", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/grievance-levels", "host": ["{{baseUrl}}"], "path": ["grievance-levels"] } } }
+        {
+          "name": "List Tools",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/tools?populate=tool_category,icon", "host": ["{{baseUrl}}"], "path": ["tools"] } }
+        },
+        {
+          "name": "Tool Categories",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/tool-categories", "host": ["{{baseUrl}}"], "path": ["tool-categories"] } }
+        },
+        {
+          "name": "Navigation Menus (Nested)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/navigation-menus?filters[location][$eq]=header&populate[children][populate]=children",
+              "host": ["{{baseUrl}}"],
+              "path": ["navigation-menus"],
+              "query": [{ "key": "populate[children][populate]", "value": "children", "description": "Deep nesting for multi-level menus" }]
+            }
+          }
+        },
+        {
+          "name": "Redirects",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/redirects", "host": ["{{baseUrl}}"], "path": ["redirects"] } }
+        },
+        {
+          "name": "Shared Sections (Reusable Blocks)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/shared-sections?populate[blocks][on][page-builder.banner][populate]=*",
+              "host": ["{{baseUrl}}"],
+              "path": ["shared-sections"]
+            },
+            "description": "Fetch standalone sections that are referenced by multiple pages."
+          }
+        }
       ]
     }
   ]
