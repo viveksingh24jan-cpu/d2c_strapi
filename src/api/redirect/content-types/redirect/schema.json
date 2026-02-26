@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "redirects",
+  "info": {
+    "singularName": "redirect",
+    "pluralName": "redirects",
+    "displayName": "Redirect",
+    "description": "Manage 301 and 302 redirects for SEO."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "fromPath": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "description": "The old URL (e.g. /old-campaign)"
+    },
+    "toPath": {
+      "type": "string",
+      "required": true,
+      "description": "The new URL (e.g. /new-campaign)"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "301",
+        "302"
+      ],
+      "default": "301"
+    },
+    "notes": {
+      "type": "text",
+      "description": "Reason for redirect."
+    }
+  }
+}

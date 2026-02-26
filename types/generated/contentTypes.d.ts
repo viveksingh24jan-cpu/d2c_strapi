@@ -911,6 +911,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
         'shared.product-cta',
         'shared.dynamic-comparison',
         'shared.compliance-banner',
+        'shared.section-reference',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;
@@ -933,6 +934,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
         'shared.product-cta',
         'shared.dynamic-comparison',
         'shared.compliance-banner',
+        'shared.section-reference',
       ]
     >;
     heroBadge: Schema.Attribute.String & Schema.Attribute.Required;
@@ -1246,6 +1248,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'shared.product-cta',
         'shared.dynamic-comparison',
         'shared.compliance-banner',
+        'shared.section-reference',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;
@@ -1257,6 +1260,53 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSharedSectionSharedSection
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'shared_sections';
+  info: {
+    description: 'A reusable UI block that can be inserted into any page.';
+    displayName: 'Shared Section';
+    pluralName: 'shared-sections';
+    singularName: 'shared-section';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    blocks: Schema.Attribute.DynamicZone<
+      [
+        'shared.slider',
+        'shared.rich-text',
+        'shared.quote',
+        'shared.media',
+        'shared.faq-item',
+        'shared.process-step',
+        'shared.award',
+        'shared.lottie',
+        'shared.alert',
+        'shared.modal',
+        'shared.product-cta',
+        'shared.dynamic-comparison',
+        'shared.compliance-banner',
+      ]
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::shared-section.shared-section'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -2053,6 +2103,7 @@ declare module '@strapi/strapi' {
       'api::navigation-menu.navigation-menu': ApiNavigationMenuNavigationMenu;
       'api::ombudsman-office.ombudsman-office': ApiOmbudsmanOfficeOmbudsmanOffice;
       'api::page.page': ApiPagePage;
+      'api::shared-section.shared-section': ApiSharedSectionSharedSection;
       'api::standard-product.standard-product': ApiStandardProductStandardProduct;
       'api::testimonial.testimonial': ApiTestimonialTestimonial;
       'api::tool-category.tool-category': ApiToolCategoryToolCategory;

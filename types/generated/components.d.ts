@@ -257,6 +257,23 @@ export interface SharedRichText extends Struct.ComponentSchema {
   };
   attributes: {
     body: Schema.Attribute.RichText;
+    styling: Schema.Attribute.Component<'shared.styling', false>;
+  };
+}
+
+export interface SharedSectionReference extends Struct.ComponentSchema {
+  collectionName: 'components_shared_section_references';
+  info: {
+    description: 'Links to a Shared Section for reusability.';
+    displayName: 'Section Reference';
+    icon: 'link';
+  };
+  attributes: {
+    custom_title: Schema.Attribute.String;
+    shared_section: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::shared-section.shared-section'
+    >;
   };
 }
 
@@ -289,6 +306,7 @@ export interface SharedSlider extends Struct.ComponentSchema {
   };
   attributes: {
     files: Schema.Attribute.Media<'images', true>;
+    styling: Schema.Attribute.Component<'shared.styling', false>;
   };
 }
 
@@ -317,6 +335,35 @@ export interface SharedStats extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedStyling extends Struct.ComponentSchema {
+  collectionName: 'components_shared_stylings';
+  info: {
+    description: 'Visual layout controls for marketing.';
+    displayName: 'Styling';
+    icon: 'paint-brush';
+  };
+  attributes: {
+    anchorId: Schema.Attribute.String;
+    backgroundColor: Schema.Attribute.Enumeration<
+      ['white', 'light-gray', 'dark-gray', 'brand-primary', 'brand-secondary']
+    > &
+      Schema.Attribute.DefaultTo<'white'>;
+    containerType: Schema.Attribute.Enumeration<
+      ['fixed-normal', 'fixed-narrow', 'fixed-wide', 'full-width']
+    > &
+      Schema.Attribute.DefaultTo<'fixed-normal'>;
+    customClassName: Schema.Attribute.String;
+    paddingBottom: Schema.Attribute.Enumeration<
+      ['none', 'small', 'medium', 'large', 'xlarge']
+    > &
+      Schema.Attribute.DefaultTo<'medium'>;
+    paddingTop: Schema.Attribute.Enumeration<
+      ['none', 'small', 'medium', 'large', 'xlarge']
+    > &
+      Schema.Attribute.DefaultTo<'medium'>;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
@@ -338,10 +385,12 @@ declare module '@strapi/strapi' {
       'shared.promo-card': SharedPromoCard;
       'shared.quote': SharedQuote;
       'shared.rich-text': SharedRichText;
+      'shared.section-reference': SharedSectionReference;
       'shared.seo': SharedSeo;
       'shared.slider': SharedSlider;
       'shared.social-link': SharedSocialLink;
       'shared.stats': SharedStats;
+      'shared.styling': SharedStyling;
     }
   }
 }

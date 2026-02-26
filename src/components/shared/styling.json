@@ -1,0 +1,62 @@
+{
+  "collectionName": "components_shared_stylings",
+  "info": {
+    "displayName": "Styling",
+    "icon": "paint-brush",
+    "description": "Visual layout controls for marketing."
+  },
+  "options": {},
+  "attributes": {
+    "backgroundColor": {
+      "type": "enumeration",
+      "enum": [
+        "white",
+        "light-gray",
+        "dark-gray",
+        "brand-primary",
+        "brand-secondary"
+      ],
+      "default": "white"
+    },
+    "paddingTop": {
+      "type": "enumeration",
+      "enum": [
+        "none",
+        "small",
+        "medium",
+        "large",
+        "xlarge"
+      ],
+      "default": "medium"
+    },
+    "paddingBottom": {
+      "type": "enumeration",
+      "enum": [
+        "none",
+        "small",
+        "medium",
+        "large",
+        "xlarge"
+      ],
+      "default": "medium"
+    },
+    "containerType": {
+      "type": "enumeration",
+      "enum": [
+        "fixed-normal",
+        "fixed-narrow",
+        "fixed-wide",
+        "full-width"
+      ],
+      "default": "fixed-normal"
+    },
+    "customClassName": {
+      "type": "string",
+      "description": "Optional CSS class for advanced overrides."
+    },
+    "anchorId": {
+      "type": "string",
+      "description": "HTML ID for jump links (e.g., 'contact-form')."
+    }
+  }
+}

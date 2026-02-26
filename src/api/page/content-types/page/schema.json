@@ -21,6 +21,10 @@
       "targetField": "title",
       "required": true
     },
+    "internalNotes": {
+      "type": "text",
+      "description": "Internal notes for CM/Marketing team (not visible on frontend)."
+    },
     "blocks": {
       "type": "dynamiczone",
       "components": [
@@ -36,7 +40,8 @@
         "shared.modal",
         "shared.product-cta",
         "shared.dynamic-comparison",
-        "shared.compliance-banner"
+        "shared.compliance-banner",
+        "shared.section-reference"
       ]
     },
     "seo": {

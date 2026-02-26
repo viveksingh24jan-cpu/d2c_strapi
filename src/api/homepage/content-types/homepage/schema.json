@@ -64,7 +64,8 @@
         "shared.modal",
         "shared.product-cta",
         "shared.dynamic-comparison",
-        "shared.compliance-banner"
+        "shared.compliance-banner",
+        "shared.section-reference"
       ]
     },
     "featuredContent": {
@@ -83,7 +84,8 @@
         "shared.modal",
         "shared.product-cta",
         "shared.dynamic-comparison",
-        "shared.compliance-banner"
+        "shared.compliance-banner",
+        "shared.section-reference"
       ]
     },
     "ctaSection": {
