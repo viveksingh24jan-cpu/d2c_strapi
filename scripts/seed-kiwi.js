@@ -375,9 +375,13 @@ async function seedLegalPages() {
     },
   ];
 
+  const results = {};
   for (const page of pages) {
-    await createEntry('api::legal-page.legal-page', { ...page, publishedAt: new Date().toISOString() });
+    const entry = await createEntry('api::legal-page.legal-page', { ...page, publishedAt: new Date().toISOString() });
+    if (page.slug === 'privacy-policy') results.privacyPageId = entry?.documentId;
+    if (page.slug === 'terms-of-use') results.termsPageId = entry?.documentId;
   }
+  return results;
 }
 
 // ─── Grievance ────────────────────────────────────────────────────────────────
@@ -984,7 +988,7 @@ async function seedAnnualReports() {
 
 // ─── Global Config ────────────────────────────────────────────────────────────
 
-async function seedGlobalConfig() {
+async function seedGlobalConfig({ privacyPageId, termsPageId } = {}) {
   console.log('  Seeding global config...');
 
   await updateSingle('api::global-config.global-config', {
@@ -1001,8 +1005,17 @@ async function seedGlobalConfig() {
     supportEmail: 'care@kiwiinsurance.in',
     footerDescription: 'Kiwi General Insurance Company Limited is a general insurance company registered with IRDAI. We offer simple, transparent, and affordable insurance solutions for every Indian.',
     footerCopyright: '© 2025 Kiwi General Insurance Company Limited. All rights reserved.',
-    privacyPolicyUrl: '/legal/privacy-policy',
-    termsOfServiceUrl: '/legal/terms-of-use',
+    ...(privacyPageId && { privacyPage: { connect: [{ documentId: privacyPageId }] } }),
+    ...(termsPageId && { termsPage: { connect: [{ documentId: termsPageId }] } }),
+    announcementBanner: {
+      text: 'New! Buy Bharat Griha Raksha (Home Insurance) starting ₹2,500/year. Limited time offer.',
+      url: '/products/home-insurance',
+      isActive: true,
+      variant: 'promo',
+    },
+    stickyCtaText: 'Get a Free Quote',
+    stickyCtaUrl: '/get-quote',
+    stickyCtaIsActive: true,
     section41Warning: txtMulti(
       'Section 41 of the Insurance Act, 1938: No person shall allow or offer to allow, either directly or indirectly, as an inducement to any person to take out or renew or continue an insurance policy, any rebate of the whole or part of the commission payable or any rebate of the premium shown on the policy, nor shall any person taking out or renewing or continuing a policy accept any rebate, except such rebate as may be allowed in accordance with the published prospectuses or tables of the insurer.',
       'Kiwi General Insurance Company Limited | IRDAI Reg. No. 190 | CIN: U66010MH2024PLC000001 | Registered Office: Kiwi House, 12th Floor, BKC, Mumbai 400051.',
@@ -1511,9 +1524,9 @@ async function main() {
   console.log('\n🥝 Kiwi General Insurance – Seeding...\n');
 
   try {
-    await seedGlobalConfig();
     await seedNavigation();
-    await seedLegalPages();
+    const legalPages = await seedLegalPages();
+    await seedGlobalConfig(legalPages);
     await seedGrievance();
     await seedOmbudsman();
     await seedDownloads();
