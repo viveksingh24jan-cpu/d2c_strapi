@@ -25,10 +25,10 @@
     "type": {
       "type": "enumeration",
       "enum": [
-        "301",
-        "302"
+        "permanent",
+        "temporary"
       ],
-      "default": "301"
+      "default": "permanent"
     },
     "notes": {
       "type": "text",
