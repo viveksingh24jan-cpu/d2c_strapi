@@ -8,115 +8,86 @@ This document is the "Grand Encyclopedia" of the Kiwi CMS. It explores every sin
 There is only one of these in the entire system. They control site-wide rules.
 
 ### **1.1 GlobalConfig (`api::global-config`)**
-*   **Purpose:** The "One-Stop-Shop" for branding and compliance.
-*   **Fields:**
-    *   `siteName` (String): Title in the browser tab.
-    *   `siteDescription` (Text): Metadata for Google Search.
-    *   `headerLogo` / `footerLogo` (Media): Images for the top and bottom of the site.
-    *   `irdaiRegNumber` (String): Mandatory license number shown in the footer.
-    *   `registeredAddress` (Text): Official office address.
-    *   `privacyPage` / `termsPage` (Relation): Links to the official Legal Pages.
-    *   `announcementBanner` (Component): A thin bar for site-wide alerts.
-    *   `trustMetrics` (Component): List of global stats (e.g., "99% Claims Ratio").
+*   **Purpose:** The "One-Stop-Shop" for branding, regulatory compliance, and global navigation links.
+*   **Key Fields:**
+    *   `siteName` (String): The brand name (e.g., "Kiwi General Insurance").
+    *   `irdaiRegNumber` (String): Mandatory license number (e.g., "190").
+    *   `privacyPage` / `termsPage` (Relation): Direct links to the Legal Page warehouse.
+    *   `stickyCta` (Component): A site-wide floating bar for urgent alerts or lead generation.
+    *   `socialLinks` (Repeatable Component): Managed list of social handles with platform-specific icons.
 
 ---
 
 ## 🏪 2. COLLECTIONS (Data Warehouses)
-These store groups of similar data.
+These store groups of similar data used across the application.
 
-### **2.1 Core Content**
-*   **Dynamic Landing Pages (`api::page`):** The master for all site URLs.
-    *   `template` (Enum): Pick `home`, `about`, `legal`, `tool-hub`.
-    *   `blocks` (Dynamic Zone): Stacks of LEGO bricks.
-    *   `metadata` (Component): Page settings like `isMandatory`.
-*   **Article (`api::article`):** The Blog/Knowledge Hub.
-    *   `cover` (Media): Featured image.
-    *   `categories` (Relation): Links to the Category Warehouse.
-    *   `authorName` (String) & `readTime` (Integer).
-*   **Category (`api::category`):** Folders for the Blog.
-    *   `name` / `slug` / `description`.
+### **2.1 Core Content & SEO**
+*   **Dynamic Landing Pages (`api::page`):** The master model for every URL.
+    *   `template` (Enum): Pick `home`, `about`, `legal`, `grievance`.
+    *   `content` (Dynamic Zone): A stack of modular sections (Hero, Stats, Accordions, etc.).
+    *   **Optimization:** Supports `shared.section-reference` to reuse blocks from the Shared Sections registry.
+*   **Article (`api::article`):** Blog posts and educational guides.
+    *   Linked to **Author** and **Category** warehouses.
+*   **Redirect (`api::redirect`):** SEO traffic management. Maps `fromPath` to `toPath` with 301/302 status codes.
 
-### **2.2 Products & Sales**
-*   **InsuranceProduct (`api::insurance-product`):** Core marketing data.
-    *   `startingPrice` (Decimal): The "From" price.
-    *   `ctaUrl` (String): Deep-link to the checkout page.
-    *   `badge` (String): e.g., "Best Seller".
-*   **StandardProduct (`api::standard-product`):** IRDAI mandatory listings.
-    *   `productType` (Enum): `arogya-sanjeevani`, `saral-suraksha-bima`, etc.
-    *   `eligibility` (Blocks): Bullet points on who can buy.
-*   **Testimonial (`api::testimonial`):** Customer reviews.
-    *   `customerName` (String) & `testimonialContent` (Blocks).
+### **2.2 Insurance Product Registry**
+*   **InsuranceProduct (`api::insurance-product`):** Marketing-heavy data.
+    *   `startingPrice` (Decimal): Pulls automatically into page CTAs.
+    *   `productDescription` (Blocks): Standardized rich-text overview.
+*   **StandardProduct (`api::standard-product`):** IRDAI-mandated standard policies.
+    *   Types: `arogya-sanjeevani`, `bharat-griha-raksha`, etc.
 
-### **2.3 Technical & Tools**
-*   **Tool (`api::tool`):** Calculators like "Premium Calc".
-    *   `url` (String): Link to the actual calculator logic.
-    *   `badge` (Enum): `New`, `Popular`, `Free`.
-*   **ToolCategory (`api::tool-category`):** Groups for calculators.
-*   **Redirect (`api::redirect`):** SEO Traffic Signs.
-    *   `fromPath` (String) -> `toPath` (String). Type: `permanent` (301) or `temporary` (302).
+### **2.3 Corporate & Regulatory**
+*   **Financial Disclosure (`api::financial-disclosure`):** Consolidated warehouse for Quarterly Results and Annual Reports.
+*   **Infrastructure:**
+    *   `api::branch`: Map-ready office locations (Head Office, Regional, Branch).
+    *   `api::ombudsman-office`: Jurisdiction-based govt. complaint offices.
+    *   `api::grievance-level`: Escalation matrix (Level 1 to 3).
+*   **LeadershipProfile (`api::leadership-profile`):** Board of Directors and Key Managerial Personnel (KMP).
 
-### **2.4 Corporate & Finance**
-*   **AnnualReport (`api::annual-report`):** Public PDFs.
-    *   `reportType` (Enum): `annual-report`, `esg-report`, `stewardship`.
-*   **FinancialYear / Quarter (`api::financial-year/quarter`):**
-    *   `isActive` (Boolean): Marks the current year.
-    *   `documents` (Component): List of Disclosure documents.
-*   **LeadershipProfile (`api::leadership-profile`):** The "Bosses".
-    *   `category` (Enum): `Board` or `KMP`.
-*   **JobListing (`api::job-listing`):** Careers.
-    *   `jobType` (Enum): `full-time`, `contract`, `pos-agent`.
-*   **Branch (`api::branch`):** Office Map.
-    *   `branchType` (Enum): `head-office`, `regional`, `branch`.
-*   **OmbudsmanOffice (`api::ombudsman-office`):** Govt. Complaint offices.
+### **2.4 Technical & Misc**
+*   **Tool (`api::tool`):** Calculators (e.g., "Premium Calculator") linked to a **Tool Category**.
+*   **JobListing (`api::job-listing`):** HR portal data.
+*   **Testimonial (`api::testimonial`):** Customer reviews verified for display.
 
 ---
 
-## 🧱 3. COMPONENTS (The LEGO Bricks)
-These are the fields you fill in when building a page.
+## 🧱 3. COMPONENT LIBRARY (The LEGO System)
 
-### **3.1 The "Paint Bucket" (shared.styling)**
-*   **BackgroundColor:** `white`, `light-gray`, `brand-primary`.
-*   **Spacing:** `paddingTop` / `paddingBottom` (None to XLarge).
-*   **ContainerType:** `narrow`, `normal`, `wide`, `full-width`.
+### **3.1 Layout & Content Bricks**
+*   **Hero Section:** High-impact banner with layout options (`centered`, `left-right`).
+*   **Text Block:** Scalable rich-text container with column support.
+*   **Accordion:** Collapsible Q&A items for FAQs.
+*   **Card Grid:** Responsive grid of `Card Items` with icons and badges.
 
-### **3.2 Layout Bricks**
-*   **Hero:** `title`, `subtitle`, `badge`, `image`, `ctaText`, `ctaUrl`.
-*   **Section Reference:** Links to a **Shared Section** entry to reuse content.
-*   **Media Slider:** `files` (Multiple images) + `styling`.
+### **3.2 Atomic Reuse (The Architect's Secret)**
+*   **Shared Section Reference (`shared.section-reference`):**
+    *   Instead of recreating a "Contact Us" block on every page, you create it once in the **Shared Sections** collection.
+    *   Inside any page, you add this component and point it to that section.
+    *   **Update once, reflect everywhere.**
 
-### **3.3 Sales & Trust Bricks**
-*   **Product CTA:** Relation to `InsuranceProduct`. Automatically grabs price and CTA link.
-*   **Stats:** List of `label` and `value`.
-*   **Award:** `title`, `year`, `issuer`, `logo`.
-*   **PromoCard:** `title`, `description`, `promoImage`, `ctaText`.
-*   **Comparison Table:** JSON-based grid for manual data entry.
-*   **Dynamic Comparison:** Links to multiple `InsuranceProducts` to compare them.
-
-### **3.4 Info & Logic Bricks**
-*   **Rich Text Block:** A Markdown editor for long stories.
-*   **FAQ Item:** `question` (String) and `answer` (Blocks).
-*   **Process Step:** `stepNumber`, `title`, `description`, `icon`.
-*   **Alert:** `variant` (`info`, `warning`, `error`, `success`) + `message`.
-*   **Modal:** `triggerLabel` (Button text) + `content` (Pop-up body).
-*   **Lottie:** `lottieUrl` (Link to animation) + `autoplay/loop` settings.
-*   **Page Metadata:** `isMandatory` (Compliance flag), `redirectionPath` (Auto-redirect).
+### **3.3 Dynamic Logic Bricks**
+*   **Insurance Product CTA (`page-builder.insurance-product-cta`):**
+    *   Instead of typing the price manually, you select a **Product** from the relation.
+    *   The frontend automatically pulls the latest `startingPrice` and `ctaUrl` from the Product Registry.
 
 ---
 
-## 🧶 4. LINKING LOGIC (The Connections)
+## 🧶 4. DATA FLOW & LINKING LOGIC
 
-1.  **Page -> Product:** A `Page` uses a `Product CTA` brick -> Points to `InsuranceProduct` (Warehouse) -> Grabs Price.
-2.  **Article -> Category:** An `Article` points to a `Category` (Warehouse) -> Shows category badge on the blog post.
-3.  **Bootstrap -> GlobalConfig:** The site starts -> Calls `/api/bootstrap` -> Grabs `GlobalConfig` -> Finds `Privacy Page` (Relation) -> Draws the footer link.
-4.  **Financials:** `FinancialQuarter` points to a `FinancialYear` -> "Q1" knows it belongs to "2024-25".
+1.  **Registry Pattern:** Always create the "entity" (Product, Author, Category) in its Warehouse first.
+2.  **Referential Integrity:** Use the **Product CTA** component on landing pages to ensure pricing is never "stale."
+3.  **SEO Logic:** The `GlobalConfig` provides the default SEO, while the `Page` component can override it for specific URLs.
+4.  **Nesting:** **Navigation Menu** supports unlimited hierarchy via self-relations (Parent -> Child).
 
 ---
 
-## 🧑‍💻 5. ARCHITECT'S FINAL ADVICE (For the Developer)
+## 🧑‍💻 5. DEVELOPER IMPLEMENTATION TIPS
 
-*   **Endpoint 1:** `GET /api/bootstrap` (Initialization - One fetch).
-*   **Endpoint 2:** `GET /api/pages?filters[slug]=slug` (Page load).
-*   **Logic:** Always check `__component` inside the `blocks` array. Map it to your React components.
-*   **Styling:** Use the `styling` object inside each block to set CSS margins and backgrounds.
+*   **Initial Load:** Call `GET /api/global-config?populate=*` to get the "Site Brain."
+*   **Page Rendering:** 
+    *   `GET /api/pages?filters[slug]=home&populate[content][on][shared.section-reference][populate]=shared_section`
+    *   This deep-populates the shared blocks in one request.
+*   **Component Mapping:** Map `__component` names (e.g., `page-builder.hero-section`) directly to your React/Vue section components.
 
-**This is the 100% complete Master Guide to the Kiwi CMS City.**
+**The Kiwi CMS is designed for maximum scalability. Treat every block as a reusable asset.**
