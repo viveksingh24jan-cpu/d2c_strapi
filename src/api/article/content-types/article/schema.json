@@ -10,6 +10,13 @@
   "options": {
     "draftAndPublish": true
   },
+  "config": {
+    "attributes": {
+      "slug": {
+        "previewUrl": "http://localhost:3000/blog/preview/{slug}"
+      }
+    }
+  },
   "pluginOptions": {},
   "attributes": {
     "title": {
@@ -51,17 +58,22 @@
     "blocks": {
       "type": "dynamiczone",
       "components": [
-        "shared.media",
-        "shared.quote",
-        "shared.rich-text",
         "shared.slider",
+        "shared.rich-text",
+        "shared.quote",
+        "shared.media",
         "shared.faq-item",
-        "shared.alert",
+        "shared.process-step",
+        "shared.award",
         "shared.lottie",
-        "shared.comparison-table",
+        "shared.alert",
+        "shared.modal",
         "shared.product-cta",
         "shared.dynamic-comparison",
-        "shared.compliance-banner"
+        "shared.compliance-banner",
+        "shared.section-reference",
+        "shared.featured-tools",
+        "shared.comparison-table"
       ]
     },
     "seo": {

@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_shared_heroes",
+  "info": {
+    "displayName": "Hero",
+    "icon": "layout",
+    "description": "Premium page header with CTA"
+  },
+  "category": "layout",
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "badge": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "ctaText": {
+      "type": "string"
+    },
+    "ctaUrl": {
+      "type": "string"
+    }
+  }
+}

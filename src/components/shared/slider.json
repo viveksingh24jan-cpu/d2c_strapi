@@ -1,10 +1,11 @@
 {
   "collectionName": "components_shared_sliders",
   "info": {
-    "displayName": "Slider",
-    "icon": "address-book",
-    "description": ""
+    "displayName": "Media Slider",
+    "icon": "images",
+    "description": "Carousel for multiple images"
   },
+  "category": "marketing",
   "options": {},
   "attributes": {
     "styling": {

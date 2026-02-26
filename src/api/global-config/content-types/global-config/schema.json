@@ -80,12 +80,12 @@
     "privacyPage": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::legal-page.legal-page"
+      "target": "api::page.page"
     },
     "termsPage": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::legal-page.legal-page"
+      "target": "api::page.page"
     },
     "supportEmail": {
       "type": "string"

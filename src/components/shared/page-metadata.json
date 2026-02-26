@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_shared_page_metadata",
+  "info": {
+    "displayName": "Page Metadata",
+    "icon": "cog",
+    "description": "Custom settings for specific page templates"
+  },
+  "options": {},
+  "attributes": {
+    "isMandatory": {
+      "type": "boolean",
+      "default": false
+    },
+    "redirectionPath": {
+      "type": "string"
+    },
+    "attachmentForDownload": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "lastUpdated": {
+      "type": "datetime"
+    },
+    "customScript": {
+      "type": "text"
+    }
+  }
+}

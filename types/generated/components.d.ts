@@ -149,6 +149,23 @@ export interface SharedFeaturedTools extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedHero extends Struct.ComponentSchema {
+  collectionName: 'components_shared_heroes';
+  info: {
+    description: 'Premium page header with CTA';
+    displayName: 'Hero';
+    icon: 'layout';
+  };
+  attributes: {
+    badge: Schema.Attribute.String;
+    ctaText: Schema.Attribute.String;
+    ctaUrl: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    subtitle: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SharedLottie extends Struct.ComponentSchema {
   collectionName: 'components_shared_lotties';
   info: {
@@ -184,6 +201,22 @@ export interface SharedModal extends Struct.ComponentSchema {
     content: Schema.Attribute.Blocks;
     title: Schema.Attribute.String;
     triggerLabel: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedPageMetadata extends Struct.ComponentSchema {
+  collectionName: 'components_shared_page_metadata';
+  info: {
+    description: 'Custom settings for specific page templates';
+    displayName: 'Page Metadata';
+    icon: 'cog';
+  };
+  attributes: {
+    attachmentForDownload: Schema.Attribute.Media<'files'>;
+    customScript: Schema.Attribute.Text;
+    isMandatory: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    lastUpdated: Schema.Attribute.DateTime;
+    redirectionPath: Schema.Attribute.String;
   };
 }
 
@@ -251,9 +284,9 @@ export interface SharedQuote extends Struct.ComponentSchema {
 export interface SharedRichText extends Struct.ComponentSchema {
   collectionName: 'components_shared_rich_texts';
   info: {
-    description: '';
-    displayName: 'Rich text';
-    icon: 'align-justify';
+    description: 'Primary text content area';
+    displayName: 'Rich Text Block';
+    icon: 'pencil';
   };
   attributes: {
     body: Schema.Attribute.RichText;
@@ -300,9 +333,9 @@ export interface SharedSeo extends Struct.ComponentSchema {
 export interface SharedSlider extends Struct.ComponentSchema {
   collectionName: 'components_shared_sliders';
   info: {
-    description: '';
-    displayName: 'Slider';
-    icon: 'address-book';
+    description: 'Carousel for multiple images';
+    displayName: 'Media Slider';
+    icon: 'images';
   };
   attributes: {
     files: Schema.Attribute.Media<'images', true>;
@@ -377,9 +410,11 @@ declare module '@strapi/strapi' {
       'shared.dynamic-comparison': SharedDynamicComparison;
       'shared.faq-item': SharedFaqItem;
       'shared.featured-tools': SharedFeaturedTools;
+      'shared.hero': SharedHero;
       'shared.lottie': SharedLottie;
       'shared.media': SharedMedia;
       'shared.modal': SharedModal;
+      'shared.page-metadata': SharedPageMetadata;
       'shared.process-step': SharedProcessStep;
       'shared.product-cta': SharedProductCta;
       'shared.promo-card': SharedPromoCard;

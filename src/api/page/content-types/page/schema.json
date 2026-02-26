@@ -5,10 +5,17 @@
     "singularName": "page",
     "pluralName": "pages",
     "displayName": "Dynamic Landing Pages",
-    "description": "Create unlimited marketing and regional landing pages"
+    "description": "Unified page model for Home, About, Legal, and Custom landing pages"
   },
   "options": {
     "draftAndPublish": true
+  },
+  "config": {
+    "attributes": {
+      "slug": {
+        "previewUrl": "http://localhost:3000/preview/{slug}"
+      }
+    }
   },
   "pluginOptions": {},
   "attributes": {
@@ -21,9 +28,27 @@
       "targetField": "title",
       "required": true
     },
-    "internalNotes": {
-      "type": "text",
-      "description": "Internal notes for CM/Marketing team (not visible on frontend)."
+    "template": {
+      "type": "enumeration",
+      "enum": [
+        "default",
+        "home",
+        "legal",
+        "tool-hub",
+        "grievance",
+        "about"
+      ],
+      "default": "default"
+    },
+    "hero": {
+      "type": "component",
+      "component": "shared.hero",
+      "repeatable": false
+    },
+    "metadata": {
+      "type": "component",
+      "component": "shared.page-metadata",
+      "repeatable": false
     },
     "blocks": {
       "type": "dynamiczone",
@@ -41,12 +66,20 @@
         "shared.product-cta",
         "shared.dynamic-comparison",
         "shared.compliance-banner",
-        "shared.section-reference"
+        "shared.section-reference",
+        "shared.featured-tools",
+        "shared.comparison-table",
+        "shared.stats",
+        "shared.promo-card"
       ]
     },
     "seo": {
       "type": "component",
       "component": "shared.seo"
+    },
+    "internalNotes": {
+      "type": "text",
+      "description": "Internal notes for CM/Marketing team (not visible on frontend)."
     }
   }
 }

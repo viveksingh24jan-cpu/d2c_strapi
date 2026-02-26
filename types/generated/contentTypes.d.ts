@@ -430,46 +430,6 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiAboutAbout extends Struct.SingleTypeSchema {
-  collectionName: 'abouts';
-  info: {
-    description: 'Write about yourself and the content you create';
-    displayName: 'About';
-    pluralName: 'abouts';
-    singularName: 'about';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    blocks: Schema.Attribute.DynamicZone<
-      [
-        'shared.media',
-        'shared.quote',
-        'shared.rich-text',
-        'shared.slider',
-        'shared.faq-item',
-        'shared.process-step',
-        'shared.award',
-        'shared.lottie',
-        'shared.alert',
-        'shared.modal',
-      ]
-    >;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::about.about'> &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiAnnualReportAnnualReport
   extends Struct.CollectionTypeSchema {
   collectionName: 'annual_reports';
@@ -521,17 +481,22 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     authorName: Schema.Attribute.String;
     blocks: Schema.Attribute.DynamicZone<
       [
-        'shared.media',
-        'shared.quote',
-        'shared.rich-text',
         'shared.slider',
+        'shared.rich-text',
+        'shared.quote',
+        'shared.media',
         'shared.faq-item',
-        'shared.alert',
+        'shared.process-step',
+        'shared.award',
         'shared.lottie',
-        'shared.comparison-table',
+        'shared.alert',
+        'shared.modal',
         'shared.product-cta',
         'shared.dynamic-comparison',
         'shared.compliance-banner',
+        'shared.section-reference',
+        'shared.featured-tools',
+        'shared.comparison-table',
       ]
     >;
     categories: Schema.Attribute.Relation<
@@ -791,10 +756,7 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
       'api::global-config.global-config'
     > &
       Schema.Attribute.Private;
-    privacyPage: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::legal-page.legal-page'
-    >;
+    privacyPage: Schema.Attribute.Relation<'oneToOne', 'api::page.page'>;
     publishedAt: Schema.Attribute.DateTime;
     registeredAddress: Schema.Attribute.Text & Schema.Attribute.Required;
     section41Warning: Schema.Attribute.Blocks;
@@ -806,10 +768,7 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
     stickyCtaText: Schema.Attribute.String;
     stickyCtaUrl: Schema.Attribute.String;
     supportEmail: Schema.Attribute.String;
-    termsPage: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::legal-page.legal-page'
-    >;
+    termsPage: Schema.Attribute.Relation<'oneToOne', 'api::page.page'>;
     trustMetrics: Schema.Attribute.Component<'shared.stats', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -845,118 +804,6 @@ export interface ApiGrievanceLevelGrievanceLevel
       Schema.Attribute.Private;
     phone: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiGrievancePageGrievancePage extends Struct.SingleTypeSchema {
-  collectionName: 'grievance_page';
-  info: {
-    displayName: 'GrievancePage';
-    pluralName: 'grievance-pages';
-    singularName: 'grievance-page';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    bimaBharosaLink: Schema.Attribute.String;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    introText: Schema.Attribute.Blocks;
-    levels: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::grievance-level.grievance-level'
-    >;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::grievance-page.grievance-page'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
-  collectionName: 'homepages';
-  info: {
-    displayName: 'Homepage';
-    pluralName: 'homepages';
-    singularName: 'homepage';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    blocks: Schema.Attribute.DynamicZone<
-      [
-        'shared.slider',
-        'shared.rich-text',
-        'shared.quote',
-        'shared.media',
-        'shared.faq-item',
-        'shared.process-step',
-        'shared.comparison-table',
-        'shared.award',
-        'shared.lottie',
-        'shared.alert',
-        'shared.modal',
-        'shared.product-cta',
-        'shared.dynamic-comparison',
-        'shared.compliance-banner',
-        'shared.section-reference',
-      ]
-    >;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    ctaSection: Schema.Attribute.Blocks;
-    featuredContent: Schema.Attribute.DynamicZone<
-      [
-        'shared.slider',
-        'shared.rich-text',
-        'shared.quote',
-        'shared.media',
-        'shared.faq-item',
-        'shared.process-step',
-        'shared.comparison-table',
-        'shared.award',
-        'shared.lottie',
-        'shared.alert',
-        'shared.modal',
-        'shared.product-cta',
-        'shared.dynamic-comparison',
-        'shared.compliance-banner',
-        'shared.section-reference',
-      ]
-    >;
-    heroBadge: Schema.Attribute.String & Schema.Attribute.Required;
-    heroCtaText: Schema.Attribute.String & Schema.Attribute.Required;
-    heroCtaUrl: Schema.Attribute.String & Schema.Attribute.Required;
-    heroImage: Schema.Attribute.Media<'images'>;
-    heroSubtitle: Schema.Attribute.String & Schema.Attribute.Required;
-    heroTitle: Schema.Attribute.String & Schema.Attribute.Required;
-    insuranceProducts: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::insurance-product.insurance-product'
-    >;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::homepage.homepage'
-    > &
-      Schema.Attribute.Private;
-    promoCards: Schema.Attribute.Component<'shared.promo-card', true>;
-    publishedAt: Schema.Attribute.DateTime;
-    seo: Schema.Attribute.Component<'shared.seo', false>;
-    stats: Schema.Attribute.Component<'shared.stats', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1098,44 +945,6 @@ export interface ApiLeadershipProfileLeadershipProfile
   };
 }
 
-export interface ApiLegalPageLegalPage extends Struct.CollectionTypeSchema {
-  collectionName: 'legal_pages';
-  info: {
-    displayName: 'LegalPage';
-    pluralName: 'legal-pages';
-    singularName: 'legal-page';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    attachmentPdf: Schema.Attribute.Media<'files'>;
-    content: Schema.Attribute.Blocks;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    isMandatory: Schema.Attribute.Boolean;
-    lastUpdated: Schema.Attribute.DateTime;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::legal-page.legal-page'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    seo: Schema.Attribute.Component<'shared.seo', false>;
-    slug: Schema.Attribute.UID<'title'>;
-    title: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 200;
-      }>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiNavigationMenuNavigationMenu
   extends Struct.CollectionTypeSchema {
   collectionName: 'navigation_menus';
@@ -1224,7 +1033,7 @@ export interface ApiOmbudsmanOfficeOmbudsmanOffice
 export interface ApiPagePage extends Struct.CollectionTypeSchema {
   collectionName: 'pages';
   info: {
-    description: 'Create unlimited marketing and regional landing pages';
+    description: 'Unified page model for Home, About, Legal, and Custom landing pages';
     displayName: 'Dynamic Landing Pages';
     pluralName: 'pages';
     singularName: 'page';
@@ -1249,18 +1058,28 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'shared.dynamic-comparison',
         'shared.compliance-banner',
         'shared.section-reference',
+        'shared.featured-tools',
+        'shared.comparison-table',
+        'shared.stats',
+        'shared.promo-card',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    hero: Schema.Attribute.Component<'shared.hero', false>;
     internalNotes: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::page.page'> &
       Schema.Attribute.Private;
+    metadata: Schema.Attribute.Component<'shared.page-metadata', false>;
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    template: Schema.Attribute.Enumeration<
+      ['default', 'home', 'legal', 'tool-hub', 'grievance', 'about']
+    > &
+      Schema.Attribute.DefaultTo<'default'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1470,37 +1289,6 @@ export interface ApiToolCategoryToolCategory
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'name'>;
     tools: Schema.Attribute.Relation<'oneToMany', 'api::tool.tool'>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiToolHubPageToolHubPage extends Struct.SingleTypeSchema {
-  collectionName: 'tool_hub_pages';
-  info: {
-    displayName: 'toolHubPage';
-    pluralName: 'tool-hub-pages';
-    singularName: 'tool-hub-page';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    featuredSection: Schema.Attribute.Component<'shared.featured-tools', false>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::tool-hub-page.tool-hub-page'
-    > &
-      Schema.Attribute.Private;
-    pageSubtitle: Schema.Attribute.String;
-    pageTitle: Schema.Attribute.String & Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    seo: Schema.Attribute.Component<'shared.seo', false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -2120,7 +1908,6 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::about.about': ApiAboutAbout;
       'api::annual-report.annual-report': ApiAnnualReportAnnualReport;
       'api::article.article': ApiArticleArticle;
       'api::branch.branch': ApiBranchBranch;
@@ -2130,12 +1917,9 @@ declare module '@strapi/strapi' {
       'api::financial-year.financial-year': ApiFinancialYearFinancialYear;
       'api::global-config.global-config': ApiGlobalConfigGlobalConfig;
       'api::grievance-level.grievance-level': ApiGrievanceLevelGrievanceLevel;
-      'api::grievance-page.grievance-page': ApiGrievancePageGrievancePage;
-      'api::homepage.homepage': ApiHomepageHomepage;
       'api::insurance-product.insurance-product': ApiInsuranceProductInsuranceProduct;
       'api::job-listing.job-listing': ApiJobListingJobListing;
       'api::leadership-profile.leadership-profile': ApiLeadershipProfileLeadershipProfile;
-      'api::legal-page.legal-page': ApiLegalPageLegalPage;
       'api::navigation-menu.navigation-menu': ApiNavigationMenuNavigationMenu;
       'api::ombudsman-office.ombudsman-office': ApiOmbudsmanOfficeOmbudsmanOffice;
       'api::page.page': ApiPagePage;
@@ -2144,7 +1928,6 @@ declare module '@strapi/strapi' {
       'api::standard-product.standard-product': ApiStandardProductStandardProduct;
       'api::testimonial.testimonial': ApiTestimonialTestimonial;
       'api::tool-category.tool-category': ApiToolCategoryToolCategory;
-      'api::tool-hub-page.tool-hub-page': ApiToolHubPageToolHubPage;
       'api::tool.tool': ApiToolTool;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
