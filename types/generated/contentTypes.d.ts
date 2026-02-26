@@ -529,6 +529,9 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
         'shared.alert',
         'shared.lottie',
         'shared.comparison-table',
+        'shared.product-cta',
+        'shared.dynamic-comparison',
+        'shared.compliance-banner',
       ]
     >;
     categories: Schema.Attribute.Relation<
@@ -807,6 +810,7 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
       'oneToOne',
       'api::legal-page.legal-page'
     >;
+    trustMetrics: Schema.Attribute.Component<'shared.stats', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -904,6 +908,9 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
         'shared.lottie',
         'shared.alert',
         'shared.modal',
+        'shared.product-cta',
+        'shared.dynamic-comparison',
+        'shared.compliance-banner',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;
@@ -923,6 +930,9 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
         'shared.lottie',
         'shared.alert',
         'shared.modal',
+        'shared.product-cta',
+        'shared.dynamic-comparison',
+        'shared.compliance-banner',
       ]
     >;
     heroBadge: Schema.Attribute.String & Schema.Attribute.Required;
@@ -964,6 +974,24 @@ export interface ApiInsuranceProductInsuranceProduct
   };
   attributes: {
     badge: Schema.Attribute.String;
+    blocks: Schema.Attribute.DynamicZone<
+      [
+        'shared.slider',
+        'shared.rich-text',
+        'shared.quote',
+        'shared.media',
+        'shared.faq-item',
+        'shared.process-step',
+        'shared.comparison-table',
+        'shared.award',
+        'shared.lottie',
+        'shared.alert',
+        'shared.modal',
+        'shared.product-cta',
+        'shared.dynamic-comparison',
+        'shared.compliance-banner',
+      ]
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -978,6 +1006,9 @@ export interface ApiInsuranceProductInsuranceProduct
       'api::insurance-product.insurance-product'
     > &
       Schema.Attribute.Private;
+    pricePrefix: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Starting at'>;
+    priceSuffix: Schema.Attribute.String & Schema.Attribute.DefaultTo<'/year'>;
     productDescription: Schema.Attribute.Blocks;
     productName: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
@@ -1188,6 +1219,51 @@ export interface ApiOmbudsmanOfficeOmbudsmanOffice
   };
 }
 
+export interface ApiPagePage extends Struct.CollectionTypeSchema {
+  collectionName: 'pages';
+  info: {
+    description: 'Create unlimited marketing and regional landing pages';
+    displayName: 'Dynamic Landing Pages';
+    pluralName: 'pages';
+    singularName: 'page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    blocks: Schema.Attribute.DynamicZone<
+      [
+        'shared.slider',
+        'shared.rich-text',
+        'shared.quote',
+        'shared.media',
+        'shared.faq-item',
+        'shared.process-step',
+        'shared.award',
+        'shared.lottie',
+        'shared.alert',
+        'shared.modal',
+        'shared.product-cta',
+        'shared.dynamic-comparison',
+        'shared.compliance-banner',
+      ]
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::page.page'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiStandardProductStandardProduct
   extends Struct.CollectionTypeSchema {
   collectionName: 'standard_products';
@@ -1200,6 +1276,24 @@ export interface ApiStandardProductStandardProduct
     draftAndPublish: true;
   };
   attributes: {
+    blocks: Schema.Attribute.DynamicZone<
+      [
+        'shared.slider',
+        'shared.rich-text',
+        'shared.quote',
+        'shared.media',
+        'shared.faq-item',
+        'shared.process-step',
+        'shared.comparison-table',
+        'shared.award',
+        'shared.lottie',
+        'shared.alert',
+        'shared.modal',
+        'shared.product-cta',
+        'shared.dynamic-comparison',
+        'shared.compliance-banner',
+      ]
+    >;
     cisDocument: Schema.Attribute.Media<'files'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1958,6 +2052,7 @@ declare module '@strapi/strapi' {
       'api::legal-page.legal-page': ApiLegalPageLegalPage;
       'api::navigation-menu.navigation-menu': ApiNavigationMenuNavigationMenu;
       'api::ombudsman-office.ombudsman-office': ApiOmbudsmanOfficeOmbudsmanOffice;
+      'api::page.page': ApiPagePage;
       'api::standard-product.standard-product': ApiStandardProductStandardProduct;
       'api::testimonial.testimonial': ApiTestimonialTestimonial;
       'api::tool-category.tool-category': ApiToolCategoryToolCategory;

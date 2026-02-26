@@ -29,6 +29,25 @@
       "multiple": false,
       "allowedTypes": ["files"]
     },
+    "blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "shared.slider",
+        "shared.rich-text",
+        "shared.quote",
+        "shared.media",
+        "shared.faq-item",
+        "shared.process-step",
+        "shared.comparison-table",
+        "shared.award",
+        "shared.lottie",
+        "shared.alert",
+        "shared.modal",
+        "shared.product-cta",
+        "shared.dynamic-comparison",
+        "shared.compliance-banner"
+      ]
+    },
     "isActive": { "type": "boolean", "default": true }
   }
 }

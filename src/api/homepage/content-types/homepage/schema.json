@@ -61,7 +61,10 @@
         "shared.award",
         "shared.lottie",
         "shared.alert",
-        "shared.modal"
+        "shared.modal",
+        "shared.product-cta",
+        "shared.dynamic-comparison",
+        "shared.compliance-banner"
       ]
     },
     "featuredContent": {
@@ -77,7 +80,10 @@
         "shared.award",
         "shared.lottie",
         "shared.alert",
-        "shared.modal"
+        "shared.modal",
+        "shared.product-cta",
+        "shared.dynamic-comparison",
+        "shared.compliance-banner"
       ]
     },
     "ctaSection": {

@@ -702,9 +702,12 @@ async function seedStandardProducts() {
     },
   ];
 
+  const created = {};
   for (const product of products) {
-    await createEntry('api::standard-product.standard-product', product);
+    const entry = await createEntry('api::standard-product.standard-product', product);
+    created[product.productName] = entry;
   }
+  return created;
 }
 
 // ─── Board Members ────────────────────────────────────────────────────────────
@@ -1128,10 +1131,52 @@ async function seedInsuranceProducts() {
     },
   ];
 
+  const created = {};
   for (const product of products) {
     const data = { ...product };
     if (!data.badge) delete data.badge;
-    await createEntry('api::insurance-product.insurance-product', data);
+    const entry = await createEntry('api::insurance-product.insurance-product', data);
+    created[product.productName] = entry;
+  }
+  return created;
+}
+
+async function crossSeedProducts(insuranceProducts, standardProducts) {
+  console.log('  Populating product dynamic zones with CTAs...');
+  
+  // Example: Add Health Insurance CTA to Car Insurance page
+  if (insuranceProducts['Car Insurance'] && insuranceProducts['Health Insurance']) {
+    await strapi.documents('api::insurance-product.insurance-product').update({
+      documentId: insuranceProducts['Car Insurance'].documentId,
+      data: {
+        blocks: [
+          {
+            __component: 'shared.product-cta',
+            product: { connect: [{ documentId: insuranceProducts['Health Insurance'].documentId }] },
+            variant: 'card',
+            customTitle: 'Secure Your Health Too',
+          }
+        ]
+      }
+    });
+  }
+
+  // Example: Add Home Insurance CTA to Standard products
+  for (const [name, entry] of Object.entries(standardProducts)) {
+    if (insuranceProducts['Home Insurance']) {
+      await strapi.documents('api::standard-product.standard-product').update({
+        documentId: entry.documentId,
+        data: {
+          blocks: [
+            {
+              __component: 'shared.product-cta',
+              product: { connect: [{ documentId: insuranceProducts['Home Insurance'].documentId }] },
+              variant: 'banner',
+            }
+          ]
+        }
+      });
+    }
   }
 }
 
@@ -1605,12 +1650,13 @@ async function main() {
     await seedOmbudsman();
     await seedDownloads();
     await seedBranches();
-    await seedStandardProducts();
+    const standardProducts = await seedStandardProducts();
     await seedBoardMembers();
     await seedPublicDisclosures();
     await seedJobs();
     await seedAnnualReports();
-    await seedInsuranceProducts();
+    const insuranceProducts = await seedInsuranceProducts();
+    await crossSeedProducts(insuranceProducts, standardProducts);
     const categories = await seedCategories();
     await seedArticles(categories);
     await seedTestimonials();

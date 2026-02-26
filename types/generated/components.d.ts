@@ -89,6 +89,42 @@ export interface SharedComparisonTable extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedComplianceBanner extends Struct.ComponentSchema {
+  collectionName: 'components_shared_compliance_banners';
+  info: {
+    description: 'Standard IRDAI/Legal disclaimers pulling from Global Config';
+    displayName: 'Compliance Banner';
+    icon: 'balance-scale';
+  };
+  attributes: {
+    customText: Schema.Attribute.Blocks;
+    showLogo: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    type: Schema.Attribute.Enumeration<
+      ['section41', 'general_disclaimer', 'investor_notice']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'section41'>;
+  };
+}
+
+export interface SharedDynamicComparison extends Struct.ComponentSchema {
+  collectionName: 'components_shared_dynamic_comparisons';
+  info: {
+    description: 'Compares products dynamically by referencing the Product Registry';
+    displayName: 'Dynamic Comparison';
+    icon: 'layer-group';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    highlightFeature: Schema.Attribute.String;
+    products: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::insurance-product.insurance-product'
+    >;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface SharedFaqItem extends Struct.ComponentSchema {
   collectionName: 'components_shared_faq_items';
   info: {
@@ -162,6 +198,27 @@ export interface SharedProcessStep extends Struct.ComponentSchema {
     icon: Schema.Attribute.Media<'images'>;
     stepNumber: Schema.Attribute.Integer & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedProductCta extends Struct.ComponentSchema {
+  collectionName: 'components_shared_product_ctas';
+  info: {
+    description: 'Dynamic product card that pulls data from the Product Registry (Single Source of Truth)';
+    displayName: 'Product CTA';
+    icon: 'shopping-cart';
+  };
+  attributes: {
+    customSubtitle: Schema.Attribute.Text;
+    customTitle: Schema.Attribute.String;
+    isFeatured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    product: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::insurance-product.insurance-product'
+    >;
+    variant: Schema.Attribute.Enumeration<['card', 'banner', 'minimal']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'card'>;
   };
 }
 
@@ -269,12 +326,15 @@ declare module '@strapi/strapi' {
       'shared.app-links': SharedAppLinks;
       'shared.award': SharedAward;
       'shared.comparison-table': SharedComparisonTable;
+      'shared.compliance-banner': SharedComplianceBanner;
+      'shared.dynamic-comparison': SharedDynamicComparison;
       'shared.faq-item': SharedFaqItem;
       'shared.featured-tools': SharedFeaturedTools;
       'shared.lottie': SharedLottie;
       'shared.media': SharedMedia;
       'shared.modal': SharedModal;
       'shared.process-step': SharedProcessStep;
+      'shared.product-cta': SharedProductCta;
       'shared.promo-card': SharedPromoCard;
       'shared.quote': SharedQuote;
       'shared.rich-text': SharedRichText;

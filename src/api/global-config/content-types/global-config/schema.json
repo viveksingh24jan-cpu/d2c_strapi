@@ -117,6 +117,12 @@
     "stickyCtaIsActive": {
       "type": "boolean",
       "default": false
+    },
+    "trustMetrics": {
+      "type": "component",
+      "component": "shared.stats",
+      "repeatable": true,
+      "description": "Global stats like Claim Settlement Ratio, Cashless Network size, etc."
     }
   }
 }

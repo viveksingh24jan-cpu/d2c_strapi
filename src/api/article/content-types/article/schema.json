@@ -58,7 +58,10 @@
         "shared.faq-item",
         "shared.alert",
         "shared.lottie",
-        "shared.comparison-table"
+        "shared.comparison-table",
+        "shared.product-cta",
+        "shared.dynamic-comparison",
+        "shared.compliance-banner"
       ]
     },
     "seo": {
