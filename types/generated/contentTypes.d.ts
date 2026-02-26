@@ -446,22 +446,22 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     authorName: Schema.Attribute.String;
     blocks: Schema.Attribute.DynamicZone<
       [
-        'shared.slider',
-        'shared.rich-text',
-        'shared.quote',
-        'shared.media',
-        'shared.faq-item',
-        'shared.process-step',
-        'shared.award',
-        'shared.lottie',
-        'shared.alert',
-        'shared.modal',
-        'shared.product-cta',
-        'shared.dynamic-comparison',
-        'shared.compliance-banner',
-        'shared.section-reference',
-        'shared.featured-tools',
+        'page-builder.hero-section',
+        'page-builder.text-block',
+        'page-builder.card-grid',
+        'page-builder.media-block',
+        'page-builder.accordion',
+        'page-builder.video-block',
+        'page-builder.comparison-table',
+        'page-builder.app-banner',
+        'page-builder.banner',
+        'page-builder.progress-steps',
+        'page-builder.stats-bar',
+        'page-builder.product-showcase',
+        'page-builder.featured-content',
+        'page-builder.insurance-product-cta',
         'shared.comparison-table',
+        'shared.section-reference',
       ]
     >;
     categories: Schema.Attribute.Relation<
@@ -698,7 +698,8 @@ export interface ApiFinancialDisclosureFinancialDisclosure
 export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
   collectionName: 'global_configs';
   info: {
-    displayName: 'GlobalConfig';
+    description: 'Master settings for branding, regulatory info, and global conversion tools';
+    displayName: 'Global Site Configuration';
     pluralName: 'global-configs';
     singularName: 'global-config';
   };
@@ -706,10 +707,7 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    announcementBanner: Schema.Attribute.Component<
-      'shared.announcement-banner',
-      false
-    >;
+    analytics: Schema.Attribute.Component<'shared.scripts', false>;
     appLinks: Schema.Attribute.Component<'shared.app-links', false>;
     bimaBharosaUrl: Schema.Attribute.String;
     cinNumber: Schema.Attribute.String;
@@ -740,13 +738,10 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
     siteDescription: Schema.Attribute.Text & Schema.Attribute.Required;
     siteName: Schema.Attribute.String & Schema.Attribute.Required;
     socialLinks: Schema.Attribute.Component<'shared.social-link', true>;
-    stickyCtaIsActive: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
-    stickyCtaText: Schema.Attribute.String;
-    stickyCtaUrl: Schema.Attribute.String;
+    stickyCta: Schema.Attribute.Component<'page-builder.sticky-cta-bar', false>;
     supportEmail: Schema.Attribute.String;
     termsPage: Schema.Attribute.Relation<'oneToOne', 'api::page.page'>;
-    trustMetrics: Schema.Attribute.Component<'shared.stats', true>;
+    trustMetrics: Schema.Attribute.Component<'shared.stats-item', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -802,20 +797,21 @@ export interface ApiInsuranceProductInsuranceProduct
     badge: Schema.Attribute.String;
     blocks: Schema.Attribute.DynamicZone<
       [
-        'shared.slider',
-        'shared.rich-text',
-        'shared.quote',
-        'shared.media',
-        'shared.faq-item',
-        'shared.process-step',
+        'page-builder.hero-section',
+        'page-builder.text-block',
+        'page-builder.card-grid',
+        'page-builder.media-block',
+        'page-builder.accordion',
+        'page-builder.video-block',
+        'page-builder.comparison-table',
+        'page-builder.app-banner',
+        'page-builder.banner',
+        'page-builder.progress-steps',
+        'page-builder.stats-bar',
+        'page-builder.product-showcase',
+        'page-builder.featured-content',
+        'page-builder.insurance-product-cta',
         'shared.comparison-table',
-        'shared.award',
-        'shared.lottie',
-        'shared.alert',
-        'shared.modal',
-        'shared.product-cta',
-        'shared.dynamic-comparison',
-        'shared.compliance-banner',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;
@@ -1010,7 +1006,7 @@ export interface ApiOmbudsmanOfficeOmbudsmanOffice
 export interface ApiPagePage extends Struct.CollectionTypeSchema {
   collectionName: 'pages';
   info: {
-    description: 'Unified page model for Home, About, Legal, and Custom landing pages';
+    description: 'Enterprise-grade unified page model with high-conversion builder sections';
     displayName: 'Dynamic Landing Pages';
     pluralName: 'pages';
     singularName: 'page';
@@ -1030,18 +1026,16 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'page-builder.video-block',
         'page-builder.comparison-table',
         'page-builder.app-banner',
-        'page-builder.sticky-cta-bar',
         'page-builder.banner',
         'page-builder.progress-steps',
         'page-builder.stats-bar',
         'page-builder.product-showcase',
+        'page-builder.insurance-product-cta',
         'page-builder.featured-content',
         'page-builder.grievance-levels',
-        'shared.rich-text',
-        'shared.media',
-        'shared.slider',
-        'shared.alert',
-        'shared.product-cta',
+        'page-builder.sticky-cta-bar',
+        'shared.comparison-table',
+        'shared.section-reference',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;
@@ -1056,7 +1050,15 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
     seo: Schema.Attribute.Component<'shared.seo', false>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     template: Schema.Attribute.Enumeration<
-      ['default', 'home', 'legal', 'tool-hub', 'grievance', 'about']
+      [
+        'default',
+        'home',
+        'legal',
+        'tool-hub',
+        'grievance',
+        'about',
+        'product-landing',
+      ]
     > &
       Schema.Attribute.DefaultTo<'default'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
@@ -1116,19 +1118,21 @@ export interface ApiSharedSectionSharedSection
   attributes: {
     blocks: Schema.Attribute.DynamicZone<
       [
-        'shared.slider',
-        'shared.rich-text',
-        'shared.quote',
-        'shared.media',
-        'shared.faq-item',
-        'shared.process-step',
-        'shared.award',
-        'shared.lottie',
-        'shared.alert',
-        'shared.modal',
-        'shared.product-cta',
-        'shared.dynamic-comparison',
-        'shared.compliance-banner',
+        'page-builder.hero-section',
+        'page-builder.text-block',
+        'page-builder.card-grid',
+        'page-builder.media-block',
+        'page-builder.accordion',
+        'page-builder.video-block',
+        'page-builder.comparison-table',
+        'page-builder.app-banner',
+        'page-builder.banner',
+        'page-builder.progress-steps',
+        'page-builder.stats-bar',
+        'page-builder.product-showcase',
+        'page-builder.featured-content',
+        'page-builder.insurance-product-cta',
+        'shared.comparison-table',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;
@@ -1162,20 +1166,21 @@ export interface ApiStandardProductStandardProduct
   attributes: {
     blocks: Schema.Attribute.DynamicZone<
       [
-        'shared.slider',
-        'shared.rich-text',
-        'shared.quote',
-        'shared.media',
-        'shared.faq-item',
-        'shared.process-step',
+        'page-builder.hero-section',
+        'page-builder.text-block',
+        'page-builder.card-grid',
+        'page-builder.media-block',
+        'page-builder.accordion',
+        'page-builder.video-block',
+        'page-builder.comparison-table',
+        'page-builder.app-banner',
+        'page-builder.banner',
+        'page-builder.progress-steps',
+        'page-builder.stats-bar',
+        'page-builder.product-showcase',
+        'page-builder.featured-content',
+        'page-builder.insurance-product-cta',
         'shared.comparison-table',
-        'shared.award',
-        'shared.lottie',
-        'shared.alert',
-        'shared.modal',
-        'shared.product-cta',
-        'shared.dynamic-comparison',
-        'shared.compliance-banner',
       ]
     >;
     cisDocument: Schema.Attribute.Media<'files'>;

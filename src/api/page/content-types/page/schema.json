@@ -69,7 +69,9 @@
         "page-builder.insurance-product-cta",
         "page-builder.featured-content",
         "page-builder.grievance-levels",
-        "page-builder.sticky-cta-bar"
+        "page-builder.sticky-cta-bar",
+        "shared.comparison-table",
+        "shared.section-reference"
       ],
       "description": "High-conversion building blocks for creating visual layouts"
     },

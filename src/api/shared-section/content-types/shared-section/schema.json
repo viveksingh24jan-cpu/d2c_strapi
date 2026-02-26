@@ -18,19 +18,21 @@
     "blocks": {
       "type": "dynamiczone",
       "components": [
-        "shared.slider",
-        "shared.rich-text",
-        "shared.quote",
-        "shared.media",
-        "shared.faq-item",
-        "shared.process-step",
-        "shared.award",
-        "shared.lottie",
-        "shared.alert",
-        "shared.modal",
-        "shared.product-cta",
-        "shared.dynamic-comparison",
-        "shared.compliance-banner"
+        "page-builder.hero-section",
+        "page-builder.text-block",
+        "page-builder.card-grid",
+        "page-builder.media-block",
+        "page-builder.accordion",
+        "page-builder.video-block",
+        "page-builder.comparison-table",
+        "page-builder.app-banner",
+        "page-builder.banner",
+        "page-builder.progress-steps",
+        "page-builder.stats-bar",
+        "page-builder.product-showcase",
+        "page-builder.featured-content",
+        "page-builder.insurance-product-cta",
+        "shared.comparison-table"
       ]
     }
   }

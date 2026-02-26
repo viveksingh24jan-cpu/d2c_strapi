@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_section_references",
+  "info": {
+    "displayName": "Shared Section Reference",
+    "icon": "repeat",
+    "description": "Reuse a globally defined section from the Shared Sections collection"
+  },
+  "options": {},
+  "attributes": {
+    "shared_section": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::shared-section.shared-section"
+    }
+  }
+}
