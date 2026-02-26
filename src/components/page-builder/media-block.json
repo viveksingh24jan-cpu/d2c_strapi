@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_page_builder_media_block",
+  "info": {
+    "displayName": "Media Block",
+    "description": "Image or video with caption and alt text",
+    "icon": "picture"
+  },
+  "options": {},
+  "attributes": {
+    "media": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "caption": {
+      "type": "string"
+    },
+    "altText": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

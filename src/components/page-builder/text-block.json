@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_page_builder_text_block",
+  "info": {
+    "displayName": "Text Block",
+    "description": "Rich text content with layout options",
+    "icon": "pencil"
+  },
+  "options": {},
+  "attributes": {
+    "content": {
+      "type": "blocks",
+      "required": true
+    },
+    "layout": {
+      "type": "enumeration",
+      "enum": [
+        "single-column",
+        "two-column"
+      ],
+      "default": "single-column"
+    }
+  }
+}

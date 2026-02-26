@@ -40,37 +40,35 @@
       ],
       "default": "default"
     },
-    "hero": {
-      "type": "component",
-      "component": "shared.hero",
-      "repeatable": false
-    },
     "metadata": {
       "type": "component",
       "component": "shared.page-metadata",
       "repeatable": false
     },
-    "blocks": {
+    "content": {
       "type": "dynamiczone",
       "components": [
-        "shared.slider",
+        "page-builder.hero-section",
+        "page-builder.text-block",
+        "page-builder.card-grid",
+        "page-builder.media-block",
+        "page-builder.accordion",
+        "page-builder.testimonial-grid",
+        "page-builder.video-block",
+        "page-builder.comparison-table",
+        "page-builder.app-banner",
+        "page-builder.sticky-cta-bar",
+        "page-builder.banner",
+        "page-builder.progress-steps",
+        "page-builder.stats-bar",
+        "page-builder.product-showcase",
+        "page-builder.featured-content",
+        "page-builder.grievance-levels",
         "shared.rich-text",
-        "shared.quote",
         "shared.media",
-        "shared.faq-item",
-        "shared.process-step",
-        "shared.award",
-        "shared.lottie",
+        "shared.slider",
         "shared.alert",
-        "shared.modal",
-        "shared.product-cta",
-        "shared.dynamic-comparison",
-        "shared.compliance-banner",
-        "shared.section-reference",
-        "shared.featured-tools",
-        "shared.comparison-table",
-        "shared.stats",
-        "shared.promo-card"
+        "shared.product-cta"
       ]
     },
     "seo": {

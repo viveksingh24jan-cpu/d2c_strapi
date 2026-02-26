@@ -1,39 +1,41 @@
 {
-  "collectionName": "components_shared_seos",
+  "collectionName": "components_shared_seo",
   "info": {
-    "name": "Seo",
-    "icon": "allergies",
-    "displayName": "Seo",
-    "description": ""
+    "displayName": "SEO",
+    "description": "SEO metadata for pages and content",
+    "icon": "search"
   },
   "options": {},
   "attributes": {
-    "metaTitle": {
-      "type": "string"
+    "meta_title": {
+      "type": "string",
+      "required": true,
+      "maxLength": 60
     },
-    "metaDescription": {
-      "type": "text"
+    "meta_description": {
+      "type": "text",
+      "required": true,
+      "maxLength": 160
     },
-    "shareImage": {
+    "meta_image": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": [
-        "images"
-      ]
-    },
-    "canonicalUrl": {
-      "type": "string"
-    },
-    "metaRobots": {
-      "type": "string"
+      "required": false,
+      "allowedTypes": ["images"]
     },
     "keywords": {
       "type": "string"
     },
-    "ogTitle": {
+    "canonical_url": {
       "type": "string"
     },
-    "ogDescription": {
+    "meta_robots": {
+      "type": "string"
+    },
+    "og_title": {
+      "type": "string"
+    },
+    "og_description": {
       "type": "string"
     }
   }

@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_page_builder_sticky_cta_bar",
+  "info": {
+    "displayName": "Sticky CTA Bar",
+    "description": "Floating call-to-action bar",
+    "icon": "cursor"
+  },
+  "options": {},
+  "attributes": {
+    "message": {
+      "type": "string",
+      "required": true
+    },
+    "ctaButton": {
+      "type": "component",
+      "repeatable": false,
+      "required": true,
+      "component": "shared.link"
+    },
+    "backgroundColor": {
+      "type": "string"
+    },
+    "position": {
+      "type": "enumeration",
+      "enum": [
+        "bottom",
+        "top"
+      ],
+      "default": "bottom"
+    },
+    "showCloseButton": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_page_builder_accordion",
+  "info": {
+    "displayName": "Accordion",
+    "description": "Collapsible FAQ/Q&A section",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "page-builder.qna-item"
+    }
+  }
+}

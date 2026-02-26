@@ -17,7 +17,7 @@ export default factories.createCoreController('api::global-config.global-config'
           socialLinks: true,
           appLinks: true,
           trustMetrics: true,
-        },
+        } as any,
       });
 
       // 2. Fetch Navigation Menus (Full Tree)
@@ -30,14 +30,19 @@ export default factories.createCoreController('api::global-config.global-config'
               children: true
             }
           }
-        }
+        } as any
       });
 
       // 3. Optional: Fetch Homepage metadata or light version
       const homepage = await strapi.documents('api::page.page').findFirst({
         filters: { slug: 'home' },
         fields: ['title', 'slug', 'template'],
-        populate: { hero: true }
+        populate: { 
+          content: {
+            filters: { __component: 'page-builder.hero-section' },
+            limit: 1
+          }
+        } as any
       });
 
       return {

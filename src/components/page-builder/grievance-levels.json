@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_page_builder_grievance_levels",
+  "info": {
+    "displayName": "Grievance Levels",
+    "description": "IRDAI grievance redressal escalation display",
+    "icon": "shield"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "introText": {
+      "type": "blocks"
+    },
+    "levels": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::grievance-level.grievance-level"
+    },
+    "bimaBharosaLink": {
+      "type": "string"
+    }
+  }
+}

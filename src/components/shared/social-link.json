@@ -1,19 +1,16 @@
 {
-  "collectionName": "components_shared_social_links",
+  "collectionName": "components_shared_social_link",
   "info": {
-    "displayName": "SocialLink"
+    "displayName": "Social Link",
+    "description": "Social media platform link",
+    "icon": "globe"
   },
   "options": {},
   "attributes": {
     "platform": {
       "type": "enumeration",
-      "enum": [
-        "facebook",
-        "twitter",
-        "linkedin",
-        "instagram",
-        "youtube"
-      ]
+      "enum": ["facebook", "twitter", "linkedin", "instagram", "youtube", "whatsapp"],
+      "required": true
     },
     "url": {
       "type": "string",
@@ -22,10 +19,8 @@
     "icon": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": [
-        "images"
-      ]
+      "required": false,
+      "allowedTypes": ["images"]
     }
-  },
-  "config": {}
+  }
 }

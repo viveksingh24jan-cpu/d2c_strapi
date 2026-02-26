@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_page_builder_stats_bar",
+  "info": {
+    "displayName": "Stats Bar",
+    "description": "Key metrics display section",
+    "icon": "chartBubble"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "stats": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.stats-item"
+    },
+    "backgroundColor": {
+      "type": "string"
+    }
+  }
+}

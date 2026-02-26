@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_page_builder_banner",
+  "info": {
+    "displayName": "Banner",
+    "description": "Announcement, promo, alert, or info banner strip",
+    "icon": "bell"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "blocks"
+    },
+    "bannerType": {
+      "type": "enumeration",
+      "enum": [
+        "announcement",
+        "promo",
+        "alert",
+        "info"
+      ],
+      "default": "info"
+    },
+    "backgroundColor": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string"
+    },
+    "ctaButton": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    },
+    "dismissible": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

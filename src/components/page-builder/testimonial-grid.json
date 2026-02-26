@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_page_builder_testimonial_grid",
+  "info": {
+    "displayName": "Testimonial Grid",
+    "description": "Customer testimonials section",
+    "icon": "quote"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "testimonials": {
+      "type": "component",
+      "repeatable": true,
+      "component": "page-builder.testimonial-item"
+    }
+  }
+}

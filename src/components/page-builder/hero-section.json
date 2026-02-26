@@ -1,0 +1,56 @@
+{
+  "collectionName": "components_page_builder_hero_section",
+  "info": {
+    "displayName": "Hero Section",
+    "description": "Hero banner with title, CTAs, and background",
+    "icon": "landscape"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "badge": {
+      "type": "string"
+    },
+    "ctaPrimary": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    },
+    "ctaSecondary": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "layout": {
+      "type": "enumeration",
+      "enum": [
+        "centered",
+        "left-right",
+        "full-width"
+      ],
+      "default": "left-right"
+    }
+  }
+}

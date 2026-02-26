@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_page_builder_comparison_table",
+  "info": {
+    "displayName": "Comparison Table",
+    "description": "Product/feature comparison table",
+    "icon": "layer"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "columns": {
+      "type": "json",
+      "required": true
+    },
+    "rows": {
+      "type": "json",
+      "required": true
+    },
+    "highlightColumn": {
+      "type": "integer",
+      "min": 0
+    }
+  }
+}

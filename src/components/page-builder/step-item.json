@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_page_builder_step_item",
+  "info": {
+    "displayName": "Step Item",
+    "description": "Single step in a progress/process visualization",
+    "icon": "arrowRight"
+  },
+  "options": {},
+  "attributes": {
+    "stepNumber": {
+      "type": "integer",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

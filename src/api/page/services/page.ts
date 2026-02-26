@@ -36,40 +36,34 @@ export default factories.createCoreService('api::page.page', ({ strapi }) => ({
    */
   getCommonPopulation() {
     return {
-      hero: {
-        populate: {
-          image: true,
-        },
-      },
       metadata: {
         populate: {
           attachmentForDownload: true,
         },
       },
-      blocks: {
+      content: {
         on: {
+          'page-builder.hero-section': { populate: '*' },
+          'page-builder.text-block': { populate: '*' },
+          'page-builder.card-grid': { populate: { cards: { populate: '*' } } },
+          'page-builder.media-block': { populate: '*' },
+          'page-builder.accordion': { populate: { items: true } },
+          'page-builder.testimonial-grid': { populate: { testimonials: true } },
+          'page-builder.video-block': { populate: '*' },
+          'page-builder.comparison-table': { populate: '*' },
+          'page-builder.app-banner': { populate: '*' },
+          'page-builder.sticky-cta-bar': { populate: '*' },
+          'page-builder.banner': { populate: '*' },
+          'page-builder.progress-steps': { populate: { steps: true } },
+          'page-builder.stats-bar': { populate: { stats: true } },
+          'page-builder.product-showcase': { populate: { products: true } },
+          'page-builder.featured-content': { populate: '*' },
+          'page-builder.grievance-levels': { populate: '*' },
+          'shared.rich-text': true,
           'shared.media': { populate: '*' },
           'shared.slider': { populate: '*' },
-          'shared.quote': true,
-          'shared.rich-text': true,
-          'shared.faq-item': true,
-          'shared.process-step': true,
-          'shared.award': { populate: '*' },
-          'shared.lottie': true,
           'shared.alert': true,
-          'shared.modal': true,
-          'shared.product-cta': { populate: '*' },
-          'shared.dynamic-comparison': { populate: '*' },
-          'shared.compliance-banner': true,
-          'shared.section-reference': { populate: '*' },
-          'shared.featured-tools': {
-            populate: {
-              tools: true,
-            },
-          },
-          'shared.comparison-table': true,
-          'shared.stats': true,
-          'shared.promo-card': { populate: '*' },
+          'shared.product-cta': { populate: '*' }
         },
       },
       seo: {

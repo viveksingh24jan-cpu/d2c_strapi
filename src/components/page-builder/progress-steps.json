@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_page_builder_progress_steps",
+  "info": {
+    "displayName": "Progress Steps",
+    "description": "Step-by-step process visualization",
+    "icon": "arrowRight"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "steps": {
+      "type": "component",
+      "repeatable": true,
+      "component": "page-builder.step-item"
+    },
+    "layout": {
+      "type": "enumeration",
+      "enum": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "horizontal"
+    }
+  }
+}

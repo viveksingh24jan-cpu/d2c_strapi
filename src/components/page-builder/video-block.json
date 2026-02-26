@@ -1,0 +1,47 @@
+{
+  "collectionName": "components_page_builder_video_block",
+  "info": {
+    "displayName": "Video Block",
+    "description": "Embedded video (YouTube, Vimeo, direct, reel)",
+    "icon": "play"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "videoUrl": {
+      "type": "string",
+      "required": true
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "videoType": {
+      "type": "enumeration",
+      "enum": [
+        "youtube",
+        "vimeo",
+        "direct",
+        "reel"
+      ],
+      "default": "youtube"
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "showControls": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

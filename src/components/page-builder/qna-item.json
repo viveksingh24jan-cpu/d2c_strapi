@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_page_builder_qna_item",
+  "info": {
+    "displayName": "Q&A Item",
+    "description": "Single question and answer pair",
+    "icon": "question"
+  },
+  "options": {},
+  "attributes": {
+    "question": {
+      "type": "string",
+      "required": true
+    },
+    "answer": {
+      "type": "blocks",
+      "required": true
+    }
+  }
+}

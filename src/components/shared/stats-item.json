@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_shared_stats_item",
+  "info": {
+    "displayName": "Stats Item",
+    "description": "Single statistic entry (label + value)",
+    "icon": "chartBubble"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    },
+    "icon": {
+      "type": "string"
+    }
+  }
+}

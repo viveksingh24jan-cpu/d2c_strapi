@@ -45,6 +45,12 @@
     "readTime": {
       "type": "integer"
     },
+    "author": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::author.author",
+      "inversedBy": "articles"
+    },
     "isFeatured": {
       "type": "boolean",
       "default": false

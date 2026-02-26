@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_page_builder_featured_content",
+  "info": {
+    "displayName": "Featured Content",
+    "description": "Dynamic display of featured articles or tools",
+    "icon": "star"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "contentType": {
+      "type": "enumeration",
+      "enum": [
+        "articles",
+        "tools"
+      ],
+      "default": "articles"
+    },
+    "displayCount": {
+      "type": "integer",
+      "default": 3
+    },
+    "layout": {
+      "type": "enumeration",
+      "enum": [
+        "carousel",
+        "grid"
+      ],
+      "default": "grid"
+    }
+  }
+}

@@ -1,11 +1,13 @@
 {
-  "collectionName": "components_disclosures_disclosure_documents",
+  "collectionName": "components_disclosures_disclosure_document",
   "info": {
-    "displayName": "DisclosureDocument"
+    "displayName": "Disclosure Document",
+    "description": "IRDAI compliance document attachment",
+    "icon": "file"
   },
   "options": {},
   "attributes": {
-    "formName": {
+    "form_name": {
       "type": "string"
     },
     "title": {
@@ -14,16 +16,11 @@
     "file": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
+      "required": false,
+      "allowedTypes": ["files"]
     },
     "description": {
       "type": "text"
     }
-  },
-  "config": {}
+  }
 }
