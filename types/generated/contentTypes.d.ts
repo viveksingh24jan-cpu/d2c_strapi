@@ -494,6 +494,7 @@ export interface ApiAnnualReportAnnualReport
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     publishedOn: Schema.Attribute.Date;
+    reportName: Schema.Attribute.String & Schema.Attribute.Required;
     reportType: Schema.Attribute.Enumeration<
       ['annual-report', 'esg-report', 'stewardship-policy']
     > &

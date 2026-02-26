@@ -977,8 +977,8 @@ async function seedAnnualReports() {
   await deleteAll('api::annual-report.annual-report');
 
   const reports = [
-    { year: '2023-24', reportType: 'annual-report', publishedOn: '2024-09-30' },
-    { year: '2023-24', reportType: 'esg-report', publishedOn: '2024-10-15' },
+    { reportName: 'Annual Report 2023-24', year: '2023-24', reportType: 'annual-report', publishedOn: '2024-09-30' },
+    { reportName: 'ESG Report 2023-24', year: '2023-24', reportType: 'esg-report', publishedOn: '2024-10-15' },
   ];
 
   for (const report of reports) {
@@ -1177,6 +1177,17 @@ async function seedArticles(categories) {
         {
           __component: 'shared.rich-text',
           body: "## Why Renewal Is More Than a Formality\n\nMost Indian car owners simply renew the same policy year after year without reviewing it. This can cost you dearly at the time of a claim.\n\n### 1. Check Your No Claim Bonus (NCB)\nIf you haven't filed a claim in the past year, you're entitled to a No Claim Bonus discount of 20-50% on your Own Damage premium. Make sure it's applied.\n\n### 2. Verify the IDV (Insured Declared Value)\nThe IDV is the current market value of your car. A lower IDV means a lower premium but lower compensation in case of total loss. Don't let the insurer depreciate your IDV too aggressively.\n\n### 3. Review Your Add-Ons\nDo you have Zero Depreciation cover? Engine Protection? Roadside Assistance? Review which add-ons are worth continuing and which can be dropped.\n\n### 4. Compare Before You Renew\nDon't auto-renew without comparing. A quick comparison on Kiwi can save you 20-40% on premiums.\n\n### 5. Update Personal Details\nHave you moved? Changed your car's CNG kit status? Update these or your claims might be rejected.",
+        },
+        {
+          __component: 'shared.alert',
+          variant: 'warning',
+          title: 'Mandatory Linkage',
+          message: 'As per latest IRDAI guidelines, linking your Aadhaar with your insurance policy is now mandatory for all claim processing.',
+        },
+        {
+          __component: 'shared.faq-item',
+          question: 'Will my NCB be lost if I switch insurers?',
+          answer: txt('No! Your No Claim Bonus is linked to you, not the car or the insurer. You can easily transfer your NCB to Kiwi when you switch.'),
         },
       ],
       publishedAt: new Date().toISOString(),
@@ -1444,6 +1455,39 @@ async function seedHomepage() {
         promoImage: null,
       },
     ],
+    blocks: [
+      {
+        __component: 'shared.alert',
+        variant: 'info',
+        title: 'Customer Advisory',
+        message: 'Our digital services will be undergo scheduled maintenance on Sunday, March 2nd, from 2:00 AM to 4:00 AM IST. During this time, policy downloads may be temporarily unavailable.',
+        isDismissible: true,
+      },
+      {
+        __component: 'shared.comparison-table',
+        title: 'Compare Our Plans',
+        subtitle: 'Choose the coverage that fits your needs.',
+        columnHeaders: ['Feature', 'Basic', 'Standard', 'Premium'],
+        rows: [
+          ['24/7 Support', '✅', '✅', '✅'],
+          ['Cashless Garages', '5,000+', '10,000+', 'Unlimited'],
+          ['Zero Dep Add-on', '❌', '✅', '✅'],
+          ['Personal Accident', 'Rs. 15L', 'Rs. 25L', 'Rs. 50L'],
+        ],
+      },
+    ],
+    featuredContent: [
+      {
+        __component: 'shared.faq-item',
+        question: 'How fast is the claim settlement process?',
+        answer: txt('We aim to process and settle 90% of our motor and health claims within 24 hours of receiving all necessary documents.'),
+      },
+      {
+        __component: 'shared.faq-item',
+        question: 'Can I buy insurance if I am not a resident of India?',
+        answer: txt('Yes, Non-Resident Indians (NRIs) can purchase certain insurance policies from Kiwi, provided they have a valid Indian bank account and PAN.'),
+      },
+    ],
     ctaSection: txtMulti(
       'Still not sure? Talk to our insurance experts.',
       'Call 1800-123-4567 (Toll-Free, 24/7) | Email: care@kiwiinsurance.in'
@@ -1476,6 +1520,36 @@ async function seedAbout() {
         __component: 'shared.quote',
         title: 'Our Promise',
         body: '"At Kiwi, we believe insurance should be a source of comfort, not confusion. We are committed to being there for you at every step — from purchase to claim." — Deepa Krishnamurthy, MD & CEO',
+      },
+      {
+        __component: 'shared.process-step',
+        stepNumber: 1,
+        title: 'Choose Your Plan',
+        description: 'Compare our affordable plans and select the one that fits your needs.',
+      },
+      {
+        __component: 'shared.process-step',
+        stepNumber: 2,
+        title: 'Get Instant Quote',
+        description: 'Provide a few details and get an accurate quote in seconds.',
+      },
+      {
+        __component: 'shared.process-step',
+        stepNumber: 3,
+        title: 'Secure Payment',
+        description: 'Pay securely using your preferred payment method and get your policy instantly.',
+      },
+      {
+        __component: 'shared.award',
+        title: 'Digital Insurer of the Year',
+        year: '2024',
+        issuer: 'Indian Insurance Forum',
+      },
+      {
+        __component: 'shared.award',
+        title: 'Customer Service Excellence',
+        year: '2024',
+        issuer: 'FICCI',
       },
     ],
   });

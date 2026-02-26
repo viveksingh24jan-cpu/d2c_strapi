@@ -6,20 +6,37 @@
     "pluralName": "annual-reports",
     "displayName": "AnnualReport"
   },
-  "options": { "draftAndPublish": false },
+  "options": {
+    "draftAndPublish": false
+  },
   "pluginOptions": {},
   "attributes": {
-    "year": { "type": "string", "required": true },
+    "year": {
+      "type": "string",
+      "required": true
+    },
     "reportType": {
       "type": "enumeration",
-      "enum": ["annual-report", "esg-report", "stewardship-policy"],
-      "required": true
+      "required": true,
+      "enum": [
+        "annual-report",
+        "esg-report",
+        "stewardship-policy"
+      ]
     },
     "file": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": ["files"]
+      "allowedTypes": [
+        "files"
+      ]
     },
-    "publishedOn": { "type": "date" }
+    "publishedOn": {
+      "type": "date"
+    },
+    "reportName": {
+      "type": "string",
+      "required": true
+    }
   }
 }
