@@ -72,23 +72,25 @@ export default factories.createCoreService('api::page.page', ({ strapi }) => ({
           },
           'page-builder.video-block': { populate: { thumbnail: true } },
           'page-builder.comparison-table': true,
-          'page-builder.app-banner': { populate: { appImage: true } },
-          'page-builder.banner': { populate: { ctaButton: { populate: '*' } } },
+          'page-builder.banner': { populate: { ctaButton: { populate: '*' }, appLinks: { populate: '*' } } },
           'page-builder.progress-steps': { populate: { steps: true } },
           'page-builder.stats-bar': { populate: { stats: true } },
-          'page-builder.product-showcase': { 
-            populate: { 
-              products: { populate: { image: true } } 
-            } 
-          },
           'page-builder.insurance-product-cta': { 
             populate: { 
-              product: { populate: { cover: true } } 
+              product: { populate: { icon: true } } 
             } 
           },
-          'page-builder.sticky-cta-bar': { populate: { link: { populate: '*' } } },
+          'page-builder.sticky-cta-bar': { populate: { ctaButton: { populate: '*' } } },
           'page-builder.featured-content': { populate: '*' },
-          'page-builder.grievance-levels': { populate: '*' }
+          'shared.section-reference': { 
+            populate: { 
+              shared_section: { 
+                populate: {
+                  blocks: { populate: '*' }
+                }
+              }
+            } 
+          }
         },
       },
       seo: {

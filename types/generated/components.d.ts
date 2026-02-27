@@ -95,13 +95,14 @@ export interface PageBuilderCardItem extends Struct.ComponentSchema {
 }
 
 export interface PageBuilderComparisonTable extends Struct.ComponentSchema {
-  collectionName: 'components_page_builder_comparison_table';
+  collectionName: 'components_page_builder_comparison_tables';
   info: {
-    description: 'Product/feature comparison table';
+    description: 'Enterprise-grade feature/product comparison grid';
     displayName: 'Comparison Table';
-    icon: 'layer';
+    icon: 'grid';
   };
   attributes: {
+    badge: Schema.Attribute.String;
     columns: Schema.Attribute.JSON & Schema.Attribute.Required;
     highlightColumn: Schema.Attribute.Integer &
       Schema.Attribute.SetMinMax<
@@ -353,20 +354,6 @@ export interface SharedAward extends Struct.ComponentSchema {
   };
 }
 
-export interface SharedComparisonTable extends Struct.ComponentSchema {
-  collectionName: 'components_shared_comparison_tables';
-  info: {
-    displayName: 'Comparison Table';
-    icon: 'grid';
-  };
-  attributes: {
-    columnHeaders: Schema.Attribute.JSON;
-    rows: Schema.Attribute.JSON;
-    subtitle: Schema.Attribute.Text;
-    title: Schema.Attribute.String;
-  };
-}
-
 export interface SharedLink extends Struct.ComponentSchema {
   collectionName: 'components_shared_link';
   info: {
@@ -542,7 +529,6 @@ declare module '@strapi/strapi' {
       'page-builder.text-block': PageBuilderTextBlock;
       'shared.app-links': SharedAppLinks;
       'shared.award': SharedAward;
-      'shared.comparison-table': SharedComparisonTable;
       'shared.link': SharedLink;
       'shared.page-metadata': SharedPageMetadata;
       'shared.scripts': SharedScripts;

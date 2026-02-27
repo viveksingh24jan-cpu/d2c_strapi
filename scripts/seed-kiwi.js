@@ -106,6 +106,13 @@ async function main() {
           mode: 'automated-by-category',
           category: 'all',
           layout: 'grid'
+        },
+        {
+          __component: 'page-builder.comparison-table',
+          title: 'Plan Comparison',
+          columns: ['Feature', 'Standard', 'Comprehensive'],
+          rows: [['Accident', 'Yes', 'Yes'], ['Theft', 'No', 'Yes']],
+          highlightColumn: 2
         }
       ]
     });

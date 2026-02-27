@@ -1,9 +1,9 @@
 {
-  "collectionName": "components_page_builder_comparison_table",
+  "collectionName": "components_page_builder_comparison_tables",
   "info": {
     "displayName": "Comparison Table",
-    "description": "Product/feature comparison table",
-    "icon": "layer"
+    "description": "Enterprise-grade feature/product comparison grid",
+    "icon": "grid"
   },
   "options": {},
   "attributes": {
@@ -16,15 +16,22 @@
     },
     "columns": {
       "type": "json",
-      "required": true
+      "required": true,
+      "description": "Array of column headers: ['Feature', 'Plan A', 'Plan B']"
     },
     "rows": {
       "type": "json",
-      "required": true
+      "required": true,
+      "description": "Array of arrays for rows: [['Accident Cover', 'Yes', 'Yes'], ['Theft', 'No', 'Yes']]"
     },
     "highlightColumn": {
       "type": "integer",
-      "min": 0
+      "min": 0,
+      "description": "Index of the column to highlight (0-indexed)"
+    },
+    "badge": {
+      "type": "string",
+      "description": "Optional badge text like 'Recommended'"
     }
   }
 }
