@@ -17,6 +17,13 @@
     },
     "testimonialContent": {
       "type": "blocks"
+    },
+    "blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "page-builder.testimonial-grid",
+        "page-builder.testimonial-item"
+      ]
     }
   }
 }

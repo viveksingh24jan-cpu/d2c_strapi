@@ -128,7 +128,27 @@ async function main() {
     await createEntry('api::tool.tool', { name: 'Challan Checker', slug: 'challan', tool_category: { connect: [{ documentId: tcat.documentId }] }, isActive: true });
     await createEntry('api::job-listing.job-listing', { jobTitle: 'UX Designer', department: 'Product', location: 'Bengaluru', isActive: true });
     await createEntry('api::redirect.redirect', { fromPath: '/old-link', toPath: '/home', type: 'permanent' });
-    await createEntry('api::testimonial.testimonial', { customerName: 'Amit S.', testimonialContent: blocks('Great experience!') });
+    await createEntry('api::testimonial.testimonial', { 
+      customerName: 'Amit S.', 
+      testimonialContent: blocks('Great experience!'),
+      blocks: [
+        {
+          __component: 'page-builder.testimonial-item',
+          quote: 'The claims process was seamless and incredibly fast.',
+          authorName: 'Amit S.',
+          authorTitle: 'Private Car Policyholder',
+          rating: 5
+        },
+        {
+          __component: 'page-builder.testimonial-grid',
+          title: 'What Others Say',
+          testimonials: [
+            { quote: 'Best digital experience!', authorName: 'Priya R.', rating: 5 },
+            { quote: 'Affordable and reliable.', authorName: 'Rahul K.', rating: 4 }
+          ]
+        }
+      ]
+    });
 
     // 10. Global Config
     console.log('  -> Global Config');
