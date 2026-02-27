@@ -12,7 +12,7 @@
     "branchName": { "type": "string", "required": true },
     "branchType": {
       "type": "enumeration",
-      "enum": ["head-office", "regional-office", "branch-office"],
+      "enum": ["head-office", "regional-office", "branch-office", "ombudsman-office"],
       "required": true
     },
     "address": { "type": "blocks" },

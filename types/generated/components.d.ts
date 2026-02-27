@@ -28,24 +28,6 @@ export interface PageBuilderAccordion extends Struct.ComponentSchema {
   };
 }
 
-export interface PageBuilderAppBanner extends Struct.ComponentSchema {
-  collectionName: 'components_page_builder_app_banner';
-  info: {
-    description: 'Mobile app download promotion section';
-    displayName: 'App Banner';
-    icon: 'phone';
-  };
-  attributes: {
-    appIcon: Schema.Attribute.Media<'images'>;
-    appLinks: Schema.Attribute.Component<'shared.app-links', false>;
-    backgroundImage: Schema.Attribute.Media<'images'>;
-    description: Schema.Attribute.Text;
-    features: Schema.Attribute.Component<'page-builder.card-item', true>;
-    qrCode: Schema.Attribute.Media<'images'>;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-  };
-}
-
 export interface PageBuilderBanner extends Struct.ComponentSchema {
   collectionName: 'components_page_builder_banner';
   info: {
@@ -54,15 +36,17 @@ export interface PageBuilderBanner extends Struct.ComponentSchema {
     icon: 'bell';
   };
   attributes: {
+    appLinks: Schema.Attribute.Component<'shared.app-links', false>;
     backgroundColor: Schema.Attribute.String;
     bannerType: Schema.Attribute.Enumeration<
-      ['announcement', 'promo', 'alert', 'info']
+      ['announcement', 'promo', 'alert', 'info', 'app-promotion']
     > &
       Schema.Attribute.DefaultTo<'info'>;
     content: Schema.Attribute.Blocks;
     ctaButton: Schema.Attribute.Component<'shared.link', false>;
     dismissible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     icon: Schema.Attribute.String;
+    qrCode: Schema.Attribute.Media<'images'>;
     title: Schema.Attribute.String;
   };
 }
@@ -150,24 +134,6 @@ export interface PageBuilderFeaturedContent extends Struct.ComponentSchema {
   };
 }
 
-export interface PageBuilderGrievanceLevels extends Struct.ComponentSchema {
-  collectionName: 'components_page_builder_grievance_levels';
-  info: {
-    description: 'IRDAI grievance redressal escalation display';
-    displayName: 'Grievance Levels';
-    icon: 'shield';
-  };
-  attributes: {
-    bimaBharosaLink: Schema.Attribute.String;
-    introText: Schema.Attribute.Blocks;
-    levels: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::grievance-level.grievance-level'
-    >;
-    title: Schema.Attribute.String;
-  };
-}
-
 export interface PageBuilderHeroSection extends Struct.ComponentSchema {
   collectionName: 'components_page_builder_hero_section';
   info: {
@@ -212,38 +178,27 @@ export interface PageBuilderInsuranceProductCta extends Struct.ComponentSchema {
 }
 
 export interface PageBuilderMediaBlock extends Struct.ComponentSchema {
-  collectionName: 'components_page_builder_media_block';
+  collectionName: 'components_page_builder_media_blocks';
   info: {
-    description: 'Image or video with caption and alt text';
+    description: 'Unified component for Image, Local Video, or External Embeds';
     displayName: 'Media Block';
     icon: 'picture';
   };
   attributes: {
-    altText: Schema.Attribute.String & Schema.Attribute.Required;
+    altText: Schema.Attribute.String;
+    autoplay: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     caption: Schema.Attribute.String;
-    media: Schema.Attribute.Media<'images' | 'videos'> &
-      Schema.Attribute.Required;
-  };
-}
-
-export interface PageBuilderProductShowcase extends Struct.ComponentSchema {
-  collectionName: 'components_page_builder_product_showcase';
-  info: {
-    description: 'Insurance product carousel/grid display';
-    displayName: 'Product Showcase';
-    icon: 'shoppingCart';
-  };
-  attributes: {
-    layout: Schema.Attribute.Enumeration<['carousel', 'grid', 'list']> &
-      Schema.Attribute.DefaultTo<'carousel'>;
-    maxDisplay: Schema.Attribute.Integer;
-    products: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::insurance-product.insurance-product'
-    >;
-    showPrice: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    subtitle: Schema.Attribute.Text;
+    description: Schema.Attribute.Text;
+    externalUrl: Schema.Attribute.String;
+    file: Schema.Attribute.Media<'images' | 'videos'>;
+    showControls: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    thumbnail: Schema.Attribute.Media<'images'>;
     title: Schema.Attribute.String;
+    type: Schema.Attribute.Enumeration<
+      ['image', 'video-local', 'video-external']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'image'>;
   };
 }
 
@@ -377,27 +332,6 @@ export interface PageBuilderTextBlock extends Struct.ComponentSchema {
     content: Schema.Attribute.Blocks & Schema.Attribute.Required;
     layout: Schema.Attribute.Enumeration<['single-column', 'two-column']> &
       Schema.Attribute.DefaultTo<'single-column'>;
-  };
-}
-
-export interface PageBuilderVideoBlock extends Struct.ComponentSchema {
-  collectionName: 'components_page_builder_video_block';
-  info: {
-    description: 'Embedded video (YouTube, Vimeo, direct, reel)';
-    displayName: 'Video Block';
-    icon: 'play';
-  };
-  attributes: {
-    autoplay: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    description: Schema.Attribute.Text;
-    showControls: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    thumbnail: Schema.Attribute.Media<'images'>;
-    title: Schema.Attribute.String;
-    videoType: Schema.Attribute.Enumeration<
-      ['youtube', 'vimeo', 'direct', 'reel']
-    > &
-      Schema.Attribute.DefaultTo<'youtube'>;
-    videoUrl: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -604,17 +538,14 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'disclosures.disclosure-document': DisclosuresDisclosureDocument;
       'page-builder.accordion': PageBuilderAccordion;
-      'page-builder.app-banner': PageBuilderAppBanner;
       'page-builder.banner': PageBuilderBanner;
       'page-builder.card-grid': PageBuilderCardGrid;
       'page-builder.card-item': PageBuilderCardItem;
       'page-builder.comparison-table': PageBuilderComparisonTable;
       'page-builder.featured-content': PageBuilderFeaturedContent;
-      'page-builder.grievance-levels': PageBuilderGrievanceLevels;
       'page-builder.hero-section': PageBuilderHeroSection;
       'page-builder.insurance-product-cta': PageBuilderInsuranceProductCta;
       'page-builder.media-block': PageBuilderMediaBlock;
-      'page-builder.product-showcase': PageBuilderProductShowcase;
       'page-builder.progress-steps': PageBuilderProgressSteps;
       'page-builder.qna-item': PageBuilderQnaItem;
       'page-builder.stats-bar': PageBuilderStatsBar;
@@ -623,7 +554,6 @@ declare module '@strapi/strapi' {
       'page-builder.testimonial-grid': PageBuilderTestimonialGrid;
       'page-builder.testimonial-item': PageBuilderTestimonialItem;
       'page-builder.text-block': PageBuilderTextBlock;
-      'page-builder.video-block': PageBuilderVideoBlock;
       'shared.app-links': SharedAppLinks;
       'shared.award': SharedAward;
       'shared.comparison-table': SharedComparisonTable;

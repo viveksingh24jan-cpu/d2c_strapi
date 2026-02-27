@@ -455,17 +455,13 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
         'page-builder.qna-item',
         'page-builder.testimonial-grid',
         'page-builder.testimonial-item',
-        'page-builder.video-block',
         'page-builder.comparison-table',
-        'page-builder.app-banner',
         'page-builder.banner',
         'page-builder.progress-steps',
         'page-builder.step-item',
         'page-builder.stats-bar',
-        'page-builder.product-showcase',
         'page-builder.insurance-product-cta',
         'page-builder.featured-content',
-        'page-builder.grievance-levels',
         'page-builder.sticky-cta-bar',
         'shared.comparison-table',
         'shared.section-reference',
@@ -556,7 +552,7 @@ export interface ApiBranchBranch extends Struct.CollectionTypeSchema {
     address: Schema.Attribute.Blocks;
     branchName: Schema.Attribute.String & Schema.Attribute.Required;
     branchType: Schema.Attribute.Enumeration<
-      ['head-office', 'regional-office', 'branch-office']
+      ['head-office', 'regional-office', 'branch-office', 'ombudsman-office']
     > &
       Schema.Attribute.Required;
     city: Schema.Attribute.String;
@@ -794,40 +790,6 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
   };
 }
 
-export interface ApiGrievanceLevelGrievanceLevel
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'grievance_levels';
-  info: {
-    displayName: 'GrievanceLevel';
-    pluralName: 'grievance-levels';
-    singularName: 'grievance-level';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    description: Schema.Attribute.Blocks;
-    email: Schema.Attribute.Email;
-    escalationTimeline: Schema.Attribute.String;
-    levelName: Schema.Attribute.String & Schema.Attribute.Required;
-    levelNumber: Schema.Attribute.Integer & Schema.Attribute.Required;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::grievance-level.grievance-level'
-    > &
-      Schema.Attribute.Private;
-    phone: Schema.Attribute.String;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiInsuranceProductInsuranceProduct
   extends Struct.CollectionTypeSchema {
   collectionName: 'insurance_products';
@@ -852,17 +814,13 @@ export interface ApiInsuranceProductInsuranceProduct
         'page-builder.qna-item',
         'page-builder.testimonial-grid',
         'page-builder.testimonial-item',
-        'page-builder.video-block',
         'page-builder.comparison-table',
-        'page-builder.app-banner',
         'page-builder.banner',
         'page-builder.progress-steps',
         'page-builder.step-item',
         'page-builder.stats-bar',
-        'page-builder.product-showcase',
         'page-builder.insurance-product-cta',
         'page-builder.featured-content',
-        'page-builder.grievance-levels',
         'page-builder.sticky-cta-bar',
         'shared.comparison-table',
         'shared.stats-item',
@@ -912,44 +870,6 @@ export interface ApiInsuranceProductInsuranceProduct
     startingPrice: Schema.Attribute.Decimal;
     tagline: Schema.Attribute.String & Schema.Attribute.Required;
     uinNumber: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiJobListingJobListing extends Struct.CollectionTypeSchema {
-  collectionName: 'job_listings';
-  info: {
-    displayName: 'JobListing';
-    pluralName: 'job-listings';
-    singularName: 'job-listing';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    applyLink: Schema.Attribute.String;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    department: Schema.Attribute.String;
-    description: Schema.Attribute.Blocks;
-    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    jobTitle: Schema.Attribute.String & Schema.Attribute.Required;
-    jobType: Schema.Attribute.Enumeration<
-      ['full-time', 'part-time', 'contract', 'pos-agent', 'imd']
-    >;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::job-listing.job-listing'
-    > &
-      Schema.Attribute.Private;
-    location: Schema.Attribute.String;
-    postedOn: Schema.Attribute.Date;
-    publishedAt: Schema.Attribute.DateTime;
-    requirements: Schema.Attribute.Blocks;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1045,39 +965,6 @@ export interface ApiNavigationMenuNavigationMenu
   };
 }
 
-export interface ApiOmbudsmanOfficeOmbudsmanOffice
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'ombudsman_offices';
-  info: {
-    displayName: 'OmbudsmanOffice';
-    pluralName: 'ombudsman-offices';
-    singularName: 'ombudsman-office';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    address: Schema.Attribute.Blocks;
-    city: Schema.Attribute.String & Schema.Attribute.Required;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    email: Schema.Attribute.Email;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::ombudsman-office.ombudsman-office'
-    > &
-      Schema.Attribute.Private;
-    phone: Schema.Attribute.String;
-    publishedAt: Schema.Attribute.DateTime;
-    territorialJurisdiction: Schema.Attribute.Text;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiPagePage extends Struct.CollectionTypeSchema {
   collectionName: 'pages';
   info: {
@@ -1101,17 +988,13 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'page-builder.qna-item',
         'page-builder.testimonial-grid',
         'page-builder.testimonial-item',
-        'page-builder.video-block',
         'page-builder.comparison-table',
-        'page-builder.app-banner',
         'page-builder.banner',
         'page-builder.progress-steps',
         'page-builder.step-item',
         'page-builder.stats-bar',
-        'page-builder.product-showcase',
         'page-builder.insurance-product-cta',
         'page-builder.featured-content',
-        'page-builder.grievance-levels',
         'page-builder.sticky-cta-bar',
         'shared.comparison-table',
         'shared.section-reference',
@@ -1247,17 +1130,13 @@ export interface ApiSharedSectionSharedSection
         'page-builder.qna-item',
         'page-builder.testimonial-grid',
         'page-builder.testimonial-item',
-        'page-builder.video-block',
         'page-builder.comparison-table',
-        'page-builder.app-banner',
         'page-builder.banner',
         'page-builder.progress-steps',
         'page-builder.step-item',
         'page-builder.stats-bar',
-        'page-builder.product-showcase',
         'page-builder.insurance-product-cta',
         'page-builder.featured-content',
-        'page-builder.grievance-levels',
         'page-builder.sticky-cta-bar',
         'shared.comparison-table',
         'shared.stats-item',
@@ -1949,12 +1828,9 @@ declare module '@strapi/strapi' {
       'api::download-document.download-document': ApiDownloadDocumentDownloadDocument;
       'api::financial-disclosure.financial-disclosure': ApiFinancialDisclosureFinancialDisclosure;
       'api::global-config.global-config': ApiGlobalConfigGlobalConfig;
-      'api::grievance-level.grievance-level': ApiGrievanceLevelGrievanceLevel;
       'api::insurance-product.insurance-product': ApiInsuranceProductInsuranceProduct;
-      'api::job-listing.job-listing': ApiJobListingJobListing;
       'api::leadership-profile.leadership-profile': ApiLeadershipProfileLeadershipProfile;
       'api::navigation-menu.navigation-menu': ApiNavigationMenuNavigationMenu;
-      'api::ombudsman-office.ombudsman-office': ApiOmbudsmanOfficeOmbudsmanOffice;
       'api::page.page': ApiPagePage;
       'api::partner.partner': ApiPartnerPartner;
       'api::redirect.redirect': ApiRedirectRedirect;

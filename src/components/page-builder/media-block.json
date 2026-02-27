@@ -1,27 +1,60 @@
 {
-  "collectionName": "components_page_builder_media_block",
+  "collectionName": "components_page_builder_media_blocks",
   "info": {
     "displayName": "Media Block",
-    "description": "Image or video with caption and alt text",
+    "description": "Unified component for Image, Local Video, or External Embeds",
     "icon": "picture"
   },
   "options": {},
   "attributes": {
-    "media": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "image",
+        "video-local",
+        "video-external"
+      ],
+      "default": "image",
+      "required": true
+    },
+    "file": {
       "type": "media",
       "multiple": false,
-      "required": true,
       "allowedTypes": [
         "images",
         "videos"
       ]
     },
+    "externalUrl": {
+      "type": "string",
+      "description": "YouTube, Vimeo, or other external URL"
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "showControls": {
+      "type": "boolean",
+      "default": true
+    },
     "caption": {
       "type": "string"
     },
     "altText": {
-      "type": "string",
-      "required": true
+      "type": "string"
     }
   }
 }

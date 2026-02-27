@@ -19,9 +19,23 @@
         "announcement",
         "promo",
         "alert",
-        "info"
+        "info",
+        "app-promotion"
       ],
       "default": "info"
+    },
+    "appLinks": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.app-links"
+    },
+    "qrCode": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "backgroundColor": {
       "type": "string"
