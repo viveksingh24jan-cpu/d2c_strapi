@@ -8,87 +8,74 @@ This document is the "Grand Encyclopedia" of the Kiwi CMS. It explores every sin
 There is only one of these in the entire system. They control site-wide rules.
 
 ### **1.1 GlobalConfig (`api::global-config`)**
-*   **Purpose:** The "One-Stop-Shop" for branding, regulatory compliance, and global navigation links.
+*   **Purpose:** The "One-Stop-Shop" for branding, regulatory compliance (CIN), and global navigation links.
 *   **Key Fields:**
     *   `siteName` (String): The brand name (e.g., "Kiwi General Insurance").
-    *   `irdaiRegNumber` (String): Mandatory license number (e.g., "190").
+    *   `irdaiRegNumber` (String): Mandatory license number.
+    *   `cinNumber` (String): Official Corporate Identification Number (`U65120KA2024PLC194560`).
     *   `privacyPage` / `termsPage` (Relation): Direct links to the Legal Page warehouse.
-    *   `stickyCta` (Component): A site-wide floating bar for urgent alerts or lead generation.
-    *   `socialLinks` (Repeatable Component): Managed list of social handles with platform-specific icons.
+    *   `stickyCta` (Component): A site-wide floating bar for lead generation.
 
 ---
 
 ## 🏪 2. COLLECTIONS (Data Warehouses)
-These store groups of similar data used across the application.
 
-### **2.1 Core Content & SEO**
-*   **Dynamic Landing Pages (`api::page`):** The master model for every URL.
-    *   `template` (Enum): Pick `home`, `about`, `legal`, `grievance`.
-    *   `content` (Dynamic Zone): A stack of modular sections (Hero, Stats, Accordions, etc.).
-    *   **Optimization:** Supports `shared.section-reference` to reuse blocks from the Shared Sections registry.
-*   **Article (`api::article`):** Blog posts and educational guides.
-    *   Linked to **Author** and **Category** warehouses.
-*   **Redirect (`api::redirect`):** SEO traffic management. Maps `fromPath` to `toPath` with 301/302 status codes.
+### **2.1 Marketing & Agility (The Sales Engine)**
+*   **Campaigns (`api::campaign`):** Time-limited seasonal promotions (e.g., "Monsoon Safety Month").
+*   **Partners (`api::partner`):** Registry of network hospitals, garages, and brand collaborators.
+*   **InsuranceProduct (`api::insurance-product`):** The master product list. 
+    *   Includes `isStandard` flag for IRDAI mandated plans.
+    *   Compliance fields: `uinNumber`, `cisDocument`, `policyWording`.
 
-### **2.2 Insurance Product Registry**
-*   **InsuranceProduct (`api::insurance-product`):** The Single Source of Truth for all marketing and mandated products.
-    *   `isStandard` (Boolean): Flag to identify IRDAI-mandated standard policies.
-    *   `productType` (Enum): Categorizes products (e.g., `arogya-sanjeevani`, `generic`).
-    *   `startingPrice` (Decimal): Pulls automatically into page CTAs.
-    *   `complianceFeatures` / `eligibility` (Blocks): Mandated wording for standard products.
-    *   `cisDocument` / `policyWording` (Media): Direct links to policy PDFs.
+### **2.2 Core Content & SEO**
+*   **Dynamic Landing Pages (`api::page`):** The model for every site URL.
+    *   Supports `shared.section-reference` for atomic reusability.
+*   **Article (`api::article`):** Blog posts and guides. Linked to **Authors**.
+*   **Redirect (`api::redirect`):** SEO management from old URLs to new ones.
 
-### **2.3 Corporate & Regulatory**
-*   **Financial Disclosure (`api::financial-disclosure`):** Consolidated warehouse for Quarterly Results and Annual Reports.
-*   **Infrastructure:**
-    *   `api::branch`: Map-ready office locations (Head Office, Regional, Branch).
-    *   `api::ombudsman-office`: Jurisdiction-based govt. complaint offices.
-    *   `api::grievance-level`: Escalation matrix (Level 1 to 3).
-*   **LeadershipProfile (`api::leadership-profile`):** Board of Directors and Key Managerial Personnel (KMP).
+### **2.3 Infrastructure & Compliance**
+*   **Transparency Reports (`api::transparency-report`):** IRDAI public disclosures.
+*   **Branch (`api::branch`):** Office map data including `latitude` and `longitude`.
+*   **GrievanceLevel (`api::grievance-level`):** The 3-tier escalation matrix.
+*   **OmbudsmanOffice (`api::ombudsman-office`):** Regional complaint offices.
 
-### **2.4 Technical & Misc**
-*   **Tool (`api::tool`):** Calculators (e.g., "Premium Calculator") linked to a **Tool Category**.
-*   **JobListing (`api::job-listing`):** HR portal data.
-*   **Testimonial (`api::testimonial`):** Customer reviews verified for display.
+### **2.4 People & Technical**
+*   **LeadershipProfile (`api::leadership-profile`):** Board of Directors and KMP profiles with LinkedIn links.
+*   **JobListing (`api::job-listing`):** Open positions in the career portal.
+*   **Tool (`api::tool`):** Calculators linked to categories.
 
 ---
 
-## 🧱 3. COMPONENT LIBRARY (The LEGO System)
+## 🧱 3. COMPONENT LIBRARY (LEGO Bricks)
 
-### **3.1 Layout & Content Bricks**
-*   **Hero Section:** High-impact banner with layout options (`centered`, `left-right`).
-*   **Text Block:** Scalable rich-text container with column support.
-*   **Accordion:** Collapsible Q&A items for FAQs.
-*   **Card Grid:** Responsive grid of `Card Items` with icons and badges.
+### **3.1 Layout Bricks**
+*   **Hero Section:** High-impact banners.
+*   **Card Grid:** Responsive layout for product or feature cards.
+*   **Text Block:** Rich text with multi-column support.
 
-### **3.2 Atomic Reuse (The Architect's Secret)**
-*   **Shared Section Reference (`shared.section-reference`):**
-    *   Instead of recreating a "Contact Us" block on every page, you create it once in the **Shared Sections** collection.
-    *   Inside any page, you add this component and point it to that section.
-    *   **Update once, reflect everywhere.**
+### **3.2 Trust & Compliance Bricks**
+*   **Award Badge (`shared.award`):** Reuse recognitions like "Best Insurer 2025" anywhere.
+*   **Disclosure Document:** For regulatory attachments.
+*   **SEO:** Enhanced with `structuredData` (JSON-LD) for Google Rich Snippets.
 
-### **3.3 Dynamic Logic Bricks**
-*   **Insurance Product CTA (`page-builder.insurance-product-cta`):**
-    *   Instead of typing the price manually, you select a **Product** from the relation.
-    *   The frontend automatically pulls the latest `startingPrice` and `ctaUrl` from the Product Registry.
+### **3.3 Atomic Reuse**
+*   **Shared Section Reference:** Add a globally-synced block (e.g., "Need Help?") into any page.
 
 ---
 
 ## 🧶 4. DATA FLOW & LINKING LOGIC
 
-1.  **Registry Pattern:** Always create the "entity" (Product, Author, Category) in its Warehouse first.
-2.  **Referential Integrity:** Use the **Product CTA** component on landing pages to ensure pricing is never "stale."
-3.  **SEO Logic:** The `GlobalConfig` provides the default SEO, while the `Page` component can override it for specific URLs.
-4.  **Nesting:** **Navigation Menu** supports unlimited hierarchy via self-relations (Parent -> Child).
+1.  **Registry Pattern:** Always create the "Product" or "Partner" in its registry first.
+2.  **SSOT Pricing:** Page CTAs pull the `startingPrice` from the `InsuranceProduct` registry.
+3.  **Geo-Mapping:** The `Branch` coordinates are used by the frontend to render Google Maps pins.
+4.  **SEO Chain:** Global SEO flows from `GlobalConfig`, overridable by individual `Page` metadata.
 
 ---
 
 ## 🧑‍💻 5. DEVELOPER IMPLEMENTATION TIPS
 
-*   **Initial Load:** Call `GET /api/global-config?populate=*` to get the "Site Brain."
-*   **Page Rendering:** 
-    *   `GET /api/pages?filters[slug]=home&populate[content][on][shared.section-reference][populate]=shared_section`
-    *   This deep-populates the shared blocks in one request.
-*   **Component Mapping:** Map `__component` names (e.g., `page-builder.hero-section`) directly to your React/Vue section components.
+*   **Master Query:** Use the Postman "Master Component Query" to see how to fetch all page blocks in one request.
+*   **Population:** For branches, always request `latitude` and `longitude` fields for map rendering.
+*   **Standard Products:** Filter the product registry by `isStandard=true` to build the "Standard Products" directory page.
 
-**The Kiwi CMS is designed for maximum scalability. Treat every block as a reusable asset.**
+**This guide is the blueprint for the Kiwi CMS City.**

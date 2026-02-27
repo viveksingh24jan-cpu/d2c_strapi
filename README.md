@@ -1,61 +1,49 @@
-# 🚀 Getting started with Strapi
+# 🥝 Kiwi General Insurance Limited - Enterprise CMS
 
-Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
+This is a production-ready Strapi v5 Headless CMS architecture tailored for the Indian D2C Insurance sector. It is designed for maximum scalability, SEO performance, and regulatory compliance (IRDAI).
 
-### `develop`
+## 🚀 Key Architectural Features
 
-Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)
+- **Unified Product Registry (SSOT):** A single source of truth for all insurance products (Car, Health, Home) with built-in support for IRDAI-mandated "Standard Products" (e.g., Arogya Sanjeevani) using `isStandard` flags and compliance fields.
+- **Atomic Reusability:** Implementation of the **Shared Section Reference** pattern. Build high-conversion UI blocks once and reuse them across any page or article with a single click.
+- **Advanced SEO & Discovery:** Every page and article includes deep SEO metadata, OpenGraph tags, and a `structuredData` JSON field for schema.org (JSON-LD) injection.
+- **Enterprise Infrastructure:** 
+  - **Geo-Aware Branches:** Integrated latitude/longitude for Google Maps.
+  - **Compliance Hub:** Transparency reports, grievance escalation levels (1-3), and ombudsman office directories.
+- **Modular Page Builder:** 20+ responsive components including Hero Sections, Accordions, Comparison Tables, Product CTAs, and Stats Bars.
+- **Nested Navigation:** Support for 4-level deep hierarchical menus for complex site structures.
 
-```
-npm run develop
-# or
-yarn develop
-```
+## 🛠️ Getting Started
 
-### `start`
-
-Start your Strapi application with autoReload disabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-start)
-
-```
-npm run start
-# or
-yarn start
+### 1. Installation
+```bash
+npm install
 ```
 
-### `build`
+### 2. Environment Setup
+Copy `.env.example` to `.env` and configure your database and secrets.
 
-Build your admin panel. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-build)
-
-```
-npm run build
-# or
-yarn build
-```
-
-## ⚙️ Deployment
-
-Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.
-
-```
-yarn strapi deploy
+### 3. Maximum Volume Seed (Development)
+Populate the CMS with realistic, industry-standard data:
+```bash
+npm run seed:kiwi
 ```
 
-## 📚 Learn more
+### 4. Development
+```bash
+npm run dev
+```
 
-- [Resource center](https://strapi.io/resource-center) - Strapi resource center.
-- [Strapi documentation](https://docs.strapi.io) - Official Strapi documentation.
-- [Strapi tutorials](https://strapi.io/tutorials) - List of tutorials made by the core team and the community.
-- [Strapi blog](https://strapi.io/blog) - Official Strapi blog containing articles made by the Strapi team and the community.
-- [Changelog](https://strapi.io/changelog) - Find out about the Strapi product updates, new features and general improvements.
+## 📚 Documentation
 
-Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/strapi). Your feedback and contributions are welcome!
+- **[CMS Master Guide](./CMS_GUIDE.md):** The "Encyclopedia" of every field, component, and linking logic.
+- **[Postman Collection](./postman/kiwi-insurance-api.postman_collection.json):** Architect-level API requests with deep population patterns.
 
-## ✨ Community
+## 🏛️ Project Structure
 
-- [Discord](https://discord.strapi.io) - Come chat with the Strapi community including the core team.
-- [Forum](https://forum.strapi.io/) - Place to discuss, ask questions and find answers, show your Strapi project and get feedback or just talk with other Community members.
-- [Awesome Strapi](https://github.com/strapi/awesome-strapi) - A curated list of awesome things related to Strapi.
+- `src/api`: 21+ Collection and Single types covering Corporate, Products, Content, and Infrastructure.
+- `src/components`: 3 categories of LEGO-style bricks (Page Builder, Shared, Disclosures).
+- `scripts`: Strategic seeding scripts for rapid environment setup.
 
 ---
-
-<sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
+*Built for Kiwi General Insurance Limited – Simple. Smart. Digital.*
