@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_page_builder_accordion_items",
+  "info": {
+    "displayName": "Accordion Item",
+    "description": "Flexible container for Q&A, Grievance levels, or generic collapsible content",
+    "icon": "plus"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string",
+      "description": "Lucide/FontAwesome icon name"
+    },
+    "content": {
+      "type": "blocks",
+      "required": true
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    },
+    "badge": {
+      "type": "string"
+    },
+    "isOpenByDefault": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

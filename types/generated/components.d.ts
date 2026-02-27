@@ -23,7 +23,26 @@ export interface PageBuilderAccordion extends Struct.ComponentSchema {
     icon: 'bulletList';
   };
   attributes: {
-    items: Schema.Attribute.Component<'page-builder.qna-item', true>;
+    items: Schema.Attribute.Component<'page-builder.accordion-item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface PageBuilderAccordionItem extends Struct.ComponentSchema {
+  collectionName: 'components_page_builder_accordion_items';
+  info: {
+    description: 'Flexible container for Q&A, Grievance levels, or generic collapsible content';
+    displayName: 'Accordion Item';
+    icon: 'plus';
+  };
+  attributes: {
+    badge: Schema.Attribute.String;
+    content: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    cta: Schema.Attribute.Component<'shared.link', false>;
+    icon: Schema.Attribute.String;
+    isOpenByDefault: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    subtitle: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -219,19 +238,6 @@ export interface PageBuilderProgressSteps extends Struct.ComponentSchema {
   };
 }
 
-export interface PageBuilderQnaItem extends Struct.ComponentSchema {
-  collectionName: 'components_page_builder_qna_item';
-  info: {
-    description: 'Single question and answer pair';
-    displayName: 'Q&A Item';
-    icon: 'question';
-  };
-  attributes: {
-    answer: Schema.Attribute.Blocks & Schema.Attribute.Required;
-    question: Schema.Attribute.String & Schema.Attribute.Required;
-  };
-}
-
 export interface PageBuilderStatsBar extends Struct.ComponentSchema {
   collectionName: 'components_page_builder_stats_bar';
   info: {
@@ -382,10 +388,10 @@ export interface SharedPageMetadata extends Struct.ComponentSchema {
   };
   attributes: {
     attachmentForDownload: Schema.Attribute.Media<'files'>;
-    customScript: Schema.Attribute.Text;
     isMandatory: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     lastUpdated: Schema.Attribute.DateTime;
     redirectionPath: Schema.Attribute.String;
+    thirdPartyScripts: Schema.Attribute.Component<'shared.scripts', false>;
   };
 }
 
@@ -512,6 +518,7 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'disclosures.disclosure-document': DisclosuresDisclosureDocument;
       'page-builder.accordion': PageBuilderAccordion;
+      'page-builder.accordion-item': PageBuilderAccordionItem;
       'page-builder.banner': PageBuilderBanner;
       'page-builder.card-grid': PageBuilderCardGrid;
       'page-builder.card-item': PageBuilderCardItem;
@@ -521,7 +528,6 @@ declare module '@strapi/strapi' {
       'page-builder.insurance-product-cta': PageBuilderInsuranceProductCta;
       'page-builder.media-block': PageBuilderMediaBlock;
       'page-builder.progress-steps': PageBuilderProgressSteps;
-      'page-builder.qna-item': PageBuilderQnaItem;
       'page-builder.stats-bar': PageBuilderStatsBar;
       'page-builder.step-item': PageBuilderStepItem;
       'page-builder.sticky-cta-bar': PageBuilderStickyCtaBar;

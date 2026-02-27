@@ -113,6 +113,26 @@ async function main() {
           columns: ['Feature', 'Standard', 'Comprehensive'],
           rows: [['Accident', 'Yes', 'Yes'], ['Theft', 'No', 'Yes']],
           highlightColumn: 2
+        },
+        { 
+          __component: 'page-builder.accordion', 
+          title: 'Grievance Redressal Escalation',
+          items: [
+            { 
+              title: 'Level 1: Customer Care', 
+              subtitle: 'Initial Resolution',
+              icon: 'phone',
+              content: blocks('Call our 24/7 toll-free number 1800-XXX-XXXX. We aim to resolve queries within 7 working days.'),
+              badge: 'Step 1'
+            },
+            { 
+              title: 'Level 2: Grievance Redressal Officer', 
+              subtitle: 'Escalation Stage',
+              icon: 'user',
+              content: blocks('If not satisfied with Level 1, email our GRO at gro@kiwi.in.'),
+              badge: 'Step 2'
+            }
+          ]
         }
       ]
     });

@@ -64,13 +64,8 @@ export default factories.createCoreService('api::page.page', ({ strapi }) => ({
             } 
           },
           'page-builder.media-block': { populate: { file: true } },
-          'page-builder.accordion': { populate: { items: true } },
-          'page-builder.testimonial-grid': { 
-            populate: { 
-              testimonials: { populate: { avatar: true } } 
-            } 
-          },
-          'page-builder.video-block': { populate: { thumbnail: true } },
+          'page-builder.accordion': { populate: { items: { populate: { cta: { populate: '*' } } } } },
+          'page-builder.testimonial-showcase': { populate: { manualTestimonials: { populate: { avatar: true } } } },
           'page-builder.comparison-table': true,
           'page-builder.banner': { populate: { ctaButton: { populate: '*' }, appLinks: { populate: '*' } } },
           'page-builder.progress-steps': { populate: { steps: true } },

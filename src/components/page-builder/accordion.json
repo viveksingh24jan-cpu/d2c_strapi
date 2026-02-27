@@ -14,7 +14,7 @@
     "items": {
       "type": "component",
       "repeatable": true,
-      "component": "page-builder.qna-item"
+      "component": "page-builder.accordion-item"
     }
   }
 }

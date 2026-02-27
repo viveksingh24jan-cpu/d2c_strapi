@@ -24,8 +24,10 @@
     "lastUpdated": {
       "type": "datetime"
     },
-    "customScript": {
-      "type": "text"
+    "thirdPartyScripts": {
+      "type": "component",
+      "component": "shared.scripts",
+      "repeatable": false
     }
   }
 }
