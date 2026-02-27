@@ -1,0 +1,51 @@
+{
+  "collectionName": "components_page_builder_testimonial_showcases",
+  "info": {
+    "displayName": "Testimonial Showcase",
+    "description": "Dynamic or manual selection of customer testimonials",
+    "icon": "quote"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "mode": {
+      "type": "enumeration",
+      "enum": [
+        "automated-by-category",
+        "manual-selection"
+      ],
+      "default": "automated-by-category",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "all",
+        "motor",
+        "health",
+        "travel",
+        "claims"
+      ],
+      "default": "all"
+    },
+    "layout": {
+      "type": "enumeration",
+      "enum": [
+        "grid",
+        "slider",
+        "single"
+      ],
+      "default": "grid"
+    },
+    "manualTestimonials": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::testimonial.testimonial"
+    }
+  }
+}

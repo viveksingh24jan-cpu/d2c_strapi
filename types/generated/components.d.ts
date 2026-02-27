@@ -280,44 +280,31 @@ export interface PageBuilderStickyCtaBar extends Struct.ComponentSchema {
   };
 }
 
-export interface PageBuilderTestimonialGrid extends Struct.ComponentSchema {
-  collectionName: 'components_page_builder_testimonial_grid';
+export interface PageBuilderTestimonialShowcase extends Struct.ComponentSchema {
+  collectionName: 'components_page_builder_testimonial_showcases';
   info: {
-    description: 'Customer testimonials section';
-    displayName: 'Testimonial Grid';
+    description: 'Dynamic or manual selection of customer testimonials';
+    displayName: 'Testimonial Showcase';
     icon: 'quote';
   };
   attributes: {
-    subtitle: Schema.Attribute.Text;
-    testimonials: Schema.Attribute.Component<
-      'page-builder.testimonial-item',
-      true
+    category: Schema.Attribute.Enumeration<
+      ['all', 'motor', 'health', 'travel', 'claims']
+    > &
+      Schema.Attribute.DefaultTo<'all'>;
+    layout: Schema.Attribute.Enumeration<['grid', 'slider', 'single']> &
+      Schema.Attribute.DefaultTo<'grid'>;
+    manualTestimonials: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::testimonial.testimonial'
     >;
+    mode: Schema.Attribute.Enumeration<
+      ['automated-by-category', 'manual-selection']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'automated-by-category'>;
+    subtitle: Schema.Attribute.Text;
     title: Schema.Attribute.String;
-  };
-}
-
-export interface PageBuilderTestimonialItem extends Struct.ComponentSchema {
-  collectionName: 'components_page_builder_testimonial_item';
-  info: {
-    description: 'Individual customer testimonial';
-    displayName: 'Testimonial Item';
-    icon: 'quote';
-  };
-  attributes: {
-    authorAvatar: Schema.Attribute.Media<'images'>;
-    authorName: Schema.Attribute.String & Schema.Attribute.Required;
-    authorTitle: Schema.Attribute.String;
-    productName: Schema.Attribute.String;
-    quote: Schema.Attribute.Text & Schema.Attribute.Required;
-    rating: Schema.Attribute.Integer &
-      Schema.Attribute.SetMinMax<
-        {
-          max: 5;
-          min: 1;
-        },
-        number
-      >;
   };
 }
 
@@ -551,8 +538,7 @@ declare module '@strapi/strapi' {
       'page-builder.stats-bar': PageBuilderStatsBar;
       'page-builder.step-item': PageBuilderStepItem;
       'page-builder.sticky-cta-bar': PageBuilderStickyCtaBar;
-      'page-builder.testimonial-grid': PageBuilderTestimonialGrid;
-      'page-builder.testimonial-item': PageBuilderTestimonialItem;
+      'page-builder.testimonial-showcase': PageBuilderTestimonialShowcase;
       'page-builder.text-block': PageBuilderTextBlock;
       'shared.app-links': SharedAppLinks;
       'shared.award': SharedAward;

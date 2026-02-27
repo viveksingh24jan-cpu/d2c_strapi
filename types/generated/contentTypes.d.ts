@@ -453,8 +453,7 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
         'page-builder.media-block',
         'page-builder.accordion',
         'page-builder.qna-item',
-        'page-builder.testimonial-grid',
-        'page-builder.testimonial-item',
+        'page-builder.testimonial-showcase',
         'page-builder.comparison-table',
         'page-builder.banner',
         'page-builder.progress-steps',
@@ -812,8 +811,7 @@ export interface ApiInsuranceProductInsuranceProduct
         'page-builder.media-block',
         'page-builder.accordion',
         'page-builder.qna-item',
-        'page-builder.testimonial-grid',
-        'page-builder.testimonial-item',
+        'page-builder.testimonial-showcase',
         'page-builder.comparison-table',
         'page-builder.banner',
         'page-builder.progress-steps',
@@ -986,8 +984,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'page-builder.media-block',
         'page-builder.accordion',
         'page-builder.qna-item',
-        'page-builder.testimonial-grid',
-        'page-builder.testimonial-item',
+        'page-builder.testimonial-showcase',
         'page-builder.comparison-table',
         'page-builder.banner',
         'page-builder.progress-steps',
@@ -1128,8 +1125,7 @@ export interface ApiSharedSectionSharedSection
         'page-builder.media-block',
         'page-builder.accordion',
         'page-builder.qna-item',
-        'page-builder.testimonial-grid',
-        'page-builder.testimonial-item',
+        'page-builder.testimonial-showcase',
         'page-builder.comparison-table',
         'page-builder.banner',
         'page-builder.progress-steps',
@@ -1164,7 +1160,8 @@ export interface ApiSharedSectionSharedSection
 export interface ApiTestimonialTestimonial extends Struct.CollectionTypeSchema {
   collectionName: 'testimonials';
   info: {
-    displayName: 'Testimonial';
+    description: 'Master list of verified customer testimonials';
+    displayName: 'Testimonial Registry';
     pluralName: 'testimonials';
     singularName: 'testimonial';
   };
@@ -1172,13 +1169,17 @@ export interface ApiTestimonialTestimonial extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    blocks: Schema.Attribute.DynamicZone<
-      ['page-builder.testimonial-grid', 'page-builder.testimonial-item']
-    >;
+    avatar: Schema.Attribute.Media<'images'>;
+    category: Schema.Attribute.Enumeration<
+      ['general', 'motor', 'health', 'travel', 'claims']
+    > &
+      Schema.Attribute.DefaultTo<'general'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     customerName: Schema.Attribute.String & Schema.Attribute.Required;
+    customerTitle: Schema.Attribute.String;
+    isFeatured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1186,7 +1187,16 @@ export interface ApiTestimonialTestimonial extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    testimonialContent: Schema.Attribute.Blocks;
+    quote: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    rating: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 1;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<5>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

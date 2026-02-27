@@ -4,7 +4,8 @@
   "info": {
     "singularName": "testimonial",
     "pluralName": "testimonials",
-    "displayName": "Testimonial"
+    "displayName": "Testimonial Registry",
+    "description": "Master list of verified customer testimonials"
   },
   "options": {
     "draftAndPublish": true
@@ -15,15 +16,39 @@
       "type": "string",
       "required": true
     },
-    "testimonialContent": {
-      "type": "blocks"
+    "customerTitle": {
+      "type": "string",
+      "description": "e.g. Verified Buyer, Car Insurance Customer"
     },
-    "blocks": {
-      "type": "dynamiczone",
-      "components": [
-        "page-builder.testimonial-grid",
-        "page-builder.testimonial-item"
-      ]
+    "quote": {
+      "type": "blocks",
+      "required": true
+    },
+    "rating": {
+      "type": "integer",
+      "min": 1,
+      "max": 5,
+      "default": 5
+    },
+    "avatar": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "general",
+        "motor",
+        "health",
+        "travel",
+        "claims"
+      ],
+      "default": "general"
+    },
+    "isFeatured": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
