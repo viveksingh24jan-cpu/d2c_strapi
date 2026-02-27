@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * Kiwi General Insurance - ABSOLUTE MAXIMUM VOLUME SEED (Strapi 5)
- * Standardizing all data types and ensuring every single feature is utilized.
+ * Kiwi General Insurance - UNIFIED PRODUCT REGISTRY SEED (Strapi 5)
+ * Consolidated InsuranceProduct + StandardProduct into one collection.
  */
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -42,7 +42,7 @@ async function main() {
   const app = await createStrapi(appContext).load();
   app.log.level = 'error';
 
-  console.log('\n🥝 Kiwi General Insurance - MASTER ARCHITECT SEEDING...\n');
+  console.log('\n🥝 Kiwi General Insurance - UNIFIED MASTER SEEDING...\n');
 
   try {
     const collections = [
@@ -51,73 +51,67 @@ async function main() {
       'api::grievance-level.grievance-level', 'api::insurance-product.insurance-product',
       'api::job-listing.job-listing', 'api::leadership-profile.leadership-profile', 'api::navigation-menu.navigation-menu',
       'api::ombudsman-office.ombudsman-office', 'api::page.page', 'api::redirect.redirect', 'api::shared-section.shared-section',
-      'api::standard-product.standard-product', 'api::testimonial.testimonial', 'api::tool.tool', 'api::tool-category.tool-category'
+      'api::testimonial.testimonial', 'api::tool.tool', 'api::tool-category.tool-category'
     ];
     for (const uid of collections) await deleteAll(uid);
 
-    // 1. Authors & Leadership (Standardized with Blocks & Social Links)
-    console.log('  -> Authors & Leadership');
-    const a1 = await createEntry('api::author.author', { 
-      name: 'Vikram Seth', 
-      bio: blocks('Expert in Motor Insurance underwriting.'),
-      socialLinks: [{ platform: 'twitter', url: 'https://twitter.com/vseth' }]
+    // 1. Meta
+    const author = await createEntry('api::author.author', { name: 'Vikram Seth', bio: blocks('Expert.') });
+
+    // 2. UNIFIED PRODUCT REGISTRY
+    console.log('  -> Seeding Unified Insurance Products');
+    const p1 = await createEntry('api::insurance-product.insurance-product', {
+      productName: 'Car Insurance', tagline: 'Comprehensive Cover', startingPrice: 2094, isActive: true, sortOrder: 1, ctaText: 'Get Quote', ctaUrl: '/car',
+      isStandard: false
     });
     
-    await createEntry('api::leadership-profile.leadership-profile', {
-      name: 'Dr. Ramesh Kumar', designation: 'CEO', category: 'KMP',
-      bio: blocks('Visionary leader with 25 years of experience.'),
-      socialLinks: [{ platform: 'linkedin', url: 'https://linkedin.com/rkumar' }]
-    });
-
-    // 2. Products Registry (SSOT)
-    console.log('  -> Product Registry');
-    const p1 = await createEntry('api::insurance-product.insurance-product', {
-      productName: 'Car Insurance', tagline: 'Comprehensive Cover', startingPrice: 2094, isActive: true, sortOrder: 1, ctaText: 'Get Quote', ctaUrl: '/car'
-    });
+    // Mandated Standard Product
     const p2 = await createEntry('api::insurance-product.insurance-product', {
-      productName: 'Health Insurance', tagline: '100% Cashless', startingPrice: 5500, isActive: true, sortOrder: 2, ctaText: 'Buy Now', ctaUrl: '/health'
+      productName: 'Arogya Sanjeevani', tagline: 'IRDAI Standard Health Plan', startingPrice: 3500, isActive: true, sortOrder: 2, ctaText: 'Buy Standard Plan', ctaUrl: '/health/arogya',
+      isStandard: true,
+      productType: 'arogya-sanjeevani',
+      complianceFeatures: blocks('Standard hospitalisation cover as per IRDAI.')
     });
 
-    // 3. Shared Sections (Global Reuse)
-    console.log('  -> Shared Sections');
-    const helpSec = await createEntry('api::shared-section.shared-section', {
-      title: 'Global Help',
-      blocks: [{ __component: 'page-builder.banner', title: 'Need Help?', description: 'Call 1800-123-4567' }]
+    const p3 = await createEntry('api::insurance-product.insurance-product', {
+      productName: 'Bharat Griha Raksha', tagline: 'Standard Home Insurance', startingPrice: 499, isActive: true, sortOrder: 3, ctaText: 'Secure Home', ctaUrl: '/home/standard',
+      isStandard: true,
+      productType: 'bharat-griha-raksha'
     });
 
-    // 4. Pages (MAX FEATURE USAGE)
-    console.log('  -> Home Page (Full Component Permutations)');
+    // 3. Pages (Identifying Standard Products)
+    console.log('  -> Seeding Home Page with Product Identification');
     await createEntry('api::page.page', {
       title: 'Home', slug: 'home', template: 'home',
       content: [
-        { __component: 'page-builder.hero-section', title: 'Smart Insurance', subtitle: 'Simple. Digital. Fast.' },
-        { __component: 'page-builder.stats-bar', stats: [{ label: 'Ratio', value: '99.2%' }] },
-        { __component: 'page-builder.insurance-product-cta', product: { connect: [{ documentId: p1.documentId }] }, variant: 'card' },
-        { __component: 'page-builder.testimonial-grid', title: 'Happy Customers', items: [{ quote: 'Great service!', authorName: 'Amit S.' }] },
-        { __component: 'page-builder.accordion', title: 'FAQs', items: [{ question: 'Is it digital?', answer: blocks('Yes.') }] },
-        { __component: 'shared.section-reference', shared_section: { connect: [{ documentId: helpSec.documentId }] } }
+        { __component: 'page-builder.hero-section', title: 'Insurance Made Simple', subtitle: 'Digital First.' },
+        { 
+          __component: 'page-builder.insurance-product-cta', 
+          product: { connect: [{ documentId: p1.documentId }] }, 
+          variant: 'card' 
+        },
+        { 
+          __component: 'page-builder.insurance-product-cta', 
+          product: { connect: [{ documentId: p2.documentId }] }, 
+          variant: 'card',
+          customTitle: 'Standard: Arogya Sanjeevani',
+          customSubtitle: 'Government Mandated Standard Health Plan'
+        },
+        { 
+          __component: 'page-builder.insurance-product-cta', 
+          product: { connect: [{ documentId: p3.documentId }] }, 
+          variant: 'minimal',
+          isFeatured: true
+        }
       ]
     });
 
-    // 5. Infrastructure (Geolocation)
-    console.log('  -> Infrastructure (Geo-aware)');
+    // 4. Infrastructure & Navigation
     await createEntry('api::branch.branch', { branchName: 'Mumbai HO', branchType: 'head-office', city: 'Mumbai', latitude: 19.0760, longitude: 72.8777 });
-    await createEntry('api::ombudsman-office.ombudsman-office', { city: 'Mumbai', email: 'mumbai@ombudsman.in' });
-    await createEntry('api::grievance-level.grievance-level', { levelNumber: 1, levelName: 'Helpline' });
-
-    // 6. Navigation (4 Levels)
-    console.log('  -> 4-Level Navigation');
     const n1 = await createEntry('api::navigation-menu.navigation-menu', { label: 'Products', location: 'header' });
-    const n2 = await createNav('Motor', n1.documentId);
-    const n3 = await createNav('Car', n2.documentId);
-    await createNav('Comprehensive', n3.documentId);
+    await createEntry('api::navigation-menu.navigation-menu', { label: 'Car Insurance', parent: { connect: [{ documentId: n1.documentId }] } });
 
-    async function createNav(label, parentId) {
-      return await createEntry('api::navigation-menu.navigation-menu', { label, parent: { connect: [{ documentId: parentId }] } });
-    }
-
-    // 7. Permissions
-    console.log('  -> Setting permissions');
+    // 5. Permissions
     const publicRole = await strapi.query('plugin::users-permissions.role').findOne({ where: { type: 'public' } });
     for (const uid of collections) {
       const parts = uid.split('::')[1].split('.');
@@ -129,7 +123,7 @@ async function main() {
       }
     }
 
-    console.log('\n✅ MASTER ARCHITECT SEED COMPLETE!\n');
+    console.log('\n✅ UNIFIED MASTER SEED COMPLETE!\n');
   } catch (err) { console.error('\n❌ Seed failed:', err); }
 
   await app.destroy();

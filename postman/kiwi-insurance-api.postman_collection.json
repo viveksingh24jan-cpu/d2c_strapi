@@ -97,19 +97,19 @@
       ]
     },
     {
-      "name": "🛡️ Products (SSOT)",
+      "name": "🛡️ Products (Unified Registry)",
       "item": [
         {
-          "name": "List Insurance Products",
-          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products?populate=icon", "host": ["{{baseUrl}}"], "path": ["insurance-products"], "query": [{ "key": "populate", "value": "icon" }] } }
+          "name": "List All Products",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products?populate=*", "host": ["{{baseUrl}}"], "path": ["insurance-products"], "query": [{ "key": "populate", "value": "*" }] } }
+        },
+        {
+          "name": "Standard Products Only (Filtered)",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products?filters[isStandard][$eq]=true", "host": ["{{baseUrl}}"], "path": ["insurance-products"] } }
         },
         {
           "name": "Get Product Detail (with Description Blocks)",
           "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products?filters[productName][$eq]=Car Insurance&populate[blocks][on][page-builder.accordion][populate]=*", "host": ["{{baseUrl}}"], "path": ["insurance-products"] } }
-        },
-        {
-          "name": "List Standard Products (IRDAI)",
-          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/standard-products", "host": ["{{baseUrl}}"], "path": ["standard-products"] } }
         }
       ]
     },
@@ -130,7 +130,7 @@
         },
         {
           "name": "List Testimonials",
-          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/testimonials", "host": ["{{baseUrl}}"], "path": ["testimonials"] } }
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/testimonials?populate=*", "host": ["{{baseUrl}}"], "path": ["testimonials"] } }
         }
       ]
     },
@@ -138,7 +138,7 @@
       "name": "📊 Corporate & Finance",
       "item": [
         {
-          "name": "Financial Disclosures (Years/Quarters)",
+          "name": "Financial Disclosures",
           "request": {
             "method": "GET",
             "url": {
@@ -146,13 +146,12 @@
               "host": ["{{baseUrl}}"],
               "path": ["financial-disclosures"],
               "query": [{ "key": "populate[documents][populate]", "value": "*" }]
-            },
-            "description": "Retrieves annual reports and quarterly results with nested document links."
+            }
           }
         },
         {
           "name": "Leadership Profiles (Board/KMP)",
-          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/leadership-profiles?sort=displayOrder:asc&populate=photo", "host": ["{{baseUrl}}"], "path": ["leadership-profiles"] } }
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/leadership-profiles?sort=displayOrder:asc&populate=photo,socialLinks", "host": ["{{baseUrl}}"], "path": ["leadership-profiles"] } }
         },
         {
           "name": "Job Listings",
@@ -160,7 +159,7 @@
         },
         {
           "name": "Download Documents",
-          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/download-documents?populate=file", "host": ["{{baseUrl}}"], "path": ["download-documents"] } }
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/download-documents", "host": ["{{baseUrl}}"], "path": ["download-documents"] } }
         }
       ]
     },
@@ -168,8 +167,8 @@
       "name": "📍 Infrastructure & Support",
       "item": [
         {
-          "name": "List Branches",
-          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/branches?filters[branchType][$eq]=head-office", "host": ["{{baseUrl}}"], "path": ["branches"] } }
+          "name": "List Branches (with Geolocation)",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/branches", "host": ["{{baseUrl}}"], "path": ["branches"] } }
         },
         {
           "name": "Ombudsman Offices",
@@ -186,21 +185,20 @@
       "item": [
         {
           "name": "List Tools",
-          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/tools?populate=tool_category,icon", "host": ["{{baseUrl}}"], "path": ["tools"] } }
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/tools?populate=tool_category", "host": ["{{baseUrl}}"], "path": ["tools"] } }
         },
         {
           "name": "Tool Categories",
           "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/tool-categories", "host": ["{{baseUrl}}"], "path": ["tool-categories"] } }
         },
         {
-          "name": "Navigation Menus (Nested)",
+          "name": "Navigation Menus (Deep Nested)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/navigation-menus?filters[location][$eq]=header&populate[children][populate]=children",
+              "raw": "{{baseUrl}}/navigation-menus?filters[location][$eq]=header&populate[children][populate][children][populate]=children",
               "host": ["{{baseUrl}}"],
-              "path": ["navigation-menus"],
-              "query": [{ "key": "populate[children][populate]", "value": "children", "description": "Deep nesting for multi-level menus" }]
+              "path": ["navigation-menus"]
             }
           }
         },
@@ -213,11 +211,10 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/shared-sections?populate[blocks][on][page-builder.banner][populate]=*",
+              "raw": "{{baseUrl}}/shared-sections?populate=*",
               "host": ["{{baseUrl}}"],
               "path": ["shared-sections"]
-            },
-            "description": "Fetch standalone sections that are referenced by multiple pages."
+            }
           }
         }
       ]

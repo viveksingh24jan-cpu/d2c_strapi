@@ -836,25 +836,41 @@ export interface ApiInsuranceProductInsuranceProduct
         'shared.link',
       ]
     >;
+    cisDocument: Schema.Attribute.Media<'files'>;
+    complianceFeatures: Schema.Attribute.Blocks;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     ctaText: Schema.Attribute.String & Schema.Attribute.Required;
     ctaUrl: Schema.Attribute.String & Schema.Attribute.Required;
+    eligibility: Schema.Attribute.Blocks;
     icon: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.Required;
     isFeatured: Schema.Attribute.Boolean;
+    isStandard: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::insurance-product.insurance-product'
     > &
       Schema.Attribute.Private;
+    policyWording: Schema.Attribute.Media<'files'>;
     pricePrefix: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'Starting at'>;
     priceSuffix: Schema.Attribute.String & Schema.Attribute.DefaultTo<'/year'>;
     productDescription: Schema.Attribute.Blocks;
-    productName: Schema.Attribute.String;
+    productName: Schema.Attribute.String & Schema.Attribute.Required;
+    productType: Schema.Attribute.Enumeration<
+      [
+        'generic',
+        'arogya-sanjeevani',
+        'saral-suraksha-bima',
+        'bharat-griha-raksha',
+        'bharat-sookshma-udyam',
+        'bharat-laghu-udyam',
+      ]
+    > &
+      Schema.Attribute.DefaultTo<'generic'>;
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
     sortOrder: Schema.Attribute.Integer & Schema.Attribute.Required;
@@ -1188,81 +1204,6 @@ export interface ApiSharedSectionSharedSection
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiStandardProductStandardProduct
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'standard_products';
-  info: {
-    displayName: 'StandardProduct';
-    pluralName: 'standard-products';
-    singularName: 'standard-product';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    blocks: Schema.Attribute.DynamicZone<
-      [
-        'page-builder.hero-section',
-        'page-builder.text-block',
-        'page-builder.card-grid',
-        'page-builder.card-item',
-        'page-builder.media-block',
-        'page-builder.accordion',
-        'page-builder.qna-item',
-        'page-builder.testimonial-grid',
-        'page-builder.testimonial-item',
-        'page-builder.video-block',
-        'page-builder.comparison-table',
-        'page-builder.app-banner',
-        'page-builder.banner',
-        'page-builder.progress-steps',
-        'page-builder.step-item',
-        'page-builder.stats-bar',
-        'page-builder.product-showcase',
-        'page-builder.insurance-product-cta',
-        'page-builder.featured-content',
-        'page-builder.grievance-levels',
-        'page-builder.sticky-cta-bar',
-        'shared.comparison-table',
-        'shared.stats-item',
-        'shared.social-link',
-        'shared.link',
-      ]
-    >;
-    cisDocument: Schema.Attribute.Media<'files'>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    eligibility: Schema.Attribute.Blocks;
-    features: Schema.Attribute.Blocks;
-    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::standard-product.standard-product'
-    > &
-      Schema.Attribute.Private;
-    policyWording: Schema.Attribute.Media<'files'>;
-    premiumRange: Schema.Attribute.String;
-    productName: Schema.Attribute.String & Schema.Attribute.Required;
-    productType: Schema.Attribute.Enumeration<
-      [
-        'arogya-sanjeevani',
-        'saral-suraksha-bima',
-        'bharat-griha-raksha',
-        'bharat-sookshma-udyam',
-        'bharat-laghu-udyam',
-      ]
-    > &
-      Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    sumInsuredRange: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1963,7 +1904,6 @@ declare module '@strapi/strapi' {
       'api::page.page': ApiPagePage;
       'api::redirect.redirect': ApiRedirectRedirect;
       'api::shared-section.shared-section': ApiSharedSectionSharedSection;
-      'api::standard-product.standard-product': ApiStandardProductStandardProduct;
       'api::testimonial.testimonial': ApiTestimonialTestimonial;
       'api::tool-category.tool-category': ApiToolCategoryToolCategory;
       'api::tool.tool': ApiToolTool;

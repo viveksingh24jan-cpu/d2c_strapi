@@ -12,7 +12,42 @@
   "pluginOptions": {},
   "attributes": {
     "productName": {
-      "type": "string"
+      "type": "string",
+      "required": true
+    },
+    "isStandard": {
+      "type": "boolean",
+      "default": false,
+      "description": "True if this is an IRDAI mandated standard product (e.g. Arogya Sanjeevani)"
+    },
+    "productType": {
+      "type": "enumeration",
+      "enum": [
+        "generic",
+        "arogya-sanjeevani",
+        "saral-suraksha-bima",
+        "bharat-griha-raksha",
+        "bharat-sookshma-udyam",
+        "bharat-laghu-udyam"
+      ],
+      "default": "generic"
+    },
+    "complianceFeatures": {
+      "type": "blocks",
+      "description": "Standardized features for regulatory compliance"
+    },
+    "eligibility": {
+      "type": "blocks"
+    },
+    "cisDocument": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["files"]
+    },
+    "policyWording": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["files"]
     },
     "productDescription": {
       "type": "blocks"

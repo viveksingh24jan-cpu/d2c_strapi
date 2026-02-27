@@ -31,11 +31,12 @@ These store groups of similar data used across the application.
 *   **Redirect (`api::redirect`):** SEO traffic management. Maps `fromPath` to `toPath` with 301/302 status codes.
 
 ### **2.2 Insurance Product Registry**
-*   **InsuranceProduct (`api::insurance-product`):** Marketing-heavy data.
+*   **InsuranceProduct (`api::insurance-product`):** The Single Source of Truth for all marketing and mandated products.
+    *   `isStandard` (Boolean): Flag to identify IRDAI-mandated standard policies.
+    *   `productType` (Enum): Categorizes products (e.g., `arogya-sanjeevani`, `generic`).
     *   `startingPrice` (Decimal): Pulls automatically into page CTAs.
-    *   `productDescription` (Blocks): Standardized rich-text overview.
-*   **StandardProduct (`api::standard-product`):** IRDAI-mandated standard policies.
-    *   Types: `arogya-sanjeevani`, `bharat-griha-raksha`, etc.
+    *   `complianceFeatures` / `eligibility` (Blocks): Mandated wording for standard products.
+    *   `cisDocument` / `policyWording` (Media): Direct links to policy PDFs.
 
 ### **2.3 Corporate & Regulatory**
 *   **Financial Disclosure (`api::financial-disclosure`):** Consolidated warehouse for Quarterly Results and Annual Reports.
