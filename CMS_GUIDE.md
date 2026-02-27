@@ -42,7 +42,12 @@ There is only one of these in the entire system. They control site-wide rules.
 ### **2.4 People & Technical**
 *   **LeadershipProfile (`api::leadership-profile`):** Board of Directors and KMP profiles with LinkedIn links.
 *   **JobListing (`api::job-listing`):** Open positions in the career portal.
-*   **Tool (`api::tool`):** Calculators linked to categories.
+*   **Tool (`api::tool`):** Unified registry for all customer tools (Calculators, Checkers, Generators).
+    *   `category` (Enum): e.g., `calculator`, `checker`.
+    *   `type` (Enum): e.g., `motor`, `health`.
+    *   `area` (Enum): e.g., `public-site`, `customer-portal`.
+    *   `cta` (Component): Dynamic link details for tool integration.
+    *   `isActive` (Boolean): Toggle visibility.
 
 ---
 

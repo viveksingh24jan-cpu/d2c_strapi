@@ -100,6 +100,13 @@
         { "name": "Articles", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/articles?populate=author,categories", "host": ["{{baseUrl}}"], "path": ["articles"] } } },
         { "name": "Authors", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/authors?populate=*", "host": ["{{baseUrl}}"], "path": ["authors"] } } }
       ]
+    },
+    {
+      "name": "🛠️ Tools & Calculators",
+      "item": [
+        { "name": "List All Tools", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/tools?populate=*", "host": ["{{baseUrl}}"], "path": ["tools"] } } },
+        { "name": "Calculators Only (Filtered)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/tools?filters[category][$eq]=calculator", "host": ["{{baseUrl}}"], "path": ["tools"] } } }
+      ]
     }
   ]
 }

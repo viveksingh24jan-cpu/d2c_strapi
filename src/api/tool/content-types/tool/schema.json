@@ -4,7 +4,8 @@
   "info": {
     "singularName": "tool",
     "pluralName": "tools",
-    "displayName": "Tool"
+    "displayName": "Financial Tools & Calculators",
+    "description": "Unified registry for all customer tools (Calculators, Challan Checkers, ABHA Generators)"
   },
   "options": {
     "draftAndPublish": true
@@ -17,11 +18,37 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "name"
+      "targetField": "name",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "calculator",
+        "checker",
+        "generator",
+        "lookup",
+        "resource"
+      ],
+      "default": "calculator",
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "motor",
+        "health",
+        "travel",
+        "generic"
+      ],
+      "default": "generic"
     },
     "shortDescription": {
       "type": "text",
       "maxLength": 300
+    },
+    "longDescription": {
+      "type": "blocks"
     },
     "icon": {
       "type": "media",
@@ -30,16 +57,24 @@
         "images"
       ]
     },
-    "url": {
-      "type": "string"
-    },
-    "isExternal": {
-      "type": "boolean",
-      "default": false
-    },
     "isActive": {
       "type": "boolean",
-      "default": false
+      "default": true
+    },
+    "area": {
+      "type": "enumeration",
+      "enum": [
+        "public-site",
+        "customer-portal",
+        "agent-portal",
+        "mobile-app"
+      ],
+      "default": "public-site"
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
     },
     "badge": {
       "type": "enumeration",
@@ -49,12 +84,6 @@
         "Trending",
         "Free"
       ]
-    },
-    "tool_category": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::tool-category.tool-category",
-      "inversedBy": "tools"
     },
     "seo": {
       "type": "component",

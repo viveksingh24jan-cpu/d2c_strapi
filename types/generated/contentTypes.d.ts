@@ -1033,76 +1033,6 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
-  collectionName: 'partners';
-  info: {
-    description: 'Network partners (hospitals, garages) and brand partnerships';
-    displayName: 'Partner';
-    pluralName: 'partners';
-    singularName: 'partner';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    category: Schema.Attribute.Enumeration<
-      ['hospital', 'garage', 'brand', 'investor']
-    > &
-      Schema.Attribute.DefaultTo<'brand'>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::partner.partner'
-    > &
-      Schema.Attribute.Private;
-    logo: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
-    partnerName: Schema.Attribute.String & Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    websiteUrl: Schema.Attribute.String;
-  };
-}
-
-export interface ApiRedirectRedirect extends Struct.CollectionTypeSchema {
-  collectionName: 'redirects';
-  info: {
-    description: 'Manage 301 and 302 redirects for SEO.';
-    displayName: 'Redirect';
-    pluralName: 'redirects';
-    singularName: 'redirect';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    fromPath: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::redirect.redirect'
-    > &
-      Schema.Attribute.Private;
-    notes: Schema.Attribute.Text;
-    publishedAt: Schema.Attribute.DateTime;
-    toPath: Schema.Attribute.String & Schema.Attribute.Required;
-    type: Schema.Attribute.Enumeration<['permanent', 'temporary']> &
-      Schema.Attribute.DefaultTo<'permanent'>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiSharedSectionSharedSection
   extends Struct.CollectionTypeSchema {
   collectionName: 'shared_sections';
@@ -1203,43 +1133,11 @@ export interface ApiTestimonialTestimonial extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiToolCategoryToolCategory
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'tool_categories';
-  info: {
-    displayName: 'toolCategory';
-    pluralName: 'tool-categories';
-    singularName: 'tool-category';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    description: Schema.Attribute.Text;
-    displayOrder: Schema.Attribute.Integer;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::tool-category.tool-category'
-    > &
-      Schema.Attribute.Private;
-    name: Schema.Attribute.String & Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'name'>;
-    tools: Schema.Attribute.Relation<'oneToMany', 'api::tool.tool'>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiToolTool extends Struct.CollectionTypeSchema {
   collectionName: 'tools';
   info: {
-    displayName: 'Tool';
+    description: 'Unified registry for all customer tools (Calculators, Challan Checkers, ABHA Generators)';
+    displayName: 'Financial Tools & Calculators';
     pluralName: 'tools';
     singularName: 'tool';
   };
@@ -1247,16 +1145,26 @@ export interface ApiToolTool extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    area: Schema.Attribute.Enumeration<
+      ['public-site', 'customer-portal', 'agent-portal', 'mobile-app']
+    > &
+      Schema.Attribute.DefaultTo<'public-site'>;
     badge: Schema.Attribute.Enumeration<['New', 'Popular', 'Trending', 'Free']>;
+    category: Schema.Attribute.Enumeration<
+      ['calculator', 'checker', 'generator', 'lookup', 'resource']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'calculator'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    cta: Schema.Attribute.Component<'shared.link', false>;
     icon: Schema.Attribute.Media<'images'>;
-    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    isExternal: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::tool.tool'> &
       Schema.Attribute.Private;
+    longDescription: Schema.Attribute.Blocks;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
@@ -1264,15 +1172,14 @@ export interface ApiToolTool extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 300;
       }>;
-    slug: Schema.Attribute.UID<'name'>;
-    tool_category: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::tool-category.tool-category'
-    >;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    type: Schema.Attribute.Enumeration<
+      ['motor', 'health', 'travel', 'generic']
+    > &
+      Schema.Attribute.DefaultTo<'generic'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    url: Schema.Attribute.String;
   };
 }
 
@@ -1842,11 +1749,8 @@ declare module '@strapi/strapi' {
       'api::leadership-profile.leadership-profile': ApiLeadershipProfileLeadershipProfile;
       'api::navigation-menu.navigation-menu': ApiNavigationMenuNavigationMenu;
       'api::page.page': ApiPagePage;
-      'api::partner.partner': ApiPartnerPartner;
-      'api::redirect.redirect': ApiRedirectRedirect;
       'api::shared-section.shared-section': ApiSharedSectionSharedSection;
       'api::testimonial.testimonial': ApiTestimonialTestimonial;
-      'api::tool-category.tool-category': ApiToolCategoryToolCategory;
       'api::tool.tool': ApiToolTool;
       'api::transparency-report.transparency-report': ApiTransparencyReportTransparencyReport;
       'plugin::content-releases.release': PluginContentReleasesRelease;

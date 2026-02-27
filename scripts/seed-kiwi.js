@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * Kiwi General Insurance - UNIFIED SHOWCASE SEED (Strapi 5)
- * Consolidating Testimonials and Media blocks for max reusability.
+ * Kiwi General Insurance - UNIFIED TOOLS SEED (Strapi 5)
+ * Consolidating Tools and Categories for simple, scalable management.
  */
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -42,7 +42,7 @@ async function main() {
   const app = await createStrapi(appContext).load();
   app.log.level = 'error';
 
-  console.log('\n🚀 KIWI GENERAL INSURANCE - CONSOLIDATED SHOWCASE SEEDING...\n');
+  console.log('\n🚀 KIWI GENERAL INSURANCE - MASTER UNIFIED SEEDING...\n');
 
   try {
     const collections = [
@@ -50,31 +50,52 @@ async function main() {
       'api::download-document.download-document', 'api::financial-disclosure.financial-disclosure',
       'api::insurance-product.insurance-product', 'api::leadership-profile.leadership-profile', 'api::navigation-menu.navigation-menu',
       'api::page.page', 'api::redirect.redirect', 'api::shared-section.shared-section',
-      'api::testimonial.testimonial', 'api::tool.tool', 'api::tool-category.tool-category',
+      'api::testimonial.testimonial', 'api::tool.tool',
       'api::transparency-report.transparency-report', 'api::campaign.campaign', 'api::partner.partner'
     ];
     for (const uid of collections) await deleteAll(uid);
 
-    // 1. TESTIMONIAL REGISTRY (SSOT)
+    // 1. UNIFIED TOOLS (The "Everything in One" Registry)
+    console.log('  -> Seeding Unified Tools');
+    await createEntry('api::tool.tool', {
+      name: 'Premium Calculator',
+      slug: 'premium-calculator',
+      category: 'calculator',
+      type: 'motor',
+      shortDescription: 'Calculate your car insurance premium in 60 seconds.',
+      isActive: true,
+      area: 'public-site',
+      cta: { label: 'Calculate Now', url: '/tools/premium-calc', variant: 'primary' },
+      badge: 'Popular'
+    });
+
+    await createEntry('api::tool.tool', {
+      name: 'Challan Checker',
+      slug: 'challan-checker',
+      category: 'checker',
+      type: 'motor',
+      shortDescription: 'Check pending traffic challans for your vehicle.',
+      isActive: true,
+      area: 'customer-portal',
+      cta: { label: 'Check Status', url: '/tools/challan', variant: 'secondary' },
+      badge: 'Free'
+    });
+
+    // 2. TESTIMONIAL REGISTRY (SSOT)
     console.log('  -> Seeding Testimonial Registry');
-    const t1 = await createEntry('api::testimonial.testimonial', {
+    await createEntry('api::testimonial.testimonial', {
       customerName: 'Amit Shah', customerTitle: 'Car Policyholder',
       quote: blocks('The claims experience was fantastic. 20-minute settlement is real!'),
       rating: 5, category: 'motor'
     });
-    const t2 = await createEntry('api::testimonial.testimonial', {
-      customerName: 'Priya Rai', customerTitle: 'Health Assurance Plus User',
-      quote: blocks('Cashless treatment at Apollo was seamless. Thank you Kiwi!'),
-      rating: 5, category: 'health'
-    });
 
-    // 2. PRODUCTS
+    // 3. PRODUCTS
     const carProd = await createEntry('api::insurance-product.insurance-product', {
       productName: 'Car Insurance', tagline: 'Comprehensive Cover', startingPrice: 2094, isActive: true, sortOrder: 1, ctaText: 'Get Quote', ctaUrl: '/car'
     });
 
-    // 3. PAGES (Using Unified Showcase)
-    console.log('  -> Seeding Home Page with Testimonial Showcase');
+    // 4. PAGES
+    console.log('  -> Seeding Home Page');
     await createEntry('api::page.page', {
       title: 'Home', slug: 'home', template: 'home',
       content: [
@@ -85,28 +106,21 @@ async function main() {
           mode: 'automated-by-category',
           category: 'all',
           layout: 'grid'
-        },
-        {
-          __component: 'page-builder.media-block',
-          type: 'video-external',
-          title: 'Watch our Story',
-          externalUrl: 'https://youtube.com/watch?v=sample',
-          caption: 'Kiwi Insurance Vision'
         }
       ]
     });
 
-    // 4. NAVIGATION & GLOBAL
+    // 5. NAVIGATION & GLOBAL
     await updateSingle('api::global-config.global-config', { siteName: 'Kiwi Insurance' });
     const n1 = await createEntry('api::navigation-menu.navigation-menu', { label: 'Products', location: 'header' });
     
     async function createNav(label, parentId) {
       return await createEntry('api::navigation-menu.navigation-menu', { label, parent: { connect: [{ documentId: parentId }] } });
     }
-    const n2 = await createNav('Motor', n1.documentId);
-    await createNav('Private Car', n2.documentId);
+    await createNav('Motor', n1.documentId);
 
-    // 5. PERMISSIONS
+    // 6. PERMISSIONS
+    console.log('  -> Setting permissions');
     const publicRole = await strapi.query('plugin::users-permissions.role').findOne({ where: { type: 'public' } });
     for (const uid of collections) {
       const apiName = uid.split('::')[1].split('.')[0];
@@ -117,7 +131,7 @@ async function main() {
       }
     }
 
-    console.log('\n✅ UNIFIED SHOWCASE SEED COMPLETE!\n');
+    console.log('\n✅ UNIFIED MASTER SEED COMPLETE!\n');
   } catch (err) { console.error('\n❌ Seed failed:', err); }
 
   await app.destroy();
