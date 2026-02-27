@@ -844,7 +844,7 @@ export interface ApiInsuranceProductInsuranceProduct
     ctaText: Schema.Attribute.String & Schema.Attribute.Required;
     ctaUrl: Schema.Attribute.String & Schema.Attribute.Required;
     eligibility: Schema.Attribute.Blocks;
-    icon: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
+    icon: Schema.Attribute.Media<'images', true>;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.Required;
     isFeatured: Schema.Attribute.Boolean;
     isStandard: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
