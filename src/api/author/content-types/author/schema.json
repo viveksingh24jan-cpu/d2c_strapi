@@ -21,7 +21,7 @@
       "targetField": "name"
     },
     "bio": {
-      "type": "text"
+      "type": "blocks"
     },
     "avatar": {
       "type": "media",
@@ -30,7 +30,9 @@
       "allowedTypes": ["images"]
     },
     "socialLinks": {
-      "type": "json"
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.social-link"
     },
     "articles": {
       "type": "relation",

@@ -42,6 +42,11 @@
     },
     "displayOrder": {
       "type": "integer"
+    },
+    "socialLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.social-link"
     }
   }
 }

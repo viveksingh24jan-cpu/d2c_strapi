@@ -21,6 +21,8 @@
     "pincode": { "type": "string" },
     "phone": { "type": "string" },
     "email": { "type": "email" },
-    "workingHours": { "type": "string" }
+    "workingHours": { "type": "string" },
+    "latitude": { "type": "decimal" },
+    "longitude": { "type": "decimal" }
   }
 }
