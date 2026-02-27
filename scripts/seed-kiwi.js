@@ -136,11 +136,37 @@ async function main() {
       siteName: 'Kiwi General Insurance', siteDescription: 'India\'s Best Digital Insurer', irdaiRegNumber: '190', registeredAddress: 'BKC, Mumbai'
     });
 
-    // 11. Navigation (Nesting)
-    console.log('  -> Navigation Hierarchies');
-    const prodNav = await createEntry('api::navigation-menu.navigation-menu', { label: 'Products', location: 'header' });
-    await createEntry('api::navigation-menu.navigation-menu', { label: 'Car', url: '/car', parent: { connect: [{ documentId: prodNav.documentId }] } });
-    await createEntry('api::navigation-menu.navigation-menu', { label: 'Health', url: '/health', parent: { connect: [{ documentId: prodNav.documentId }] } });
+    // 11. Navigation (4-Level Nesting)
+    console.log('  -> Navigation Hierarchies (4 Levels Deep)');
+    
+    async function createNav(label, url, location, parentId) {
+      return await createEntry('api::navigation-menu.navigation-menu', {
+        label, url, location, 
+        parent: parentId ? { connect: [{ documentId: parentId }] } : null
+      });
+    }
+
+    // --- HEADER (4 Levels) ---
+    const h1 = await createNav('Products', null, 'header'); // Level 1
+    const h2 = await createNav('Motor Insurance', null, null, h1.documentId); // Level 2
+    const h3 = await createNav('Private Car', '/car', null, h2.documentId); // Level 3
+    await createNav('Comprehensive Policy', '/car/comprehensive', null, h3.documentId); // Level 4
+    await createNav('Third Party Cover', '/car/tp', null, h3.documentId); // Level 4
+
+    const h2_health = await createNav('Health Insurance', null, null, h1.documentId); // Level 2
+    const h3_family = await createNav('Family Plans', '/health/family', null, h2_health.documentId); // Level 3
+    await createNav('Floater Plus', '/health/floater', null, h3_family.documentId); // Level 4
+
+    // --- FOOTER (4 Levels) ---
+    const f1 = await createNav('Company', null, 'footer_company'); // Level 1
+    const f2 = await createNav('About Kiwi', '/about', null, f1.documentId); // Level 2
+    const f3 = await createNav('Our Journey', '/about/story', null, f2.documentId); // Level 3
+    await createNav('Founding Year 2024', '/about/2024', null, f3.documentId); // Level 4
+
+    const f1_legal = await createNav('Legal', null, 'footer_legal'); // Level 1
+    const f2_policy = await createNav('Policies', null, null, f1_legal.documentId); // Level 2
+    const f3_data = await createNav('Data Privacy', '/privacy', null, f2_policy.documentId); // Level 3
+    await createNav('GDPR Compliance', '/privacy/gdpr', null, f3_data.documentId); // Level 4
 
     // 12. Permissions
     console.log('  -> Setting permissions');
