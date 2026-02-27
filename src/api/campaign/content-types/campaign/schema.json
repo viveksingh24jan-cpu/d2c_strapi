@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "campaigns",
+  "info": {
+    "singularName": "campaign",
+    "pluralName": "campaigns",
+    "displayName": "Campaign",
+    "description": "Time-limited marketing campaigns and seasonal promotions"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "campaignName": {
+      "type": "string",
+      "required": true
+    },
+    "startDate": {
+      "type": "date",
+      "required": true
+    },
+    "endDate": {
+      "type": "date",
+      "required": true
+    },
+    "banner": {
+      "type": "component",
+      "repeatable": false,
+      "component": "page-builder.banner"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "campaignSlug": {
+      "type": "uid",
+      "targetField": "campaignName"
+    }
+  }
+}

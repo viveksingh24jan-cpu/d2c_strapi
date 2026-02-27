@@ -52,6 +52,10 @@
     "productDescription": {
       "type": "blocks"
     },
+    "uinNumber": {
+      "type": "string",
+      "description": "Unique Identification Number assigned by IRDAI"
+    },
     "startingPrice": {
       "type": "decimal"
     },
@@ -124,7 +128,8 @@
         "shared.comparison-table",
         "shared.stats-item",
         "shared.social-link",
-        "shared.link"
+        "shared.link",
+        "shared.award"
       ]
     },
     "seo": {

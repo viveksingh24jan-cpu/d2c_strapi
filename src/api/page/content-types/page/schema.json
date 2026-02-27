@@ -80,7 +80,8 @@
         "shared.seo",
         "shared.social-link",
         "shared.link",
-        "shared.app-links"
+        "shared.app-links",
+        "shared.award"
       ],
       "description": "High-conversion building blocks for creating visual layouts"
     },

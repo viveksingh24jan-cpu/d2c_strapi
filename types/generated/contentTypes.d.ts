@@ -583,6 +583,40 @@ export interface ApiBranchBranch extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCampaignCampaign extends Struct.CollectionTypeSchema {
+  collectionName: 'campaigns';
+  info: {
+    description: 'Time-limited marketing campaigns and seasonal promotions';
+    displayName: 'Campaign';
+    pluralName: 'campaigns';
+    singularName: 'campaign';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    banner: Schema.Attribute.Component<'page-builder.banner', false>;
+    campaignName: Schema.Attribute.String & Schema.Attribute.Required;
+    campaignSlug: Schema.Attribute.UID<'campaignName'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    endDate: Schema.Attribute.Date & Schema.Attribute.Required;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::campaign.campaign'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    startDate: Schema.Attribute.Date & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
@@ -834,6 +868,7 @@ export interface ApiInsuranceProductInsuranceProduct
         'shared.stats-item',
         'shared.social-link',
         'shared.link',
+        'shared.award',
       ]
     >;
     cisDocument: Schema.Attribute.Media<'files'>;
@@ -876,6 +911,7 @@ export interface ApiInsuranceProductInsuranceProduct
     sortOrder: Schema.Attribute.Integer & Schema.Attribute.Required;
     startingPrice: Schema.Attribute.Decimal;
     tagline: Schema.Attribute.String & Schema.Attribute.Required;
+    uinNumber: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1084,6 +1120,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'shared.social-link',
         'shared.link',
         'shared.app-links',
+        'shared.award',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;
@@ -1113,6 +1150,41 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
+  collectionName: 'partners';
+  info: {
+    description: 'Network partners (hospitals, garages) and brand partnerships';
+    displayName: 'Partner';
+    pluralName: 'partners';
+    singularName: 'partner';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category: Schema.Attribute.Enumeration<
+      ['hospital', 'garage', 'brand', 'investor']
+    > &
+      Schema.Attribute.DefaultTo<'brand'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::partner.partner'
+    > &
+      Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    partnerName: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    websiteUrl: Schema.Attribute.String;
   };
 }
 
@@ -1312,6 +1384,49 @@ export interface ApiToolTool extends Struct.CollectionTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     url: Schema.Attribute.String;
+  };
+}
+
+export interface ApiTransparencyReportTransparencyReport
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'transparency_reports';
+  info: {
+    description: 'IRDAI mandated public disclosures and transparency reports';
+    displayName: 'Transparency Report';
+    pluralName: 'transparency-reports';
+    singularName: 'transparency-report';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    file: Schema.Attribute.Media<'files'> & Schema.Attribute.Required;
+    financialYear: Schema.Attribute.String & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::transparency-report.transparency-report'
+    > &
+      Schema.Attribute.Private;
+    publicationDate: Schema.Attribute.Date;
+    publishedAt: Schema.Attribute.DateTime;
+    reportTitle: Schema.Attribute.String & Schema.Attribute.Required;
+    reportType: Schema.Attribute.Enumeration<
+      [
+        'public-disclosure',
+        'nl-schedule',
+        'stewardship-report',
+        'csr-report',
+        'annual-report',
+      ]
+    > &
+      Schema.Attribute.DefaultTo<'public-disclosure'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1829,6 +1944,7 @@ declare module '@strapi/strapi' {
       'api::article.article': ApiArticleArticle;
       'api::author.author': ApiAuthorAuthor;
       'api::branch.branch': ApiBranchBranch;
+      'api::campaign.campaign': ApiCampaignCampaign;
       'api::category.category': ApiCategoryCategory;
       'api::download-document.download-document': ApiDownloadDocumentDownloadDocument;
       'api::financial-disclosure.financial-disclosure': ApiFinancialDisclosureFinancialDisclosure;
@@ -1840,11 +1956,13 @@ declare module '@strapi/strapi' {
       'api::navigation-menu.navigation-menu': ApiNavigationMenuNavigationMenu;
       'api::ombudsman-office.ombudsman-office': ApiOmbudsmanOfficeOmbudsmanOffice;
       'api::page.page': ApiPagePage;
+      'api::partner.partner': ApiPartnerPartner;
       'api::redirect.redirect': ApiRedirectRedirect;
       'api::shared-section.shared-section': ApiSharedSectionSharedSection;
       'api::testimonial.testimonial': ApiTestimonialTestimonial;
       'api::tool-category.tool-category': ApiToolCategoryToolCategory;
       'api::tool.tool': ApiToolTool;
+      'api::transparency-report.transparency-report': ApiTransparencyReportTransparencyReport;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

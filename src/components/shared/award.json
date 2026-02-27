@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_shared_awards",
+  "info": {
+    "displayName": "Award",
+    "description": "Industry recognitions and award badges",
+    "icon": "award"
+  },
+  "options": {},
+  "attributes": {
+    "awardName": {
+      "type": "string",
+      "required": true
+    },
+    "issuingOrganization": {
+      "type": "string",
+      "required": true
+    },
+    "awardDate": {
+      "type": "date"
+    },
+    "awardImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "awardLink": {
+      "type": "string"
+    }
+  }
+}

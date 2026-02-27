@@ -37,6 +37,10 @@
     },
     "og_description": {
       "type": "string"
+    },
+    "structuredData": {
+      "type": "json",
+      "description": "JSON-LD structured data for schema.org"
     }
   }
 }

@@ -416,6 +416,22 @@ export interface SharedAppLinks extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedAward extends Struct.ComponentSchema {
+  collectionName: 'components_shared_awards';
+  info: {
+    description: 'Industry recognitions and award badges';
+    displayName: 'Award';
+    icon: 'award';
+  };
+  attributes: {
+    awardDate: Schema.Attribute.Date;
+    awardImage: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    awardLink: Schema.Attribute.String;
+    awardName: Schema.Attribute.String & Schema.Attribute.Required;
+    issuingOrganization: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SharedComparisonTable extends Struct.ComponentSchema {
   collectionName: 'components_shared_comparison_tables';
   info: {
@@ -519,6 +535,7 @@ export interface SharedSeo extends Struct.ComponentSchema {
       }>;
     og_description: Schema.Attribute.String;
     og_title: Schema.Attribute.String;
+    structuredData: Schema.Attribute.JSON;
   };
 }
 
@@ -608,6 +625,7 @@ declare module '@strapi/strapi' {
       'page-builder.text-block': PageBuilderTextBlock;
       'page-builder.video-block': PageBuilderVideoBlock;
       'shared.app-links': SharedAppLinks;
+      'shared.award': SharedAward;
       'shared.comparison-table': SharedComparisonTable;
       'shared.link': SharedLink;
       'shared.page-metadata': SharedPageMetadata;

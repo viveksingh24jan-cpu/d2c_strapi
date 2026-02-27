@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "transparency_reports",
+  "info": {
+    "singularName": "transparency-report",
+    "pluralName": "transparency-reports",
+    "displayName": "Transparency Report",
+    "description": "IRDAI mandated public disclosures and transparency reports"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "reportTitle": {
+      "type": "string",
+      "required": true
+    },
+    "financialYear": {
+      "type": "string",
+      "required": true,
+      "description": "Format: 2024-25"
+    },
+    "reportType": {
+      "type": "enumeration",
+      "enum": [
+        "public-disclosure",
+        "nl-schedule",
+        "stewardship-report",
+        "csr-report",
+        "annual-report"
+      ],
+      "default": "public-disclosure"
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["files"]
+    },
+    "publicationDate": {
+      "type": "date"
+    }
+  }
+}
