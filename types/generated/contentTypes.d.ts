@@ -1454,68 +1454,6 @@ export interface PluginI18NLocale extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface PluginPluginAllInOneAccessibilitySettings
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'setting';
-  info: {
-    displayName: 'Settings';
-    pluralName: 'setting';
-    singularName: 'settings';
-  };
-  options: {
-    comment: '';
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
-  };
-  attributes: {
-    Color_Code: Schema.Attribute.String;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    Icon_Position: Schema.Attribute.Enumeration<
-      [
-        'top_left',
-        'top_center',
-        'top_right',
-        'middle_left',
-        'middle_right',
-        'bottom_left',
-        'bottom_center',
-        'bottom_right',
-      ]
-    >;
-    Icon_Size: Schema.Attribute.Enumeration<
-      [
-        'aioa-big-icon',
-        'aioa-medium-icon',
-        'aioa-default-icon',
-        'aioa-small-icon',
-        'aioa-extra-small-icon',
-      ]
-    >;
-    Icon_Type: Schema.Attribute.Enumeration<
-      ['aioa-icon-type-1', 'aioa-icon-type-2', 'aioa-icon-type-3']
-    >;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'plugin::plugin-all-in-one-accessibility.settings'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface PluginReviewWorkflowsWorkflow
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_workflows';
@@ -1910,7 +1848,6 @@ declare module '@strapi/strapi' {
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
-      'plugin::plugin-all-in-one-accessibility.settings': PluginPluginAllInOneAccessibilitySettings;
       'plugin::review-workflows.workflow': PluginReviewWorkflowsWorkflow;
       'plugin::review-workflows.workflow-stage': PluginReviewWorkflowsWorkflowStage;
       'plugin::upload.file': PluginUploadFile;

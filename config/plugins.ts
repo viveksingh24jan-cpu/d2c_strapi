@@ -1,7 +1,4 @@
 export default ({ env }) => ({
-  'plugin-all-in-one-accessibility': {
-    enabled: true,
-  },
   
   // Best in Class Practice: Separate asset storage from CMS server
   // Configure 'upload' provider (e.g., S3, Cloudinary, Strapi Cloud)
