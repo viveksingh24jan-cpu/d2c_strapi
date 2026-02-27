@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * Kiwi General Insurance - ARCHITECT AUDIT SYNC SEED (Strapi 5)
- * Standardizing bios, adding social links, and geolocation.
+ * Kiwi General Insurance - ABSOLUTE MAXIMUM VOLUME SEED (Strapi 5)
+ * Standardizing all data types and ensuring every single feature is utilized.
  */
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -42,7 +42,7 @@ async function main() {
   const app = await createStrapi(appContext).load();
   app.log.level = 'error';
 
-  console.log('\n🥝 Kiwi General Insurance - ARCHITECT AUDIT SEEDING...\n');
+  console.log('\n🥝 Kiwi General Insurance - MASTER ARCHITECT SEEDING...\n');
 
   try {
     const collections = [
@@ -55,60 +55,69 @@ async function main() {
     ];
     for (const uid of collections) await deleteAll(uid);
 
-    // 1. Authors (Now with Blocks & Social Components)
-    console.log('  -> Standardizing Authors');
-    const author = await createEntry('api::author.author', { 
+    // 1. Authors & Leadership (Standardized with Blocks & Social Links)
+    console.log('  -> Authors & Leadership');
+    const a1 = await createEntry('api::author.author', { 
       name: 'Vikram Seth', 
       bio: blocks('Expert in Motor Insurance underwriting.'),
-      socialLinks: [{ platform: 'twitter', url: 'https://twitter.com/vseth' }, { platform: 'linkedin', url: 'https://linkedin.com/in/vseth' }]
+      socialLinks: [{ platform: 'twitter', url: 'https://twitter.com/vseth' }]
     });
-
-    // 2. Leadership (Now with Social Components)
-    console.log('  -> Standardizing Leadership');
+    
     await createEntry('api::leadership-profile.leadership-profile', {
-      name: 'Dr. Ramesh Kumar',
-      designation: 'MD & CEO',
-      category: 'KMP',
-      bio: blocks('25 years of industry leadership.'),
-      socialLinks: [{ platform: 'linkedin', url: 'https://linkedin.com/in/rkumar' }],
-      displayOrder: 1
+      name: 'Dr. Ramesh Kumar', designation: 'CEO', category: 'KMP',
+      bio: blocks('Visionary leader with 25 years of experience.'),
+      socialLinks: [{ platform: 'linkedin', url: 'https://linkedin.com/rkumar' }]
     });
 
-    // 3. Branches (Now with Geolocation)
-    console.log('  -> Adding Geolocation to Branches');
-    await createEntry('api::branch.branch', { 
-      branchName: 'Mumbai Head Office', city: 'Mumbai', branchType: 'head-office', 
-      latitude: 19.0760, longitude: 72.8777 
+    // 2. Products Registry (SSOT)
+    console.log('  -> Product Registry');
+    const p1 = await createEntry('api::insurance-product.insurance-product', {
+      productName: 'Car Insurance', tagline: 'Comprehensive Cover', startingPrice: 2094, isActive: true, sortOrder: 1, ctaText: 'Get Quote', ctaUrl: '/car'
     });
-    await createEntry('api::branch.branch', { 
-      branchName: 'Delhi Regional Office', city: 'New Delhi', branchType: 'regional-office', 
-      latitude: 28.6139, longitude: 77.2090 
+    const p2 = await createEntry('api::insurance-product.insurance-product', {
+      productName: 'Health Insurance', tagline: '100% Cashless', startingPrice: 5500, isActive: true, sortOrder: 2, ctaText: 'Buy Now', ctaUrl: '/health'
     });
 
-    // 4. Products
-    console.log('  -> Products Registry');
-    const carProd = await createEntry('api::insurance-product.insurance-product', {
-      productName: 'Car Insurance', tagline: 'Best in Class Protection', startingPrice: 2094, isActive: true, sortOrder: 1, ctaText: 'Get Quote', ctaUrl: '/car'
+    // 3. Shared Sections (Global Reuse)
+    console.log('  -> Shared Sections');
+    const helpSec = await createEntry('api::shared-section.shared-section', {
+      title: 'Global Help',
+      blocks: [{ __component: 'page-builder.banner', title: 'Need Help?', description: 'Call 1800-123-4567' }]
     });
 
-    // 5. Pages
-    console.log('  -> Dynamic Pages');
+    // 4. Pages (MAX FEATURE USAGE)
+    console.log('  -> Home Page (Full Component Permutations)');
     await createEntry('api::page.page', {
       title: 'Home', slug: 'home', template: 'home',
       content: [
         { __component: 'page-builder.hero-section', title: 'Smart Insurance', subtitle: 'Simple. Digital. Fast.' },
-        { __component: 'page-builder.insurance-product-cta', product: { connect: [{ documentId: carProd.documentId }] }, variant: 'card' }
+        { __component: 'page-builder.stats-bar', stats: [{ label: 'Ratio', value: '99.2%' }] },
+        { __component: 'page-builder.insurance-product-cta', product: { connect: [{ documentId: p1.documentId }] }, variant: 'card' },
+        { __component: 'page-builder.testimonial-grid', title: 'Happy Customers', items: [{ quote: 'Great service!', authorName: 'Amit S.' }] },
+        { __component: 'page-builder.accordion', title: 'FAQs', items: [{ question: 'Is it digital?', answer: blocks('Yes.') }] },
+        { __component: 'shared.section-reference', shared_section: { connect: [{ documentId: helpSec.documentId }] } }
       ]
     });
 
+    // 5. Infrastructure (Geolocation)
+    console.log('  -> Infrastructure (Geo-aware)');
+    await createEntry('api::branch.branch', { branchName: 'Mumbai HO', branchType: 'head-office', city: 'Mumbai', latitude: 19.0760, longitude: 72.8777 });
+    await createEntry('api::ombudsman-office.ombudsman-office', { city: 'Mumbai', email: 'mumbai@ombudsman.in' });
+    await createEntry('api::grievance-level.grievance-level', { levelNumber: 1, levelName: 'Helpline' });
+
     // 6. Navigation (4 Levels)
     console.log('  -> 4-Level Navigation');
-    const h1 = await createEntry('api::navigation-menu.navigation-menu', { label: 'Products', location: 'header' });
-    const h2 = await createEntry('api::navigation-menu.navigation-menu', { label: 'Motor', parent: { connect: [{ documentId: h1.documentId }] } });
-    const h3 = await createEntry('api::navigation-menu.navigation-menu', { label: 'Car', parent: { connect: [{ documentId: h2.documentId }] } });
-    await createEntry('api::navigation-menu.navigation-menu', { label: 'Comprehensive', parent: { connect: [{ documentId: h3.documentId }] } });
+    const n1 = await createEntry('api::navigation-menu.navigation-menu', { label: 'Products', location: 'header' });
+    const n2 = await createNav('Motor', n1.documentId);
+    const n3 = await createNav('Car', n2.documentId);
+    await createNav('Comprehensive', n3.documentId);
+
+    async function createNav(label, parentId) {
+      return await createEntry('api::navigation-menu.navigation-menu', { label, parent: { connect: [{ documentId: parentId }] } });
+    }
 
     // 7. Permissions
+    console.log('  -> Setting permissions');
     const publicRole = await strapi.query('plugin::users-permissions.role').findOne({ where: { type: 'public' } });
     for (const uid of collections) {
       const parts = uid.split('::')[1].split('.');
@@ -120,7 +129,7 @@ async function main() {
       }
     }
 
-    console.log('\n✅ ARCHITECT AUDIT SEED COMPLETE!\n');
+    console.log('\n✅ MASTER ARCHITECT SEED COMPLETE!\n');
   } catch (err) { console.error('\n❌ Seed failed:', err); }
 
   await app.destroy();
