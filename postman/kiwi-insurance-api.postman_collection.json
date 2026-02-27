@@ -1,67 +1,40 @@
 {
   "info": {
-    "name": "Kiwi General Insurance – ULTIMATE API (Architect Level)",
-    "description": "Exhaustive API coverage for every Collection, Single Type, and Component permutation in the Kiwi CMS.\nIncludes Deep Population patterns (`on` syntax), Filtering, Sorting, and CRUD operations.",
+    "name": "Kiwi General Insurance – ULTIMATE API (Day 0 Architect)",
+    "description": "Exhaustive API coverage for the Day 0 consolidated architecture. Includes deep population for rich Accordions, unified Banners, and SSOT Products.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:1337/api", "type": "string" },
-    { "key": "documentId", "value": "REPLACE_WITH_ID", "type": "string" },
     { "key": "jwt", "value": "REPLACE_WITH_JWT_TOKEN", "type": "string" }
   ],
   "item": [
     {
-      "name": "🔐 Authentication & Users",
-      "item": [
-        {
-          "name": "Login (Get Token)",
-          "request": {
-            "method": "POST",
-            "header": [ { "key": "Content-Type", "value": "application/json" } ],
-            "body": { "mode": "raw", "raw": "{\n  \"identifier\": \"admin@kiwiinsurance.in\",\n  \"password\": \"password123\"\n}" },
-            "url": { "raw": "{{baseUrl}}/auth/local", "host": ["{{baseUrl}}"], "path": ["auth", "local"] }
-          }
-        },
-        { "name": "Get Me (Profile)", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }], "url": { "raw": "{{baseUrl}}/users/me", "host": ["{{baseUrl}}"], "path": ["users", "me"] } } }
-      ]
-    },
-    {
       "name": "🚀 System Brain",
       "item": [
-        {
-          "name": "Global Config (Full Sync)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/global-config?populate=*",
-              "host": ["{{baseUrl}}"],
-              "path": ["global-config"],
-              "query": [
-                { "key": "populate", "value": "*" }
-              ]
-            }
-          }
-        }
+        { "name": "Global Config", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/global-config?populate=*", "host": ["{{baseUrl}}"], "path": ["global-config"] } } }
       ]
     },
     {
       "name": "📄 Dynamic Landing Pages",
       "item": [
         {
-          "name": "Home Page (Full SEO & Dynamic Blocks)",
+          "name": "Home Page (Full Sync)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/pages?filters[slug][$eq]=home&populate[content][on][page-builder.insurance-product-cta][populate]=product&populate[content][on][shared.section-reference][populate]=shared_section&populate[content][on][shared.award][populate]=*&populate[seo][populate]=*",
+              "raw": "{{baseUrl}}/pages?filters[slug][$eq]=home&populate[content][on][page-builder.insurance-product-cta][populate]=product&populate[content][on][shared.section-reference][populate]=shared_section&populate[content][on][page-builder.accordion][populate]=*&populate[content][on][page-builder.banner][populate]=*&populate[content][on][page-builder.hero-section][populate]=*",
               "host": ["{{baseUrl}}"],
               "path": ["pages"],
               "query": [
                 { "key": "filters[slug][$eq]", "value": "home" },
                 { "key": "populate[content][on][page-builder.insurance-product-cta][populate]", "value": "product" },
                 { "key": "populate[content][on][shared.section-reference][populate]", "value": "shared_section" },
-                { "key": "populate[seo][populate]", "value": "*" }
+                { "key": "populate[content][on][page-builder.accordion][populate]", "value": "*" },
+                { "key": "populate[content][on][page-builder.banner][populate]", "value": "*" }
               ]
-            }
+            },
+            "description": "Fetches the full page structure with consolidated Day 0 components."
           }
         }
       ]
@@ -69,43 +42,22 @@
     {
       "name": "🛡️ Unified Product Registry",
       "item": [
-        { "name": "All Products", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products?populate=*", "host": ["{{baseUrl}}"], "path": ["insurance-products"] } } },
+        { "name": "All Products (SSOT)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products?populate=*", "host": ["{{baseUrl}}"], "path": ["insurance-products"] } } },
         { "name": "Standard Products Only", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products?filters[isStandard][$eq]=true", "host": ["{{baseUrl}}"], "path": ["insurance-products"] } } }
-      ]
-    },
-    {
-      "name": "📣 Campaigns & Partners",
-      "item": [
-        { "name": "Active Campaigns", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/campaigns?filters[isActive][$eq]=true&populate=banner", "host": ["{{baseUrl}}"], "path": ["campaigns"] } } },
-        { "name": "Partners Registry (Hospitals/Garages)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/partners?populate=logo", "host": ["{{baseUrl}}"], "path": ["partners"] } } }
-      ]
-    },
-    {
-      "name": "⚖️ Regulatory & Compliance",
-      "item": [
-        { "name": "Transparency Reports", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/transparency-reports?populate=file", "host": ["{{baseUrl}}"], "path": ["transparency-reports"] } } },
-        { "name": "Ombudsman Offices", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/ombudsman-offices", "host": ["{{baseUrl}}"], "path": ["ombudsman-offices"] } } },
-        { "name": "Grievance Levels", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/grievance-levels", "host": ["{{baseUrl}}"], "path": ["grievance-levels"] } } }
-      ]
-    },
-    {
-      "name": "📍 Branches & Geo",
-      "item": [
-        { "name": "Branch Map Data", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/branches", "host": ["{{baseUrl}}"], "path": ["branches"] }, "description": "Fetches branches with lat/long for map rendering." } }
       ]
     },
     {
       "name": "📰 Content Engine",
       "item": [
-        { "name": "Articles", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/articles?populate=author,categories", "host": ["{{baseUrl}}"], "path": ["articles"] } } },
-        { "name": "Authors", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/authors?populate=*", "host": ["{{baseUrl}}"], "path": ["authors"] } } }
+        { "name": "Articles (with blocks)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/articles?populate=*", "host": ["{{baseUrl}}"], "path": ["articles"] } } },
+        { "name": "Authors Registry", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/authors?populate=*", "host": ["{{baseUrl}}"], "path": ["authors"] } } }
       ]
     },
     {
-      "name": "🛠️ Tools & Calculators",
+      "name": "⚖️ Regulatory & Infra",
       "item": [
-        { "name": "List All Tools", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/tools?populate=*", "host": ["{{baseUrl}}"], "path": ["tools"] } } },
-        { "name": "Calculators Only (Filtered)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/tools?filters[category][$eq]=calculator", "host": ["{{baseUrl}}"], "path": ["tools"] } } }
+        { "name": "Branch Map Data", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/branches", "host": ["{{baseUrl}}"], "path": ["branches"] }, "description": "Returns geolocation data for map rendering." } },
+        { "name": "Transparency Reports", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/transparency-reports", "host": ["{{baseUrl}}"], "path": ["transparency-reports"] } } }
       ]
     }
   ]

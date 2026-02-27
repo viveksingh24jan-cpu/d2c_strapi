@@ -1,49 +1,37 @@
-# 🥝 Kiwi General Insurance Limited - Enterprise CMS
+# 🥝 Kiwi General Insurance - Day 0 Scalable CMS
 
-This is a production-ready Strapi v5 Headless CMS architecture tailored for the Indian D2C Insurance sector. It is designed for maximum scalability, SEO performance, and regulatory compliance (IRDAI).
+This is a production-grade Strapi v5 Headless CMS architecture, trimmed to Day 0 primitives for maximum speed and infinite scalability.
 
-## 🚀 Key Architectural Features
+## 🚀 Architectural Pillars
 
-- **Unified Product Registry (SSOT):** A single source of truth for all insurance products (Car, Health, Home) with built-in support for IRDAI-mandated "Standard Products" (e.g., Arogya Sanjeevani) using `isStandard` flags and compliance fields.
-- **Atomic Reusability:** Implementation of the **Shared Section Reference** pattern. Build high-conversion UI blocks once and reuse them across any page or article with a single click.
-- **Advanced SEO & Discovery:** Every page and article includes deep SEO metadata, OpenGraph tags, and a `structuredData` JSON field for schema.org (JSON-LD) injection.
-- **Enterprise Infrastructure:** 
-  - **Geo-Aware Branches:** Integrated latitude/longitude for Google Maps.
-  - **Compliance Hub:** Transparency reports, grievance escalation levels (1-3), and ombudsman office directories.
-- **Modular Page Builder:** 20+ responsive components including Hero Sections, Accordions, Comparison Tables, Product CTAs, and Stats Bars.
-- **Nested Navigation:** Support for 4-level deep hierarchical menus for complex site structures.
+- **Structural Primitives:** Consistently using generic components (`Banner`, `Accordion`) to handle specialized use cases (`App Promo`, `Grievance Levels`) via Enums.
+- **Unified Registries:** Single Source of Truth (SSOT) for Products, Testimonials, and Authors.
+- **Atomic Reusability:** Implementation of the **Shared Section Reference** pattern for global block mirroring.
+- **Master Data Saturation:** 100% realistic industry data for Motor, Health, and Home insurance sectors.
 
-## 🛠️ Getting Started
+## 🛠️ Quick Start
 
 ### 1. Installation
 ```bash
 npm install
 ```
 
-### 2. Environment Setup
-Copy `.env.example` to `.env` and configure your database and secrets.
-
-### 3. Maximum Volume Seed (Development)
-Populate the CMS with realistic, industry-standard data:
+### 2. Master Data Seed (Website Ready)
+Populate the CMS with exhaustive industry data:
 ```bash
 npm run seed:kiwi
 ```
 
-### 4. Development
+### 3. Development
 ```bash
 npm run dev
 ```
 
-## 📚 Documentation
+## 📚 Technical Handover
 
-- **[CMS Master Guide](./CMS_GUIDE.md):** The "Encyclopedia" of every field, component, and linking logic.
-- **[Postman Collection](./postman/kiwi-insurance-api.postman_collection.json):** Architect-level API requests with deep population patterns.
-
-## 🏛️ Project Structure
-
-- `src/api`: 21+ Collection and Single types covering Corporate, Products, Content, and Infrastructure.
-- `src/components`: 3 categories of LEGO-style bricks (Page Builder, Shared, Disclosures).
-- `scripts`: Strategic seeding scripts for rapid environment setup.
+- **[CMS Master Guide](./CMS_GUIDE.md):** The definitive manual for every field and linking logic.
+- **[Postman Collection](./postman/kiwi-insurance-api.postman_collection.json):** Architect-level API requests with deep population.
+- **[Architecture Blueprint](./cms_architecture_file.md):** Deep analysis of why this structure wins against competitors.
 
 ---
-*Built for Kiwi General Insurance Limited – Simple. Smart. Digital.*
+*Optimized for Kiwi General Insurance Limited – Simple. Smart. Digital.*

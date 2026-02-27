@@ -1,86 +1,69 @@
-# 🥝 Kiwi CMS: The Definitive Master Manual (0-100% Mastery)
+# 🥝 Kiwi CMS: The Ultimate Day 0 Master Manual
 
-This document is the "Grand Encyclopedia" of the Kiwi CMS. It explores every single field, why it exists, and how the data flows from the CMS into the website.
-
----
-
-## 🏛️ 1. SINGLE TYPES (Site Brain)
-There is only one of these in the entire system. They control site-wide rules.
-
-### **1.1 GlobalConfig (`api::global-config`)**
-*   **Purpose:** The "One-Stop-Shop" for branding, regulatory compliance (CIN), and global navigation links.
-*   **Key Fields:**
-    *   `siteName` (String): The brand name (e.g., "Kiwi General Insurance").
-    *   `irdaiRegNumber` (String): Mandatory license number.
-    *   `cinNumber` (String): Official Corporate Identification Number (`U65120KA2024PLC194560`).
-    *   `privacyPage` / `termsPage` (Relation): Direct links to the Legal Page warehouse.
-    *   `stickyCta` (Component): A site-wide floating bar for lead generation.
+This document is the definitive guide for the **Kiwi General Insurance CMS**. It defines a "Day 0" architecture: trimmed for speed, but architected for infinite scale.
 
 ---
 
-## 🏪 2. COLLECTIONS (Data Warehouses)
+## 🏛️ 1. ARCHITECTURAL PILLARS
 
-### **2.1 Marketing & Agility (The Sales Engine)**
-*   **Campaigns (`api::campaign`):** Time-limited seasonal promotions (e.g., "Monsoon Safety Month").
-*   **Partners (`api::partner`):** Registry of network hospitals, garages, and brand collaborators.
-*   **InsuranceProduct (`api::insurance-product`):** The master product list. 
-    *   Includes `isStandard` flag for IRDAI mandated plans.
-    *   Compliance fields: `uinNumber`, `cisDocument`, `policyWording`.
+1.  **Unified Registries:** Data (Products, Authors, Testimonials) is defined in a master collection and referenced by components.
+2.  **Structural Primitives:** We use generic components (like `Banner` or `Accordion`) to handle specific use cases (App Promo, Grievance Levels) using Enums.
+3.  **Atomic Reuse:** Global blocks are managed in `Shared Sections` and inserted into pages using `Section References`.
+4.  **SSOT Pricing:** Page pricing is dynamic. If you change a price in the `InsuranceProduct` registry, it updates across the entire website instantly.
 
-### **2.2 Core Content & SEO**
-*   **Dynamic Landing Pages (`api::page`):** The model for every site URL.
-    *   Supports `shared.section-reference` for atomic reusability.
-*   **Article (`api::article`):** Blog posts and guides. Linked to **Authors**.
-*   **Redirect (`api::redirect`):** SEO management from old URLs to new ones.
+---
+
+## 🏬 2. COLLECTION REGISTRIES (The Warehouses)
+
+### **2.1 Products & Marketing**
+*   **Insurance Products (`api::insurance-product`):** Master list of all plans.
+    *   `isStandard` (Flag): Identifies IRDAI mandated plans.
+    *   `productType`: Enum for compliance classification.
+*   **Testimonials (`api::testimonial`):** Verified reviews with a `category` filter (Motor, Health, etc.).
+*   **Tools (`api::tool`):** Calculators and checkers with dynamic `cta` links.
+
+### **2.2 Content & SEO**
+*   **Pages (`api::page`):** The engine for every URL. Built using the Component Library.
+*   **Articles (`api::article`):** Knowledge hub posts linked to **Authors** and **Categories**.
+*   **Authors:** Profile registry with standardized bio blocks and social components.
 
 ### **2.3 Infrastructure & Compliance**
-*   **Transparency Reports (`api::transparency-report`):** IRDAI public disclosures.
-*   **Branch (`api::branch`):** Office map data including `latitude` and `longitude`.
-*   **GrievanceLevel (`api::grievance-level`):** The 3-tier escalation matrix.
-*   **OmbudsmanOffice (`api::ombudsman-office`):** Regional complaint offices.
-
-### **2.4 People & Technical**
-*   **LeadershipProfile (`api::leadership-profile`):** Board of Directors and KMP profiles with LinkedIn links.
-*   **JobListing (`api::job-listing`):** Open positions in the career portal.
-*   **Tool (`api::tool`):** Unified registry for all customer tools (Calculators, Checkers, Generators).
-    *   `category` (Enum): e.g., `calculator`, `checker`.
-    *   `type` (Enum): e.g., `motor`, `health`.
-    *   `area` (Enum): e.g., `public-site`, `customer-portal`.
-    *   `cta` (Component): Dynamic link details for tool integration.
-    *   `isActive` (Boolean): Toggle visibility.
+*   **Branches:** Office registry with integrated **Latitude/Longitude** for map rendering. Supports `head-office`, `regional`, and `ombudsman-office` types via Enum.
+*   **Transparency Reports:** IRDAI public disclosures and financial results.
 
 ---
 
-## 🧱 3. COMPONENT LIBRARY (LEGO Bricks)
+## 🧱 3. COMPONENT LIBRARY (The LEGO Bricks)
 
-### **3.1 Layout Bricks**
-*   **Hero Section:** High-impact banners.
-*   **Card Grid:** Responsive layout for product or feature cards.
-*   **Text Block:** Rich text with multi-column support.
+### **3.1 Visual Blocks**
+*   **Hero Section:** High-impact banner for page tops.
+*   **Accordion:** Used for FAQs, Grievance Escalations, and Step-by-step guides.
+    *   *Upgrade:* Supports `icon`, `subtitle`, and `badge` per item.
+*   **Banner:** Unified component for Announcements, Alerts, and App Promotions (via `app-promotion` Enum).
+*   **Comparison Table:** Enterprise-grade grid for comparing policy features.
 
-### **3.2 Trust & Compliance Bricks**
-*   **Award Badge (`shared.award`):** Reuse recognitions like "Best Insurer 2025" anywhere.
-*   **Disclosure Document:** For regulatory attachments.
-*   **SEO:** Enhanced with `structuredData` (JSON-LD) for Google Rich Snippets.
-
-### **3.3 Atomic Reuse**
-*   **Shared Section Reference:** Add a globally-synced block (e.g., "Need Help?") into any page.
-
----
-
-## 🧶 4. DATA FLOW & LINKING LOGIC
-
-1.  **Registry Pattern:** Always create the "Product" or "Partner" in its registry first.
-2.  **SSOT Pricing:** Page CTAs pull the `startingPrice` from the `InsuranceProduct` registry.
-3.  **Geo-Mapping:** The `Branch` coordinates are used by the frontend to render Google Maps pins.
-4.  **SEO Chain:** Global SEO flows from `GlobalConfig`, overridable by individual `Page` metadata.
+### **3.2 Dynamic Logic Blocks**
+*   **Insurance Product CTA:** A "Smart Card" that fetches real-time data from the Product Registry.
+*   **Testimonial Showcase:** Dynamic filter that pulls reviews by category (e.g., "Show all Motor reviews").
+*   **Section Reference:** The bridge to global reusability. Insert any `Shared Section` here.
 
 ---
 
-## 🧑‍💻 5. DEVELOPER IMPLEMENTATION TIPS
+## 🧶 4. KNOWLEDGE TRANSFER: DATA FLOW
 
-*   **Master Query:** Use the Postman "Master Component Query" to see how to fetch all page blocks in one request.
-*   **Population:** For branches, always request `latitude` and `longitude` fields for map rendering.
-*   **Standard Products:** Filter the product registry by `isStandard=true` to build the "Standard Products" directory page.
+1.  **How to add a Grievance Section?**
+    *   Create a `Page`. Add an `Accordion` component. Use the `title` for the Level (e.g., "Level 1") and `content` for the details.
+2.  **How to promote the Mobile App?**
+    *   Add a `Banner` component. Set `bannerType` to `app-promotion`. Attach the `appLinks` and `qrCode`.
+3.  **How to update prices site-wide?**
+    *   Go to **Content Manager** -> **Insurance Products**. Edit the `startingPrice`. Save & Publish. Every page using a `Product CTA` for that car/health plan will update immediately.
 
-**This guide is the blueprint for the Kiwi CMS City.**
+---
+
+## 🧑‍💻 5. DEVELOPER API TIPS
+
+*   **Deep Population:** To get a full page with its shared blocks, use:
+    `GET /api/pages?filters[slug]=home&populate=content.product,content.shared_section`
+*   **Geo-Maps:** Use `latitude` and `longitude` from the `Branch` collection to plot markers on the frontend map.
+
+**Architect's Note:** This CMS is in a "Website Ready" state. Every block is optimized for maximum reuse and minimal code duplication.
