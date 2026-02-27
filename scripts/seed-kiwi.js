@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * Kiwi General Insurance - ABSOLUTELY EXHAUSTIVE SEED (Strapi 5)
- * Covers every single Collection, Component, and Single Type requested.
+ * Kiwi General Insurance - MAXIMUM VOLUME SEED (Strapi 5)
+ * Populates EVERY section with FULL realistic data.
  */
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -34,7 +34,7 @@ async function updateSingle(uid, data) {
   } catch (e) { console.error(`Error updating single ${uid}:`, e.message); return null; }
 }
 
-// ─── Main Seeding ───
+// ─── Main Logic ───
 
 async function main() {
   const { createStrapi, compileStrapi } = require('@strapi/strapi');
@@ -42,7 +42,7 @@ async function main() {
   const app = await createStrapi(appContext).load();
   app.log.level = 'error';
 
-  console.log('\n🥝 Kiwi General Insurance - FINAL RE-SEEDING (All Features)...\n');
+  console.log('\n🥝 Kiwi General Insurance - MAXIMUM VOLUME SEEDING...\n');
 
   try {
     const collections = [
@@ -55,78 +55,99 @@ async function main() {
     ];
     for (const uid of collections) await deleteAll(uid);
 
-    // 1. Meta
-    const author = await createEntry('api::author.author', { name: 'Sarah Baker', bio: 'Insurance Specialist' });
-    const cat = await createEntry('api::category.category', { name: 'Claims Guide', slug: 'claims-guide' });
+    // 1. Authors & Categories
+    console.log('  -> Authors & Categories');
+    const a1 = await createEntry('api::author.author', { name: 'Vikram Seth', bio: 'Actuarial Expert', slug: 'vikram-seth' });
+    const a2 = await createEntry('api::author.author', { name: 'Priya Sharma', bio: 'Claims Specialist', slug: 'priya-sharma' });
+    const c1 = await createEntry('api::category.category', { name: 'Motor Insurance', slug: 'motor-insurance' });
+    const c2 = await createEntry('api::category.category', { name: 'Health & Wellness', slug: 'health-insurance' });
 
-    // 2. Products
-    const car = await createEntry('api::insurance-product.insurance-product', {
-      productName: 'Car Insurance', tagline: 'Best in India', startingPrice: 2094, isActive: true, sortOrder: 1, ctaText: 'Get Quote', ctaUrl: '/car'
-    });
-    const health = await createEntry('api::insurance-product.insurance-product', {
-      productName: 'Health Insurance', tagline: '100% Cashless', startingPrice: 5000, isActive: true, sortOrder: 2, ctaText: 'Buy Now', ctaUrl: '/health'
-    });
-
-    // 3. Shared Sections
-    const footerInfo = await createEntry('api::shared-section.shared-section', {
-      title: 'Global Footer Info',
-      blocks: [{ __component: 'page-builder.text-block', content: blocks('Kiwi General Insurance | IRDAI Reg 190') }]
+    // 2. Shared Sections
+    console.log('  -> Shared Sections');
+    const globalHelp = await createEntry('api::shared-section.shared-section', {
+      title: 'Global Help Support',
+      blocks: [{ __component: 'page-builder.banner', title: 'Need help?', description: 'Call 1800-123-4567 for 24/7 support.' }]
     });
 
-    // 4. Standard Products (IRDAI)
-    await createEntry('api::standard-product.standard-product', {
-      productName: 'Arogya Sanjeevani', productType: 'arogya-sanjeevani', isActive: true, premiumRange: 'Starting Rs. 3000'
+    // 3. Insurance Product Registry
+    console.log('  -> Product Registry');
+    const p1 = await createEntry('api::insurance-product.insurance-product', {
+      productName: 'Comprehensive Car Insurance', tagline: 'Drive with peace of mind.', startingPrice: 2094, isActive: true, sortOrder: 1, ctaText: 'Get Quote', ctaUrl: '/car'
     });
-    await createEntry('api::standard-product.standard-product', {
-      productName: 'Bharat Griha Raksha', productType: 'bharat-griha-raksha', isActive: true, premiumRange: 'Starting Rs. 500'
+    const p2 = await createEntry('api::insurance-product.insurance-product', {
+      productName: 'Health Assurance Plus', tagline: 'Best in class health cover.', startingPrice: 5500, isActive: true, sortOrder: 2, ctaText: 'Buy Now', ctaUrl: '/health'
+    });
+    const p3 = await createEntry('api::insurance-product.insurance-product', {
+      productName: 'Two Wheeler Shield', tagline: 'Protect your bike.', startingPrice: 499, isActive: true, sortOrder: 3, ctaText: 'Renew Now', ctaUrl: '/bike'
     });
 
-    // 5. Infrastructure
-    await createEntry('api::branch.branch', { branchName: 'Mumbai HO', branchType: 'head-office', city: 'Mumbai' });
-    await createEntry('api::ombudsman-office.ombudsman-office', { city: 'Mumbai', email: 'mumbai@ombudsman.in' });
-    await createEntry('api::grievance-level.grievance-level', { levelNumber: 1, levelName: 'Customer Care' });
-    await createEntry('api::leadership-profile.leadership-profile', { name: 'Rajesh Kumar', designation: 'CEO', category: 'KMP' });
+    // 4. Standard Products
+    console.log('  -> Standard Products');
+    await createEntry('api::standard-product.standard-product', { productName: 'Arogya Sanjeevani', productType: 'arogya-sanjeevani', isActive: true });
+    await createEntry('api::standard-product.standard-product', { productName: 'Saral Suraksha Bima', productType: 'saral-suraksha-bima', isActive: true });
+    await createEntry('api::standard-product.standard-product', { productName: 'Bharat Griha Raksha', productType: 'bharat-griha-raksha', isActive: true });
 
-    // 6. Recruitment & tools
-    const toolCat = await createEntry('api::tool-category.tool-category', { name: 'Calculators', slug: 'calculators' });
-    await createEntry('api::tool.tool', { name: 'Tax Saver Calc', slug: 'tax-calc', isActive: true, tool_category: { connect: [{ documentId: toolCat.documentId }] } });
-    await createEntry('api::job-listing.job-listing', { jobTitle: 'Underwriter', department: 'Risk', location: 'Mumbai', isActive: true });
-    await createEntry('api::download-document.download-document', { title: 'Claim Form', documentType: 'claim-form', productCategory: 'health' });
-    
-    // 7. Pages & Components
+    // 5. Pages & Full Component Usage
+    console.log('  -> Dynamic Pages (Max Component Usage)');
     await createEntry('api::page.page', {
       title: 'Home', slug: 'home', template: 'home',
       content: [
-        { __component: 'page-builder.hero-section', title: 'Insurance for India', subtitle: 'Simple & Transparent' },
-        { __component: 'page-builder.insurance-product-cta', product: { connect: [{ documentId: car.documentId }] }, variant: 'card' },
-        { 
-          __component: 'page-builder.accordion', 
-          title: 'Frequently Asked Questions',
-          items: [{ question: 'How to file a claim?', answer: blocks('Call our 24/7 helpline at 1800-XXX.') }]
-        },
-        { 
-          __component: 'page-builder.card-grid', 
-          title: 'Why Choose Kiwi?',
-          cards: [{ title: 'Paperless', description: 'Everything is digital.' }, { title: 'Fast', description: 'Settlements in 20 mins.' }]
-        },
-        { __component: 'shared.section-reference', shared_section: { connect: [{ documentId: footerInfo.documentId }] } }
+        { __component: 'page-builder.hero-section', title: 'Future-Proof your Life', subtitle: 'Simple. Digital. Fast.', layout: 'left-right' },
+        { __component: 'page-builder.stats-bar', title: 'India\'s Rising Insurer', stats: [{ label: 'Users', value: '50L+' }, { label: 'Ratio', value: '99.2%' }] },
+        { __component: 'page-builder.insurance-product-cta', product: { connect: [{ documentId: p1.documentId }] }, variant: 'card' },
+        { __component: 'page-builder.accordion', title: 'FAQs', items: [{ question: 'Cashless hospital?', answer: blocks('Yes, 10k+ hospitals.') }] },
+        { __component: 'page-builder.progress-steps', title: '3 Steps to Insure', items: [{ title: 'Quote', stepNumber: 1 }, { title: 'Pay', stepNumber: 2 }, { title: 'Policy', stepNumber: 3 }] },
+        { __component: 'page-builder.app-banner', title: 'Download Kiwi App', description: 'Available on iOS and Android.' },
+        { __component: 'shared.section-reference', shared_section: { connect: [{ documentId: globalHelp.documentId }] } }
       ]
     });
 
-    // 8. Articles
-    await createEntry('api::article.article', {
-      title: 'How to claim Car Insurance', slug: 'how-to-claim', author: { connect: [{ documentId: author.documentId }] }, categories: { connect: [{ documentId: cat.documentId }] }
-    });
+    // 6. Blog Articles
+    console.log('  -> Articles');
+    await createEntry('api::article.article', { title: 'How IDV affects your premium', slug: 'idv-guide', author: { connect: [{ documentId: a1.documentId }] }, categories: { connect: [{ documentId: c1.documentId }] } });
+    await createEntry('api::article.article', { title: 'Tax savings u/s 80D', slug: '80d-savings', author: { connect: [{ documentId: a2.documentId }] }, categories: { connect: [{ documentId: c2.documentId }] } });
 
-    // 9. Global
+    // 7. Corporate Infrastructure
+    console.log('  -> Infrastructure (Branches, Ombudsman, Grievance)');
+    await createEntry('api::branch.branch', { branchName: 'Mumbai HO', city: 'Mumbai', branchType: 'head-office', pincode: '400051' });
+    await createEntry('api::branch.branch', { branchName: 'Delhi RO', city: 'Delhi', branchType: 'regional-office', pincode: '110001' });
+    await createEntry('api::ombudsman-office.ombudsman-office', { city: 'Ahmedabad', email: 'ahmedabad@cio.in' });
+    await createEntry('api::ombudsman-office.ombudsman-office', { city: 'Bengaluru', email: 'bengaluru@cio.in' });
+    await createEntry('api::grievance-level.grievance-level', { levelNumber: 1, levelName: 'Customer Service' });
+    await createEntry('api::grievance-level.grievance-level', { levelNumber: 2, levelName: 'Grievance Officer' });
+    await createEntry('api::leadership-profile.leadership-profile', { name: 'Dr. Ramesh Kumar', designation: 'CEO', category: 'KMP', displayOrder: 1 });
+
+    // 8. Finance & Compliance
+    console.log('  -> Financials & Compliance');
+    await createEntry('api::financial-disclosure.financial-disclosure', { title: 'NL-1 Schedule Q1', disclosureType: 'public-disclosure', financialYear: '2024-25', quarter: 'Q1' });
+    await createEntry('api::download-document.download-document', { title: 'Motor Claim Form', documentType: 'claim-form', productCategory: 'motor' });
+
+    // 9. Misc (Tools, Jobs, Redirects, Testimonials)
+    console.log('  -> Misc (Tools, Jobs, Redirects, Testimonials)');
+    const tcat = await createEntry('api::tool-category.tool-category', { name: 'Vehicle Tools', slug: 'v-tools' });
+    await createEntry('api::tool.tool', { name: 'Challan Checker', slug: 'challan', tool_category: { connect: [{ documentId: tcat.documentId }] }, isActive: true });
+    await createEntry('api::job-listing.job-listing', { jobTitle: 'UX Designer', department: 'Product', location: 'Bengaluru', isActive: true });
+    await createEntry('api::redirect.redirect', { fromPath: '/old-link', toPath: '/home', type: 'permanent' });
+    await createEntry('api::testimonial.testimonial', { customerName: 'Amit S.', testimonialContent: blocks('Great experience!') });
+
+    // 10. Global Config
+    console.log('  -> Global Config');
     await updateSingle('api::global-config.global-config', {
-      siteName: 'Kiwi Insurance', siteDescription: 'Simple. Fast. Reliable.', irdaiRegNumber: '190', registeredAddress: 'Mumbai'
+      siteName: 'Kiwi General Insurance', siteDescription: 'India\'s Best Digital Insurer', irdaiRegNumber: '190', registeredAddress: 'BKC, Mumbai'
     });
 
-    // 10. Permissions
+    // 11. Navigation (Nesting)
+    console.log('  -> Navigation Hierarchies');
+    const prodNav = await createEntry('api::navigation-menu.navigation-menu', { label: 'Products', location: 'header' });
+    await createEntry('api::navigation-menu.navigation-menu', { label: 'Car', url: '/car', parent: { connect: [{ documentId: prodNav.documentId }] } });
+    await createEntry('api::navigation-menu.navigation-menu', { label: 'Health', url: '/health', parent: { connect: [{ documentId: prodNav.documentId }] } });
+
+    // 12. Permissions
+    console.log('  -> Setting permissions');
     const publicRole = await strapi.query('plugin::users-permissions.role').findOne({ where: { type: 'public' } });
     for (const uid of collections) {
-      const [apiName, contentType] = uid.split('::')[1].split('.');
+      const parts = uid.split('::')[1].split('.');
+      const apiName = parts[0];
       for (const action of ['find', 'findOne']) {
         await strapi.query('plugin::users-permissions.permission').create({
           data: { action: `api::${apiName}.${apiName}.${action}`, role: publicRole.id }
@@ -134,7 +155,7 @@ async function main() {
       }
     }
 
-    console.log('\n✅ Exhaustive Re-Seed complete!\n');
+    console.log('\n✅ MAXIMUM VOLUME SEED COMPLETE!\n');
   } catch (err) { console.error('\n❌ Seed failed:', err); }
 
   await app.destroy();
