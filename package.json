@@ -10,6 +10,7 @@
     "dev": "strapi develop",
     "seed:example": "node ./scripts/seed.js",
     "seed:kiwi": "node ./scripts/seed-kiwi.js",
+    "seed:unified": "node ./scripts/seed-unified.js",
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
