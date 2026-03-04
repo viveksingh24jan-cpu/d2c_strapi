@@ -95,7 +95,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::coverage.coverage",
-      "inversedBy": "insurancePlans"
+      "mappedBy": "insurancePlans"
     },
     "seo": {
       "type": "component",

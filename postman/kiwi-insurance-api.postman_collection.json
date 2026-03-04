@@ -1,13 +1,31 @@
 {
   "info": {
     "name": "Kiwi General Insurance – D2C CMS API (Final Handover)",
-    "description": "Comprehensive API collection for the optimized Insurance D2C CMS. Supports LOB > Horizontal > Product > Plan > Coverage hierarchy with keyword-based lookups.",
+    "description": "Comprehensive API collection for the optimized Insurance D2C CMS. Supports LOB > Product > Plan > Coverage hierarchy with keyword-based lookups.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:1337/api", "type": "string" },
-    { "key": "jwt", "value": "REPLACE_WITH_JWT_TOKEN", "type": "string" }
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:1337/api",
+      "type": "string"
+    },
+    {
+      "key": "jwt",
+      "value": "REPLACE_WITH_JWT_TOKEN",
+      "type": "string"
+    }
   ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt}}",
+        "type": "string"
+      }
+    ]
+  },
   "item": [
     {
       "name": "🏥 D2C Insurance Hierarchy",
@@ -17,65 +35,35 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/line-of-businesses?populate=horizontals",
+              "raw": "{{baseUrl}}/line-of-businesses?populate=*",
               "host": ["{{baseUrl}}"],
-              "path": ["line-of-businesses"],
-              "query": [{ "key": "populate", "value": "horizontals" }]
+              "path": ["line-of-businesses"]
             },
-            "description": "Fetch all LOBs (Motor, Health, etc.) with their sub-lines."
+            "description": "Fetch all LOBs with SEO, CTA, and UI Config."
           }
         },
         {
-          "name": "2. Horizontals (Product Lines)",
+          "name": "2. Insurance Products (4W/2W Master)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/horizontals?filters[code][$eq]=4W&populate[insuranceProducts][populate]=*",
+              "raw": "{{baseUrl}}/insurance-products?filters[uiConfig][isVisibleOnHomepage][$eq]=true&populate=*",
               "host": ["{{baseUrl}}"],
-              "path": ["horizontals"],
-              "query": [
-                { "key": "filters[code][$eq]", "value": "4W" },
-                { "key": "populate[insuranceProducts][populate]", "value": "*" }
-              ]
+              "path": ["insurance-products"]
             },
-            "description": "Fetch a specific Horizontal (e.g. 4W) and its associated products."
+            "description": "Fetch homepage product cards."
           }
         },
         {
-          "name": "3. Insurance Products (Tenure Matrix)",
+          "name": "3. Insurance Plans (Tenures 1+3, 1+5)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/insurance-products?filters[horizontal][code][$eq]=4W&filters[odTerm][$eq]=1&filters[tpTerm][$eq]=3&populate=*",
+              "raw": "{{baseUrl}}/insurance-plans?filters[insuranceProduct][identifier][$eq]=4W&populate[inclusions][populate]=*&populate[addons][populate]=*&populate[faqs]=*&populate[seo]=*",
               "host": ["{{baseUrl}}"],
-              "path": ["insurance-products"],
-              "query": [
-                { "key": "filters[horizontal][code][$eq]", "value": "4W" },
-                { "key": "filters[odTerm][$eq]", "value": "1" },
-                { "key": "filters[tpTerm][$eq]", "value": "3" },
-                { "key": "populate", "value": "*" }
-              ]
+              "path": ["insurance-plans"]
             },
-            "description": "Query specific product tenures (e.g. 4W Comp 1+3)."
-          }
-        },
-        {
-          "name": "4. Insurance Plans (Variants)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/insurance-plans?filters[insuranceProduct][lookupKey][$eq]=4W_COMP_1_5&populate[inclusions][populate]=*&populate[addons][populate]=*&populate[exclusions][populate]=*&populate[faqs]=*",
-              "host": ["{{baseUrl}}"],
-              "path": ["insurance-plans"],
-              "query": [
-                { "key": "filters[insuranceProduct][lookupKey][$eq]", "value": "4W_COMP_1_5" },
-                { "key": "populate[inclusions][populate]", "value": "*" },
-                { "key": "populate[addons][populate]", "value": "*" },
-                { "key": "populate[exclusions][populate]", "value": "*" },
-                { "key": "populate[faqs]", "value": "*" }
-              ]
-            },
-            "description": "Fetch all plans (Gold, Elite) for a specific product with full details."
+            "description": "Fetch specific plans for a vehicle type with full detail population."
           }
         }
       ]
@@ -88,60 +76,28 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/coverages?filters[lookupKeys][$contains]=VOLDED_FLAG&populate=*",
+              "raw": "{{baseUrl}}/coverages?filters[identifiers][$contains]=VOLDED_FLAG&populate=*",
               "host": ["{{baseUrl}}"],
-              "path": ["coverages"],
-              "query": [
-                { "key": "filters[lookupKeys][$contains]", "value": "VOLDED_FLAG" },
-                { "key": "populate", "value": "*" }
-              ]
+              "path": ["coverages"]
             },
-            "description": "Directly fetch the UI/UX content for a specific technical keyword."
-          }
-        },
-        {
-          "name": "All Coverages for a Horizontal",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/coverages?filters[horizontals][code][$eq]=4W&populate=*",
-              "host": ["{{baseUrl}}"],
-              "path": ["coverages"],
-              "query": [
-                { "key": "filters[horizontals][code][$eq]", "value": "4W" },
-                { "key": "populate", "value": "*" }
-              ]
-            },
-            "description": "Fetch all master definitions for a vehicle line."
+            "description": "Pull UI/UX content (headings, icons, tooltips) for a technical keyword."
           }
         }
       ]
     },
     {
-      "name": "⚖️ Regulatory & SEO",
+      "name": "📄 Dynamic Page Builder",
       "item": [
         {
-          "name": "Regulatory Disclosures",
+          "name": "Product Landing Page (Full Build)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/insurance-products?populate=regulatoryDetails",
+              "raw": "{{baseUrl}}/insurance-products?filters[slug][$eq]=car-insurance&populate[pageBuilder][on][page-builder.accordion][populate]=*&populate[pageBuilder][on][page-builder.banner][populate]=*&populate[seo]=*",
               "host": ["{{baseUrl}}"],
-              "path": ["insurance-products"],
-              "query": [{ "key": "populate", "value": "regulatoryDetails" }]
-            }
-          }
-        },
-        {
-          "name": "SEO & Metadata",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/insurance-plans?populate=seo",
-              "host": ["{{baseUrl}}"],
-              "path": ["insurance-plans"],
-              "query": [{ "key": "populate", "value": "seo" }]
-            }
+              "path": ["insurance-products"]
+            },
+            "description": "Fetch the full dynamic landing page for a specific product."
           }
         }
       ]
