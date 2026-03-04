@@ -1,0 +1,90 @@
+{
+  "kind": "collectionType",
+  "collectionName": "coverages",
+  "info": {
+    "singularName": "coverage",
+    "pluralName": "coverages",
+    "displayName": "Master Coverage Registry",
+    "description": "Master Registry for Coverage Keywords"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "identifiers": {
+      "type": "json",
+      "required": true,
+      "description": "Array of keywords (VOLDED_FLAG, etc.)"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": ["default", "addon", "discount"],
+      "default": "default"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "explanationImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "explanationVideoUrl": {
+      "type": "string"
+    },
+    "benefitHeadline": {
+      "type": "string"
+    },
+    "richFeatures": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.feature"
+    },
+    "comparisonGrid": {
+      "type": "component",
+      "repeatable": false,
+      "component": "product.comparison-settings"
+    },
+    "detailedDescription": {
+      "type": "blocks"
+    },
+    "limitValue": {
+      "type": "string"
+    },
+    "unitLabel": {
+      "type": "string"
+    },
+    "addonCostLabel": {
+      "type": "string"
+    },
+    "infoTooltip": {
+      "type": "text"
+    },
+    "insurancePlans": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::insurance-plan.insurance-plan",
+      "inversedBy": "coverages"
+    },
+    "applicableToCategories": {
+      "type": "json"
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo"
+    },
+    "uiConfig": {
+      "type": "component",
+      "component": "shared.ui-config"
+    }
+  }
+}

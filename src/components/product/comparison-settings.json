@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_product_comparison_settings",
+  "info": {
+    "displayName": "Comparison Grid Settings",
+    "icon": "table",
+    "description": "How this coverage appears in a side-by-side grid"
+  },
+  "options": {},
+  "attributes": {
+    "showInGrid": {
+      "type": "boolean",
+      "default": true
+    },
+    "gridLabel": {
+      "type": "string",
+      "description": "Shorter label for narrow grid columns"
+    },
+    "gridIcon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"],
+      "description": "Icon specific to the comparison grid"
+    },
+    "gridGroup": {
+      "type": "string",
+      "description": "Category heading in the grid (e.g. Add-ons, Liability)"
+    },
+    "displayValue": {
+      "type": "string",
+      "description": "Value shown in grid (e.g. Covered, Optional, ₹500)"
+    }
+  }
+}

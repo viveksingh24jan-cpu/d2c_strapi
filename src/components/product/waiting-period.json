@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_product_waiting_periods",
+  "info": {
+    "displayName": "Waiting Period",
+    "description": "Specific waiting periods for conditions",
+    "icon": "clock"
+  },
+  "options": {},
+  "attributes": {
+    "conditionName": {
+      "type": "string",
+      "required": true,
+      "description": "e.g., Pre-existing disease, Cataract, etc."
+    },
+    "duration": {
+      "type": "string",
+      "description": "e.g., 24 months, 3 years"
+    },
+    "description": {
+      "type": "text"
+    },
+    "detailedContent": {
+      "type": "blocks"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "waivedByAddon": {
+      "type": "boolean",
+      "default": false,
+      "description": "True if this can be removed via an add-on (Upsell trigger)"
+    }
+  }
+}

@@ -4,131 +4,85 @@
   "info": {
     "singularName": "insurance-product",
     "pluralName": "insurance-products",
-    "displayName": "InsuranceProduct"
+    "displayName": "InsuranceProduct",
+    "description": "Master Products (4W, 2W) with Dynamic Page Builder"
   },
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {},
   "attributes": {
     "productName": {
       "type": "string",
       "required": true
     },
-    "isStandard": {
-      "type": "boolean",
-      "default": false,
-      "description": "True if this is an IRDAI mandated standard product (e.g. Arogya Sanjeevani)"
-    },
-    "productType": {
-      "type": "enumeration",
-      "enum": [
-        "generic",
-        "arogya-sanjeevani",
-        "saral-suraksha-bima",
-        "bharat-griha-raksha",
-        "bharat-sookshma-udyam",
-        "bharat-laghu-udyam"
-      ],
-      "default": "generic"
-    },
-    "complianceFeatures": {
-      "type": "blocks",
-      "description": "Standardized features for regulatory compliance"
-    },
-    "eligibility": {
-      "type": "blocks"
-    },
-    "cisDocument": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": ["files"]
-    },
-    "policyWording": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": ["files"]
-    },
-    "productDescription": {
-      "type": "blocks"
-    },
-    "uinNumber": {
+    "identifier": {
       "type": "string",
-      "description": "Unique Identification Number assigned by IRDAI"
+      "required": true,
+      "unique": true,
+      "description": "e.g. 4W, 2W, CV"
     },
-    "startingPrice": {
-      "type": "decimal"
-    },
-    "pricePrefix": {
-      "type": "string",
-      "default": "Starting at"
-    },
-    "priceSuffix": {
-      "type": "string",
-      "default": "/year"
-    },
-    "isFeatured": {
-      "type": "boolean"
-    },
-    "tagline": {
-      "type": "string",
+    "slug": {
+      "type": "uid",
+      "targetField": "productName",
       "required": true
     },
-    "badge": {
+    "lineOfBusiness": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::line-of-business.line-of-business",
+      "inversedBy": "insuranceProducts"
+    },
+    "insurancePlans": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::insurance-plan.insurance-plan",
+      "inversedBy": "insuranceProducts"
+    },
+    "cardIcon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "heroHeading": {
       "type": "string"
     },
-    "ctaText": {
-      "type": "string",
-      "required": true
+    "heroDescription": {
+      "type": "text"
     },
-    "ctaUrl": {
-      "type": "string",
-      "required": true
-    },
-    "isActive": {
-      "type": "boolean",
-      "required": true
-    },
-    "sortOrder": {
-      "type": "integer",
-      "required": true
-    },
-    "icon": {
-      "type": "media",
-      "multiple": true,
-      "required": false,
-      "allowedTypes": [
-        "images"
-      ]
-    },
-    "blocks": {
+    "pageBuilder": {
       "type": "dynamiczone",
       "components": [
+        "page-builder.banner",
         "page-builder.hero-section",
         "page-builder.text-block",
         "page-builder.card-grid",
-        "page-builder.card-item",
         "page-builder.media-block",
         "page-builder.accordion",
         "page-builder.testimonial-showcase",
         "page-builder.comparison-table",
-        "page-builder.banner",
         "page-builder.progress-steps",
-        "page-builder.step-item",
         "page-builder.stats-bar",
         "page-builder.insurance-product-cta",
         "page-builder.featured-content",
-        "page-builder.sticky-cta-bar",
-        "shared.stats-item",
-        "shared.social-link",
-        "shared.link",
-        "shared.award"
+        "page-builder.sticky-cta-bar"
       ]
+    },
+    "keyBenefits": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.key-benefit"
     },
     "seo": {
       "type": "component",
-      "component": "shared.seo",
-      "repeatable": false
+      "component": "shared.seo"
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.cta"
+    },
+    "uiConfig": {
+      "type": "component",
+      "component": "shared.ui-config"
     }
   }
 }

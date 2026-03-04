@@ -1,69 +1,67 @@
-# 🥝 Kiwi CMS: The Ultimate Day 0 Master Manual
+# 🥝 Kiwi Insurance: D2C CMS User Manual (0.00 to 1.00)
+## *The Definitive Guide for Product Managers*
 
-This document is the definitive guide for the **Kiwi General Insurance CMS**. It defines a "Day 0" architecture: trimmed for speed, but architected for infinite scale.
-
----
-
-## 🏛️ 1. ARCHITECTURAL PILLARS
-
-1.  **Unified Registries:** Data (Products, Authors, Testimonials) is defined in a master collection and referenced by components.
-2.  **Structural Primitives:** We use generic components (like `Banner` or `Accordion`) to handle specific use cases (App Promo, Grievance Levels) using Enums.
-3.  **Atomic Reuse:** Global blocks are managed in `Shared Sections` and inserted into pages using `Section References`.
-4.  **SSOT Pricing:** Page pricing is dynamic. If you change a price in the `InsuranceProduct` registry, it updates across the entire website instantly.
+This manual is for you if you have **ZERO** technical knowledge. It explains how to drive the insurance engine from the Strapi Admin UI.
 
 ---
 
-## 🏬 2. COLLECTION REGISTRIES (The Warehouses)
+## 1. The Core Hierarchy (The DNA)
+Everything in your business flows from Top to Bottom. You MUST follow this order:
 
-### **2.1 Products & Marketing**
-*   **Insurance Products (`api::insurance-product`):** Master list of all plans.
-    *   `isStandard` (Flag): Identifies IRDAI mandated plans.
-    *   `productType`: Enum for compliance classification.
-*   **Testimonials (`api::testimonial`):** Verified reviews with a `category` filter (Motor, Health, etc.).
-*   **Tools (`api::tool`):** Calculators and checkers with dynamic `cta` links.
-
-### **2.2 Content & SEO**
-*   **Pages (`api::page`):** The engine for every URL. Built using the Component Library.
-*   **Articles (`api::article`):** Knowledge hub posts linked to **Authors** and **Categories**.
-*   **Authors:** Profile registry with standardized bio blocks and social components.
-
-### **2.3 Infrastructure & Compliance**
-*   **Branches:** Office registry with integrated **Latitude/Longitude** for map rendering. Supports `head-office`, `regional`, and `ombudsman-office` types via Enum.
-*   **Transparency Reports:** IRDAI public disclosures and financial results.
+1.  **LOB (Root)**: The "Main Business." (e.g., **Motor**, **Health**).
+2.  **Product (Vehicle Master)**: The "Homepage Hero." (e.g., **4 Wheeler Insurance**, **2 Wheeler Insurance**).
+3.  **Plan (Policy/Tenure Template)**: The "Product Page Offering." (e.g., **Comprehensive 1+3**, **TP-Only 3 Year**).
+4.  **Master Coverage Registry**: The "Feature Library." (e.g., **Zero Depreciation**, **Voluntary Deductible**).
 
 ---
 
-## 🧱 3. COMPONENT LIBRARY (The LEGO Bricks)
-
-### **3.1 Visual Blocks**
-*   **Hero Section:** High-impact banner for page tops.
-*   **Accordion:** Used for FAQs, Grievance Escalations, and Step-by-step guides.
-    *   *Upgrade:* Supports `icon`, `subtitle`, and `badge` per item.
-*   **Banner:** Unified component for Announcements, Alerts, and App Promotions (via `app-promotion` Enum).
-*   **Comparison Table:** Enterprise-grade grid for comparing policy features.
-
-### **3.2 Dynamic Logic Blocks**
-*   **Insurance Product CTA:** A "Smart Card" that fetches real-time data from the Product Registry.
-*   **Testimonial Showcase:** Dynamic filter that pulls reviews by category (e.g., "Show all Motor reviews").
-*   **Section Reference:** The bridge to global reusability. Insert any `Shared Section` here.
+## 2. The "Master Keyword" Strategy
+Every coverage you offer (like "Zero Dep") is identified by a technical **Keyword** (e.g., `ZERO_DEP_FLAG`). 
+*   Your insurance price engine sends this keyword. 
+*   The CMS looks up this keyword and shows the **Icon**, **Heading**, and **"i" Button Content** you configured.
 
 ---
 
-## 🧶 4. KNOWLEDGE TRANSFER: DATA FLOW
+## 3. Inheritance: The "Smart Fill" Pattern
+To make your life easy, we use **Inheritance**. You can set a global default and only override it locally:
 
-1.  **How to add a Grievance Section?**
-    *   Create a `Page`. Add an `Accordion` component. Use the `title` for the Level (e.g., "Level 1") and `content` for the details.
-2.  **How to promote the Mobile App?**
-    *   Add a `Banner` component. Set `bannerType` to `app-promotion`. Attach the `appLinks` and `qrCode`.
-3.  **How to update prices site-wide?**
-    *   Go to **Content Manager** -> **Insurance Products**. Edit the `startingPrice`. Save & Publish. Every page using a `Product CTA` for that car/health plan will update immediately.
+*   **Global Level (Master Registry)**: Set the icon and description for "Zero Dep" once.
+*   **Product Level (Override)**: Want a different icon for *only* 2-wheeler Zero Dep? Change it here.
+*   **Plan Level (Override)**: Want a different name for *only* the "Gold Plan" Zero Dep? Change it here.
+
+**If you leave a field empty at the Plan or Product level, the CMS automatically "Falls Back" to the Master Registry default.**
 
 ---
 
-## 🧑‍💻 5. DEVELOPER API TIPS
+## 4. Configuring UI Blocks
 
-*   **Deep Population:** To get a full page with its shared blocks, use:
-    `GET /api/pages?filters[slug]=home&populate=content.product,content.shared_section`
-*   **Geo-Maps:** Use `latitude` and `longitude` from the `Branch` collection to plot markers on the frontend map.
+### **Advanced SEO (Every Page)**
+*   **Meta Title/Description**: Google search results.
+*   **Meta Robots**: Set to `index, follow` unless you want to hide a page from Google.
+*   **Canonical URL**: Crucial for SEO! If "Plan A" and "Plan B" have the same content, point the canonical to one of them to avoid penalties.
 
-**Architect's Note:** This CMS is in a "Website Ready" state. Every block is optimized for maximum reuse and minimal code duplication.
+### **Dynamic CTAs (Every Page)**
+*   **Label Text**: The text on the button (e.g., "Secure My Car").
+*   **Variant**: Primary (Main Color), Secondary (Outline), Ghost (Text only).
+*   **Action URL**: The URL it goes to.
+
+### **UI Config (Visibility)**
+*   `isVisibleOnHomepage`: Toggle to hide/show a product card on the homepage.
+*   `sortOrder`: Lower numbers come first in the list.
+
+---
+
+## 5. Adding a Coverage (Step-by-Step)
+1.  **Go to `Master Coverage Registry`**.
+2.  **Create New**: Name it "Engine Protection."
+3.  **Add Keywords**: Input `["ENG_PROT_FLAG", "ENG_PROT_2024"]`.
+4.  **Set UI**: Upload an icon, add a short "i" button tooltip, and a long explanation for the "Read More" modal.
+5.  **Set Comparison**: In `comparisonGrid`, type "Engine" for the group and "Covered" for the display value.
+6.  **Link to Plan**: Go to any `Insurance Plan`, add an `Addon` block, and pick "Engine Protection" from the dropdown. **Save.**
+
+---
+
+## 6. Pro PM Tips
+*   **Use Slugs for URLs**: Slugs must be lowercase with dashes (e.g., `car-insurance`). No spaces!
+*   **One Update = 100 Updates**: Changing the IRDAI registration in a `Regulatory Disclosure` updates every plan linked to it instantly.
+*   **Rich Features**: Use icons for every feature to make the "Plan Selection" page look premium.

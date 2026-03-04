@@ -1,0 +1,44 @@
+{
+  "collectionName": "components_product_plan_coverages",
+  "info": {
+    "displayName": "Plan Coverage Link",
+    "icon": "link",
+    "description": "Links a Keyword from Registry with optional overrides"
+  },
+  "options": {},
+  "attributes": {
+    "coverage": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::coverage.coverage",
+      "description": "Pick the Master Keyword from Registry"
+    },
+    "titleOverride": {
+      "type": "string",
+      "description": "Leave empty to use Master Registry title"
+    },
+    "descriptionOverride": {
+      "type": "blocks",
+      "description": "Leave empty to use Master Registry description"
+    },
+    "iconOverride": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"],
+      "description": "Leave empty to use Master Registry icon"
+    },
+    "limitOverride": {
+      "type": "string",
+      "description": "e.g., Change 'Up to 5L' to 'Unlimited' for this specific plan"
+    },
+    "isIncluded": {
+      "type": "boolean",
+      "default": false,
+      "description": "True if this keyword is part of the base plan price"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

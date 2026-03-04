@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_shared_ctas",
+  "info": {
+    "displayName": "Dynamic CTA",
+    "icon": "cursor",
+    "description": "Configurable buttons and links"
+  },
+  "options": {},
+  "attributes": {
+    "labelText": {
+      "type": "string",
+      "required": true
+    },
+    "actionUrl": {
+      "type": "string",
+      "required": true
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": ["primary", "secondary", "ghost", "link"],
+      "default": "primary"
+    },
+    "isVisible": {
+      "type": "boolean",
+      "default": true
+    },
+    "iconName": {
+      "type": "string"
+    }
+  }
+}

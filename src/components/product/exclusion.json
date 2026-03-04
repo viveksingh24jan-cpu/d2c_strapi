@@ -1,0 +1,45 @@
+{
+  "collectionName": "components_product_exclusions",
+  "info": {
+    "displayName": "Exclusion",
+    "description": "Standard exclusions for the plan",
+    "icon": "cancel"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "detailedContent": {
+      "type": "blocks",
+      "description": "Full explanation for the 'Read More' modal"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "general",
+        "medical",
+        "lifestyle",
+        "occupational",
+        "standard"
+      ],
+      "default": "general"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "isPermanent": {
+      "type": "boolean",
+      "default": true,
+      "description": "True if this exclusion is always applicable"
+    }
+  }
+}

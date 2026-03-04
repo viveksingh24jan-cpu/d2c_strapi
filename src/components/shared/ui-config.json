@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_shared_ui_configs",
+  "info": {
+    "displayName": "UI UX Config",
+    "icon": "cog",
+    "description": "Visibility and Layout control"
+  },
+  "options": {},
+  "attributes": {
+    "isVisibleOnHomepage": {
+      "type": "boolean",
+      "default": true
+    },
+    "isVisibleInMenu": {
+      "type": "boolean",
+      "default": true
+    },
+    "isVisibleInFooter": {
+      "type": "boolean",
+      "default": true
+    },
+    "showInComparisonGrid": {
+      "type": "boolean",
+      "default": true
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    },
+    "themeColor": {
+      "type": "string",
+      "description": "HEX or CSS class for specific branding"
+    }
+  }
+}

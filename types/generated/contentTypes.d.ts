@@ -642,6 +642,65 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCoverageCoverage extends Struct.CollectionTypeSchema {
+  collectionName: 'coverages';
+  info: {
+    description: 'The central repository for all coverage/discount keywords (VOLDED_FLAG, etc.)';
+    displayName: 'Master Coverage Registry';
+    pluralName: 'coverages';
+    singularName: 'coverage';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    addonCostLabel: Schema.Attribute.String;
+    applicableToCategories: Schema.Attribute.JSON;
+    badge: Schema.Attribute.String;
+    benefitHeadline: Schema.Attribute.String;
+    comparisonGrid: Schema.Attribute.Component<
+      'product.comparison-settings',
+      false
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    detailedDescription: Schema.Attribute.Blocks;
+    explanationImage: Schema.Attribute.Media<'images'>;
+    explanationVideoUrl: Schema.Attribute.String;
+    heading: Schema.Attribute.String;
+    horizontals: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::horizontal.horizontal'
+    >;
+    icon: Schema.Attribute.Media<'images'>;
+    infoTooltip: Schema.Attribute.Text;
+    insuranceProduct: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::insurance-product.insurance-product'
+    >;
+    isRecommended: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    limitValue: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::coverage.coverage'
+    > &
+      Schema.Attribute.Private;
+    lookupKeys: Schema.Attribute.JSON & Schema.Attribute.Required;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    richFeatures: Schema.Attribute.Component<'product.feature', true>;
+    sortOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    type: Schema.Attribute.Enumeration<['default', 'addon', 'discount']> &
+      Schema.Attribute.DefaultTo<'default'>;
+    unitLabel: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiDownloadDocumentDownloadDocument
   extends Struct.CollectionTypeSchema {
   collectionName: 'download_documents';
@@ -787,6 +846,109 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiHorizontalHorizontal extends Struct.CollectionTypeSchema {
+  collectionName: 'horizontals';
+  info: {
+    description: 'Product Line/Horizontal (e.g. Car, Bike under Motor)';
+    displayName: 'Product Line (Horizontal)';
+    pluralName: 'horizontals';
+    singularName: 'horizontal';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    code: Schema.Attribute.String & Schema.Attribute.Required;
+    coverages: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::coverage.coverage'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    insuranceProducts: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::insurance-product.insurance-product'
+    >;
+    lineOfBusiness: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::line-of-business.line-of-business'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::horizontal.horizontal'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    sortOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiInsurancePlanInsurancePlan
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'insurance_plans';
+  info: {
+    description: 'Specific plan variants (e.g., Gold, Silver) with rich content';
+    displayName: 'InsurancePlan';
+    pluralName: 'insurance-plans';
+    singularName: 'insurance-plan';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    addons: Schema.Attribute.Component<'product.plan-coverage', true>;
+    badge: Schema.Attribute.String;
+    benefitSummary: Schema.Attribute.Text;
+    comparisonAttributes: Schema.Attribute.Component<
+      'product.comparison-attribute',
+      true
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    ctaLabel: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Select Plan'>;
+    ctaUrl: Schema.Attribute.String & Schema.Attribute.Required;
+    discounts: Schema.Attribute.Component<'product.plan-coverage', true>;
+    exclusions: Schema.Attribute.Component<'product.exclusion', true>;
+    faqs: Schema.Attribute.Component<'shared.faq', true>;
+    inclusions: Schema.Attribute.Component<'product.plan-coverage', true>;
+    insuranceProduct: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::insurance-product.insurance-product'
+    >;
+    isRecommended: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::insurance-plan.insurance-plan'
+    > &
+      Schema.Attribute.Private;
+    lookupKey: Schema.Attribute.String;
+    mainDescription: Schema.Attribute.Blocks;
+    mainHeading: Schema.Attribute.String & Schema.Attribute.Required;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    planTier: Schema.Attribute.Enumeration<
+      ['basic', 'standard', 'plus', 'gold', 'silver', 'bronze', 'premium']
+    > &
+      Schema.Attribute.DefaultTo<'standard'>;
+    publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    tagline: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    waitingPeriods: Schema.Attribute.Component<'product.waiting-period', true>;
+  };
+}
+
 export interface ApiInsuranceProductInsuranceProduct
   extends Struct.CollectionTypeSchema {
   collectionName: 'insurance_products';
@@ -799,6 +961,7 @@ export interface ApiInsuranceProductInsuranceProduct
     draftAndPublish: true;
   };
   attributes: {
+    active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     badge: Schema.Attribute.String;
     blocks: Schema.Attribute.DynamicZone<
       [
@@ -825,44 +988,77 @@ export interface ApiInsuranceProductInsuranceProduct
     >;
     cisDocument: Schema.Attribute.Media<'files'>;
     complianceFeatures: Schema.Attribute.Blocks;
+    coverageOverrides: Schema.Attribute.Component<
+      'product.plan-coverage',
+      true
+    >;
+    coverages: Schema.Attribute.Relation<'oneToMany', 'api::coverage.coverage'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     ctaText: Schema.Attribute.String & Schema.Attribute.Required;
     ctaUrl: Schema.Attribute.String & Schema.Attribute.Required;
     eligibility: Schema.Attribute.Blocks;
+    heroHeading: Schema.Attribute.String;
+    heroImage: Schema.Attribute.Media<'images'>;
+    heroSubheading: Schema.Attribute.Text;
+    horizontal: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::horizontal.horizontal'
+    >;
     icon: Schema.Attribute.Media<'images', true>;
+    insurancePlans: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::insurance-plan.insurance-plan'
+    >;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.Required;
     isFeatured: Schema.Attribute.Boolean;
     isStandard: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    keyBenefits: Schema.Attribute.Component<'product.key-benefit', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::insurance-product.insurance-product'
     > &
       Schema.Attribute.Private;
+    lookupKey: Schema.Attribute.String;
+    odTerm: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 0;
+        },
+        number
+      >;
     policyWording: Schema.Attribute.Media<'files'>;
     pricePrefix: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'Starting at'>;
     priceSuffix: Schema.Attribute.String & Schema.Attribute.DefaultTo<'/year'>;
+    productCategory: Schema.Attribute.Enumeration<
+      ['comprehensive', 'own-damage', 'third-party', 'bundled']
+    > &
+      Schema.Attribute.DefaultTo<'comprehensive'>;
     productDescription: Schema.Attribute.Blocks;
     productName: Schema.Attribute.String & Schema.Attribute.Required;
-    productType: Schema.Attribute.Enumeration<
-      [
-        'generic',
-        'arogya-sanjeevani',
-        'saral-suraksha-bima',
-        'bharat-griha-raksha',
-        'bharat-sookshma-udyam',
-        'bharat-laghu-udyam',
-      ]
-    > &
-      Schema.Attribute.DefaultTo<'generic'>;
     publishedAt: Schema.Attribute.DateTime;
+    regulatoryDetails: Schema.Attribute.Component<
+      'shared.regulatory-disclosure',
+      false
+    >;
     seo: Schema.Attribute.Component<'shared.seo', false>;
+    shortDescription: Schema.Attribute.Text;
+    slug: Schema.Attribute.UID<'productName'>;
     sortOrder: Schema.Attribute.Integer & Schema.Attribute.Required;
     startingPrice: Schema.Attribute.Decimal;
     tagline: Schema.Attribute.String & Schema.Attribute.Required;
+    tpTerm: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 0;
+        },
+        number
+      >;
     uinNumber: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -901,6 +1097,44 @@ export interface ApiLeadershipProfileLeadershipProfile
     photo: Schema.Attribute.Media<'images'>;
     publishedAt: Schema.Attribute.DateTime;
     socialLinks: Schema.Attribute.Component<'shared.social-link', true>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiLineOfBusinessLineOfBusiness
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'line_of_businesses';
+  info: {
+    description: 'Root categories (Motor, Health, Travel, Property)';
+    displayName: 'LineOfBusiness';
+    pluralName: 'line-of-businesses';
+    singularName: 'line-of-business';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    horizontals: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::horizontal.horizontal'
+    >;
+    icon: Schema.Attribute.Media<'images'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::line-of-business.line-of-business'
+    > &
+      Schema.Attribute.Private;
+    lookupKey: Schema.Attribute.String;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1734,11 +1968,15 @@ declare module '@strapi/strapi' {
       'api::branch.branch': ApiBranchBranch;
       'api::campaign.campaign': ApiCampaignCampaign;
       'api::category.category': ApiCategoryCategory;
+      'api::coverage.coverage': ApiCoverageCoverage;
       'api::download-document.download-document': ApiDownloadDocumentDownloadDocument;
       'api::financial-disclosure.financial-disclosure': ApiFinancialDisclosureFinancialDisclosure;
       'api::global-config.global-config': ApiGlobalConfigGlobalConfig;
+      'api::horizontal.horizontal': ApiHorizontalHorizontal;
+      'api::insurance-plan.insurance-plan': ApiInsurancePlanInsurancePlan;
       'api::insurance-product.insurance-product': ApiInsuranceProductInsuranceProduct;
       'api::leadership-profile.leadership-profile': ApiLeadershipProfileLeadershipProfile;
+      'api::line-of-business.line-of-business': ApiLineOfBusinessLineOfBusiness;
       'api::navigation-menu.navigation-menu': ApiNavigationMenuNavigationMenu;
       'api::page.page': ApiPagePage;
       'api::shared-section.shared-section': ApiSharedSectionSharedSection;

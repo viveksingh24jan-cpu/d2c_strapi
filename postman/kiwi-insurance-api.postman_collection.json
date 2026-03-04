@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "Kiwi General Insurance – ULTIMATE API (Day 0 Architect)",
-    "description": "Exhaustive API coverage for the Day 0 consolidated architecture. Includes deep population for rich Accordions, unified Banners, and SSOT Products.",
+    "name": "Kiwi General Insurance – D2C CMS API (Final Handover)",
+    "description": "Comprehensive API collection for the optimized Insurance D2C CMS. Supports LOB > Horizontal > Product > Plan > Coverage hierarchy with keyword-based lookups.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -10,54 +10,140 @@
   ],
   "item": [
     {
-      "name": "🚀 System Brain",
-      "item": [
-        { "name": "Global Config", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/global-config?populate=*", "host": ["{{baseUrl}}"], "path": ["global-config"] } } }
-      ]
-    },
-    {
-      "name": "📄 Dynamic Landing Pages",
+      "name": "🏥 D2C Insurance Hierarchy",
       "item": [
         {
-          "name": "Home Page (Full Sync)",
+          "name": "1. Line of Business (LOB)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/pages?filters[slug][$eq]=home&populate[content][on][page-builder.insurance-product-cta][populate]=product&populate[content][on][shared.section-reference][populate]=shared_section&populate[content][on][page-builder.accordion][populate]=*&populate[content][on][page-builder.banner][populate]=*&populate[content][on][page-builder.hero-section][populate]=*",
+              "raw": "{{baseUrl}}/line-of-businesses?populate=horizontals",
               "host": ["{{baseUrl}}"],
-              "path": ["pages"],
+              "path": ["line-of-businesses"],
+              "query": [{ "key": "populate", "value": "horizontals" }]
+            },
+            "description": "Fetch all LOBs (Motor, Health, etc.) with their sub-lines."
+          }
+        },
+        {
+          "name": "2. Horizontals (Product Lines)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/horizontals?filters[code][$eq]=4W&populate[insuranceProducts][populate]=*",
+              "host": ["{{baseUrl}}"],
+              "path": ["horizontals"],
               "query": [
-                { "key": "filters[slug][$eq]", "value": "home" },
-                { "key": "populate[content][on][page-builder.insurance-product-cta][populate]", "value": "product" },
-                { "key": "populate[content][on][shared.section-reference][populate]", "value": "shared_section" },
-                { "key": "populate[content][on][page-builder.accordion][populate]", "value": "*" },
-                { "key": "populate[content][on][page-builder.banner][populate]", "value": "*" }
+                { "key": "filters[code][$eq]", "value": "4W" },
+                { "key": "populate[insuranceProducts][populate]", "value": "*" }
               ]
             },
-            "description": "Fetches the full page structure with consolidated Day 0 components."
+            "description": "Fetch a specific Horizontal (e.g. 4W) and its associated products."
+          }
+        },
+        {
+          "name": "3. Insurance Products (Tenure Matrix)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/insurance-products?filters[horizontal][code][$eq]=4W&filters[odTerm][$eq]=1&filters[tpTerm][$eq]=3&populate=*",
+              "host": ["{{baseUrl}}"],
+              "path": ["insurance-products"],
+              "query": [
+                { "key": "filters[horizontal][code][$eq]", "value": "4W" },
+                { "key": "filters[odTerm][$eq]", "value": "1" },
+                { "key": "filters[tpTerm][$eq]", "value": "3" },
+                { "key": "populate", "value": "*" }
+              ]
+            },
+            "description": "Query specific product tenures (e.g. 4W Comp 1+3)."
+          }
+        },
+        {
+          "name": "4. Insurance Plans (Variants)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/insurance-plans?filters[insuranceProduct][lookupKey][$eq]=4W_COMP_1_5&populate[inclusions][populate]=*&populate[addons][populate]=*&populate[exclusions][populate]=*&populate[faqs]=*",
+              "host": ["{{baseUrl}}"],
+              "path": ["insurance-plans"],
+              "query": [
+                { "key": "filters[insuranceProduct][lookupKey][$eq]", "value": "4W_COMP_1_5" },
+                { "key": "populate[inclusions][populate]", "value": "*" },
+                { "key": "populate[addons][populate]", "value": "*" },
+                { "key": "populate[exclusions][populate]", "value": "*" },
+                { "key": "populate[faqs]", "value": "*" }
+              ]
+            },
+            "description": "Fetch all plans (Gold, Elite) for a specific product with full details."
           }
         }
       ]
     },
     {
-      "name": "🛡️ Unified Product Registry",
+      "name": "🔍 Keyword Engine (Registry)",
       "item": [
-        { "name": "All Products (SSOT)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products?populate=*", "host": ["{{baseUrl}}"], "path": ["insurance-products"] } } },
-        { "name": "Standard Products Only", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/insurance-products?filters[isStandard][$eq]=true", "host": ["{{baseUrl}}"], "path": ["insurance-products"] } } }
+        {
+          "name": "Lookup by Keyword (Single Source of Truth)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/coverages?filters[lookupKeys][$contains]=VOLDED_FLAG&populate=*",
+              "host": ["{{baseUrl}}"],
+              "path": ["coverages"],
+              "query": [
+                { "key": "filters[lookupKeys][$contains]", "value": "VOLDED_FLAG" },
+                { "key": "populate", "value": "*" }
+              ]
+            },
+            "description": "Directly fetch the UI/UX content for a specific technical keyword."
+          }
+        },
+        {
+          "name": "All Coverages for a Horizontal",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/coverages?filters[horizontals][code][$eq]=4W&populate=*",
+              "host": ["{{baseUrl}}"],
+              "path": ["coverages"],
+              "query": [
+                { "key": "filters[horizontals][code][$eq]", "value": "4W" },
+                { "key": "populate", "value": "*" }
+              ]
+            },
+            "description": "Fetch all master definitions for a vehicle line."
+          }
+        }
       ]
     },
     {
-      "name": "📰 Content Engine",
+      "name": "⚖️ Regulatory & SEO",
       "item": [
-        { "name": "Articles (with blocks)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/articles?populate=*", "host": ["{{baseUrl}}"], "path": ["articles"] } } },
-        { "name": "Authors Registry", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/authors?populate=*", "host": ["{{baseUrl}}"], "path": ["authors"] } } }
-      ]
-    },
-    {
-      "name": "⚖️ Regulatory & Infra",
-      "item": [
-        { "name": "Branch Map Data", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/branches", "host": ["{{baseUrl}}"], "path": ["branches"] }, "description": "Returns geolocation data for map rendering." } },
-        { "name": "Transparency Reports", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/transparency-reports", "host": ["{{baseUrl}}"], "path": ["transparency-reports"] } } }
+        {
+          "name": "Regulatory Disclosures",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/insurance-products?populate=regulatoryDetails",
+              "host": ["{{baseUrl}}"],
+              "path": ["insurance-products"],
+              "query": [{ "key": "populate", "value": "regulatoryDetails" }]
+            }
+          }
+        },
+        {
+          "name": "SEO & Metadata",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/insurance-plans?populate=seo",
+              "host": ["{{baseUrl}}"],
+              "path": ["insurance-plans"],
+              "query": [{ "key": "populate", "value": "seo" }]
+            }
+          }
+        }
       ]
     }
   ]

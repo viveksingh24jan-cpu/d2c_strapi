@@ -1,46 +1,39 @@
 {
-  "collectionName": "components_shared_seo",
+  "collectionName": "components_shared_seos",
   "info": {
-    "displayName": "SEO",
-    "description": "SEO metadata for pages and content",
-    "icon": "search"
+    "displayName": "Advanced SEO",
+    "icon": "search",
+    "description": "Enterprise-grade SEO with Robots and Structured Data"
   },
   "options": {},
   "attributes": {
-    "meta_title": {
+    "metaTitle": {
       "type": "string",
-      "required": true,
-      "maxLength": 60
+      "required": true
     },
-    "meta_description": {
+    "metaDescription": {
       "type": "text",
-      "required": true,
-      "maxLength": 160
+      "required": true
     },
-    "meta_image": {
+    "metaImage": {
       "type": "media",
       "multiple": false,
-      "required": false,
       "allowedTypes": ["images"]
     },
-    "keywords": {
-      "type": "string"
+    "metaKeywords": {
+      "type": "text"
     },
-    "canonical_url": {
-      "type": "string"
+    "metaRobots": {
+      "type": "string",
+      "default": "index, follow",
+      "description": "e.g., noindex, nofollow"
     },
-    "meta_robots": {
-      "type": "string"
-    },
-    "og_title": {
-      "type": "string"
-    },
-    "og_description": {
+    "canonicalURL": {
       "type": "string"
     },
     "structuredData": {
       "type": "json",
-      "description": "JSON-LD structured data for schema.org"
+      "description": "JSON-LD for Schema.org"
     }
   }
 }

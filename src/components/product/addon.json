@@ -1,0 +1,65 @@
+{
+  "collectionName": "components_product_addons",
+  "info": {
+    "displayName": "Add-on",
+    "description": "Optional coverage items to be purchased separately",
+    "icon": "plus"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "description": "Heading of the add-on"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"],
+      "description": "Details Icon"
+    },
+    "infoTooltip": {
+      "type": "text",
+      "description": "Content for the 'i' button"
+    },
+    "detailedHeading": {
+      "type": "string",
+      "description": "Heading inside the 'View Details' modal"
+    },
+    "detailedDescription": {
+      "type": "blocks",
+      "description": "Main content for the 'View Details' modal"
+    },
+    "features": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.feature",
+      "description": "Bullet points/Advantages for this add-on"
+    },
+    "badge": {
+      "type": "string",
+      "description": "e.g., Must Have, Best for Ageing Cars"
+    },
+    "lookupKeyword": {
+      "type": "string",
+      "required": true,
+      "description": "Key for engine mapping (e.g., ZERO_DEP_FLAG)"
+    },
+    "limitValue": {
+      "type": "string",
+      "description": "e.g. Up to 10 lakh, Unlimited"
+    },
+    "unitLabel": {
+      "type": "string",
+      "description": "e.g. %, days, lakh"
+    },
+    "deductibleWording": {
+      "type": "string",
+      "description": "e.g. ₹500 deductible"
+    },
+    "addonCostLabel": {
+      "type": "string",
+      "description": "From ₹299 extra/year"
+    }
+  }
+}

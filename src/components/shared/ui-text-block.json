@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_shared_ui_text_blocks",
+  "info": {
+    "displayName": "UITextBlock",
+    "icon": "cursor",
+    "description": "Atomic UI component for buttons and labels"
+  },
+  "options": {},
+  "attributes": {
+    "contextKey": {
+      "type": "string",
+      "required": true,
+      "description": "e.g., buy_now_btn, compare_plans_btn"
+    },
+    "labelText": {
+      "type": "string",
+      "required": true
+    },
+    "helperText": {
+      "type": "text",
+      "description": "Tooltip or secondary text"
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": ["primary", "secondary", "ghost"],
+      "default": "primary"
+    },
+    "iconName": {
+      "type": "string",
+      "description": "Lucide/FontAwesome icon name"
+    }
+  }
+}

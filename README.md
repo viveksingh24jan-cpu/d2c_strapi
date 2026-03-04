@@ -1,37 +1,31 @@
-# 🥝 Kiwi General Insurance - Day 0 Scalable CMS
+# 🥝 Kiwi Insurance D2C CMS: The Ultimate "Day 0" Architecture
 
-This is a production-grade Strapi v5 Headless CMS architecture, trimmed to Day 0 primitives for maximum speed and infinite scalability.
+## 1. Project Vision
+This is an enterprise-grade, high-conversion Headless CMS built on **Strapi v4**. It is designed specifically for the **Indian Insurance Market**, handling the complex matrix of vehicle segments (4W, 2W, CV), policy types (Comprehensive, TP, OD), and multi-year tenures (1+1, 1+3, 1+5).
 
-## 🚀 Architectural Pillars
+## 2. Core Philosophy: "Atomic D2C"
+The system is built on four pillars:
+*   **Agility**: PMs can change UI, buttons, and SEO without code.
+*   **Scalability**: Adding a new LOB (e.g., Marine) or a new tenure takes minutes.
+*   **Consistency**: A single "Master Registry" ensures "Zero Dep" means the same thing everywhere.
+*   **SEO Autonomy**: Every single page has rankable URLs and advanced metadata control.
 
-- **Structural Primitives:** Consistently using generic components (`Banner`, `Accordion`) to handle specialized use cases (`App Promo`, `Grievance Levels`) via Enums.
-- **Unified Registries:** Single Source of Truth (SSOT) for Products, Testimonials, and Authors.
-- **Atomic Reusability:** Implementation of the **Shared Section Reference** pattern for global block mirroring.
-- **Master Data Saturation:** 100% realistic industry data for Motor, Health, and Home insurance sectors.
+## 3. The 4-Step D2C User Journey (Data Hierarchy)
+1.  **LOB (Root)**: The high-level entry (e.g., `Motor`).
+2.  **Product (Vehicle Master)**: The vehicle you own (e.g., `4W`, `2W`). This drives the **Homepage Cards**.
+3.  **Plan (Policy Template)**: The specific duration (e.g., `Comprehensive 1+3`). This drives the **Quote/Selection Page**.
+4.  **Coverage (Keyword Registry)**: The technical features (e.g., `VOLDED_FLAG`). This drives the **Feature Lists & Comparison Grids**.
 
-## 🛠️ Quick Start
-
-### 1. Installation
-```bash
-npm install
-```
-
-### 2. Master Data Seed (Website Ready)
-Populate the CMS with exhaustive industry data:
-```bash
-npm run seed:kiwi
-```
-
-### 3. Development
-```bash
-npm run dev
-```
-
-## 📚 Technical Handover
-
-- **[CMS Master Guide](./CMS_GUIDE.md):** The definitive manual for every field and linking logic.
-- **[Postman Collection](./postman/kiwi-insurance-api.postman_collection.json):** Architect-level API requests with deep population.
-- **[Architecture Blueprint](./cms_architecture_file.md):** Deep analysis of why this structure wins against competitors.
+## 4. Technical Tech Stack
+*   **Backend**: Strapi (Node.js)
+*   **Database**: PostgreSQL / SQLite
+*   **API**: REST with deep `populate` logic.
+*   **Architecture**: Inheritance-based "Shadowing" model.
 
 ---
-*Optimized for Kiwi General Insurance Limited – Simple. Smart. Digital.*
+
+## 5. Quick Start for GPT / Developers
+If you are using this as a knowledge base for an AI, the most important files are:
+*   `CMS_GUIDE.md`: For "How to use" questions.
+*   `HANDOVER.md`: For "How it works" questions.
+*   `src/api/*/schema.json`: For database structure questions.

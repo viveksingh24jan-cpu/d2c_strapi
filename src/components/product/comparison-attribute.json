@@ -1,0 +1,48 @@
+{
+  "collectionName": "components_product_comparison_attributes",
+  "info": {
+    "displayName": "Comparison Attribute",
+    "icon": "layer",
+    "description": "Rows for comparison table (e.g. CSR, Cashless Network)"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true,
+      "description": "The row name (e.g., Claim Settlement Ratio)"
+    },
+    "value": {
+      "type": "string",
+      "required": true,
+      "description": "The value for this specific plan (e.g., 99.8%)"
+    },
+    "valueType": {
+      "type": "enumeration",
+      "enum": [
+        "text",
+        "percentage",
+        "boolean",
+        "rating",
+        "currency"
+      ],
+      "default": "text"
+    },
+    "numericValue": {
+      "type": "decimal",
+      "description": "For UI progress bars or sorting (e.g. 99.8)"
+    },
+    "isHighlighted": {
+      "type": "boolean",
+      "default": false
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "tooltip": {
+      "type": "text"
+    }
+  }
+}

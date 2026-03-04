@@ -1,0 +1,59 @@
+{
+  "kind": "collectionType",
+  "collectionName": "line_of_businesses",
+  "info": {
+    "singularName": "line-of-business",
+    "pluralName": "line-of-businesses",
+    "displayName": "LineOfBusiness",
+    "description": "Root Category (Motor, Health, Travel)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "identifier": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "description": "Unique technical key (e.g. MOTOR, HEALTH)"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "heroHeading": {
+      "type": "string"
+    },
+    "heroDescription": {
+      "type": "text"
+    },
+    "insuranceProducts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::insurance-product.insurance-product",
+      "mappedBy": "lineOfBusiness"
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo"
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.cta"
+    },
+    "uiConfig": {
+      "type": "component",
+      "component": "shared.ui-config"
+    }
+  }
+}

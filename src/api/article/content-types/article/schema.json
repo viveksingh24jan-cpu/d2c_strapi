@@ -87,8 +87,15 @@
     },
     "seo": {
       "type": "component",
-      "component": "shared.seo",
-      "repeatable": false
+      "component": "shared.seo"
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.cta"
+    },
+    "uiConfig": {
+      "type": "component",
+      "component": "shared.ui-config"
     }
   }
 }

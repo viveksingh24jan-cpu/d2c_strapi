@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_shared_regulatory_disclosures",
+  "info": {
+    "displayName": "Regulatory Disclosure",
+    "icon": "handshaking",
+    "description": "IRDAI/Legal mandatory disclaimers"
+  },
+  "options": {},
+  "attributes": {
+    "irdaRegistration": {
+      "type": "string",
+      "description": "IRDAI Registration Number"
+    },
+    "gstNote": {
+      "type": "string",
+      "default": "Premium is exclusive of GST"
+    },
+    "mandatoryDisclaimer": {
+      "type": "blocks",
+      "description": "Long-form legal disclaimer/fine print"
+    },
+    "displayMode": {
+      "type": "enumeration",
+      "enum": ["footer", "plan-card", "checkout"],
+      "default": "footer"
+    }
+  }
+}

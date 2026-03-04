@@ -1,0 +1,118 @@
+{
+  "kind": "collectionType",
+  "collectionName": "insurance_plans",
+  "info": {
+    "singularName": "insurance-plan",
+    "pluralName": "insurance-plans",
+    "displayName": "InsurancePlan",
+    "description": "Plan variants (1+3) with Dynamic Page Builder"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "identifier": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "description": "Unique key (e.g. 4W_COMP_1_3)"
+    },
+    "odTerm": {
+      "type": "integer",
+      "min": 0,
+      "max": 5
+    },
+    "tpTerm": {
+      "type": "integer",
+      "min": 0,
+      "max": 5
+    },
+    "insuranceProducts": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::insurance-product.insurance-product",
+      "mappedBy": "insurancePlans"
+    },
+    "pageBuilder": {
+      "type": "dynamiczone",
+      "components": [
+        "page-builder.banner",
+        "page-builder.accordion",
+        "page-builder.testimonial-showcase",
+        "page-builder.comparison-table",
+        "page-builder.progress-steps",
+        "page-builder.stats-bar",
+        "page-builder.text-block"
+      ]
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "badge": {
+      "type": "string"
+    },
+    "mainHeading": {
+      "type": "string"
+    },
+    "benefitSummary": {
+      "type": "text"
+    },
+    "inclusions": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.plan-coverage"
+    },
+    "addons": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.plan-coverage"
+    },
+    "discounts": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.plan-coverage"
+    },
+    "exclusions": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.exclusion"
+    },
+    "faqs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.faq"
+    },
+    "comparisonAttributes": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.comparison-attribute"
+    },
+    "coverages": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::coverage.coverage",
+      "inversedBy": "insurancePlans"
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo"
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.cta"
+    },
+    "uiConfig": {
+      "type": "component",
+      "component": "shared.ui-config"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    }
+  }
+}

@@ -83,6 +83,10 @@
       "component": "shared.seo",
       "description": "SEO & Social Sharing configuration"
     },
+    "uiConfig": {
+      "type": "component",
+      "component": "shared.ui-config"
+    },
     "internalNotes": {
       "type": "text",
       "description": "Internal notes for Content/Marketing team (not visible on frontend)."

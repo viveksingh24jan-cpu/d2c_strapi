@@ -1,0 +1,67 @@
+{
+  "collectionName": "components_product_coverages",
+  "info": {
+    "displayName": "Coverage",
+    "description": "Main coverage configuration (Basic, Add-on, Discount)",
+    "icon": "shield"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "basic",
+        "addon",
+        "discount"
+      ],
+      "default": "basic"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "shortDescription": {
+      "type": "text",
+      "description": "Brief marketing copy for the coverage list view"
+    },
+    "detailedContent": {
+      "type": "blocks",
+      "description": "Comprehensive explanation for the expanded/modal view"
+    },
+    "infoTooltip": {
+      "type": "text",
+      "description": "Global info (i button) for this coverage"
+    },
+    "advantages": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.feature"
+    },
+    "lookupKeyword": {
+      "type": "string",
+      "description": "The unique key for mapping to the insurance engine (e.g., LOB_PROD_ADDON_KEY)"
+    },
+    "badge": {
+      "type": "string",
+      "description": "e.g., Most Popular, New, Saves Premium"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

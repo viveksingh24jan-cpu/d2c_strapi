@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_product_features",
+  "info": {
+    "displayName": "Feature",
+    "description": "Individual feature or advantage with icon and tooltip",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "infoTooltip": {
+      "type": "text",
+      "description": "Content for the 'i' button"
+    },
+    "isHighlighted": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

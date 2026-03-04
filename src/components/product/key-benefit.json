@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_product_key_benefits",
+  "info": {
+    "displayName": "Key Benefit",
+    "icon": "star",
+    "description": "Highlighted benefit for product/plan cards"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "isPrimary": {
+      "type": "boolean",
+      "default": true,
+      "description": "Show with a larger icon/highlight on the card"
+    }
+  }
+}

@@ -329,6 +329,193 @@ export interface PageBuilderTextBlock extends Struct.ComponentSchema {
   };
 }
 
+export interface ProductAddon extends Struct.ComponentSchema {
+  collectionName: 'components_product_addons';
+  info: {
+    description: 'Optional coverage items to be purchased separately';
+    displayName: 'Add-on';
+    icon: 'plus';
+  };
+  attributes: {
+    addonCostLabel: Schema.Attribute.String;
+    badge: Schema.Attribute.String;
+    deductibleWording: Schema.Attribute.String;
+    detailedDescription: Schema.Attribute.Blocks;
+    detailedHeading: Schema.Attribute.String;
+    features: Schema.Attribute.Component<'product.feature', true>;
+    icon: Schema.Attribute.Media<'images'>;
+    infoTooltip: Schema.Attribute.Text;
+    limitValue: Schema.Attribute.String;
+    lookupKeyword: Schema.Attribute.String & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    unitLabel: Schema.Attribute.String;
+  };
+}
+
+export interface ProductComparisonAttribute extends Struct.ComponentSchema {
+  collectionName: 'components_product_comparison_attributes';
+  info: {
+    description: 'Rows for comparison table (e.g. CSR, Cashless Network)';
+    displayName: 'Comparison Attribute';
+    icon: 'layer';
+  };
+  attributes: {
+    icon: Schema.Attribute.Media<'images'>;
+    isHighlighted: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    numericValue: Schema.Attribute.Decimal;
+    tooltip: Schema.Attribute.Text;
+    value: Schema.Attribute.String & Schema.Attribute.Required;
+    valueType: Schema.Attribute.Enumeration<
+      ['text', 'percentage', 'boolean', 'rating', 'currency']
+    > &
+      Schema.Attribute.DefaultTo<'text'>;
+  };
+}
+
+export interface ProductComparisonSettings extends Struct.ComponentSchema {
+  collectionName: 'components_product_comparison_settings';
+  info: {
+    description: 'How this coverage appears in a side-by-side grid';
+    displayName: 'Comparison Grid Settings';
+    icon: 'table';
+  };
+  attributes: {
+    displayValue: Schema.Attribute.String;
+    gridGroup: Schema.Attribute.String;
+    gridIcon: Schema.Attribute.Media<'images'>;
+    gridLabel: Schema.Attribute.String;
+    showInGrid: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+  };
+}
+
+export interface ProductCoverage extends Struct.ComponentSchema {
+  collectionName: 'components_product_coverages';
+  info: {
+    description: 'Main coverage configuration (Basic, Add-on, Discount)';
+    displayName: 'Coverage';
+    icon: 'shield';
+  };
+  attributes: {
+    advantages: Schema.Attribute.Component<'product.feature', true>;
+    badge: Schema.Attribute.String;
+    detailedContent: Schema.Attribute.Blocks;
+    icon: Schema.Attribute.Media<'images'>;
+    image: Schema.Attribute.Media<'images'>;
+    infoTooltip: Schema.Attribute.Text;
+    lookupKeyword: Schema.Attribute.String;
+    shortDescription: Schema.Attribute.Text;
+    sortOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    type: Schema.Attribute.Enumeration<['basic', 'addon', 'discount']> &
+      Schema.Attribute.DefaultTo<'basic'>;
+  };
+}
+
+export interface ProductExclusion extends Struct.ComponentSchema {
+  collectionName: 'components_product_exclusions';
+  info: {
+    description: 'Standard exclusions for the plan';
+    displayName: 'Exclusion';
+    icon: 'cancel';
+  };
+  attributes: {
+    category: Schema.Attribute.Enumeration<
+      ['general', 'medical', 'lifestyle', 'occupational', 'standard']
+    > &
+      Schema.Attribute.DefaultTo<'general'>;
+    description: Schema.Attribute.Text;
+    detailedContent: Schema.Attribute.Blocks;
+    icon: Schema.Attribute.Media<'images'>;
+    isPermanent: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ProductFeature extends Struct.ComponentSchema {
+  collectionName: 'components_product_features';
+  info: {
+    description: 'Individual feature or advantage with icon and tooltip';
+    displayName: 'Feature';
+    icon: 'bulletList';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    icon: Schema.Attribute.Media<'images'>;
+    infoTooltip: Schema.Attribute.Text;
+    isHighlighted: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ProductInclusion extends Struct.ComponentSchema {
+  collectionName: 'components_product_inclusions';
+  info: {
+    description: 'Standard coverage items included in the plan';
+    displayName: 'Inclusion';
+    icon: 'check';
+  };
+  attributes: {
+    detailedDescription: Schema.Attribute.Blocks;
+    detailedHeading: Schema.Attribute.String;
+    features: Schema.Attribute.Component<'product.feature', true>;
+    icon: Schema.Attribute.Media<'images'>;
+    infoTooltip: Schema.Attribute.Text;
+    lookupKeyword: Schema.Attribute.String & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ProductKeyBenefit extends Struct.ComponentSchema {
+  collectionName: 'components_product_key_benefits';
+  info: {
+    description: 'Highlighted benefit for product/plan cards';
+    displayName: 'Key Benefit';
+    icon: 'star';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    icon: Schema.Attribute.Media<'images'>;
+    isPrimary: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ProductPlanCoverage extends Struct.ComponentSchema {
+  collectionName: 'components_product_plan_coverages';
+  info: {
+    description: 'Links a Keyword from Registry with optional overrides';
+    displayName: 'Plan Coverage Link';
+    icon: 'link';
+  };
+  attributes: {
+    coverage: Schema.Attribute.Relation<'oneToOne', 'api::coverage.coverage'>;
+    descriptionOverride: Schema.Attribute.Blocks;
+    iconOverride: Schema.Attribute.Media<'images'>;
+    isIncluded: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    limitOverride: Schema.Attribute.String;
+    sortOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    titleOverride: Schema.Attribute.String;
+  };
+}
+
+export interface ProductWaitingPeriod extends Struct.ComponentSchema {
+  collectionName: 'components_product_waiting_periods';
+  info: {
+    description: 'Specific waiting periods for conditions';
+    displayName: 'Waiting Period';
+    icon: 'clock';
+  };
+  attributes: {
+    conditionName: Schema.Attribute.String & Schema.Attribute.Required;
+    description: Schema.Attribute.Text;
+    detailedContent: Schema.Attribute.Blocks;
+    duration: Schema.Attribute.String;
+    icon: Schema.Attribute.Media<'images'>;
+    waivedByAddon: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+  };
+}
+
 export interface SharedAppLinks extends Struct.ComponentSchema {
   collectionName: 'components_shared_app_links';
   info: {
@@ -357,6 +544,19 @@ export interface SharedAward extends Struct.ComponentSchema {
     awardLink: Schema.Attribute.String;
     awardName: Schema.Attribute.String & Schema.Attribute.Required;
     issuingOrganization: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedFaq extends Struct.ComponentSchema {
+  collectionName: 'components_shared_faqs';
+  info: {
+    description: 'Simple Question and Answer pair';
+    displayName: 'FAQ';
+    icon: 'question';
+  };
+  attributes: {
+    answer: Schema.Attribute.Text & Schema.Attribute.Required;
+    question: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -392,6 +592,25 @@ export interface SharedPageMetadata extends Struct.ComponentSchema {
     lastUpdated: Schema.Attribute.DateTime;
     redirectionPath: Schema.Attribute.String;
     thirdPartyScripts: Schema.Attribute.Component<'shared.scripts', false>;
+  };
+}
+
+export interface SharedRegulatoryDisclosure extends Struct.ComponentSchema {
+  collectionName: 'components_shared_regulatory_disclosures';
+  info: {
+    description: 'IRDAI/Legal mandatory disclaimers';
+    displayName: 'Regulatory Disclosure';
+    icon: 'handshaking';
+  };
+  attributes: {
+    displayMode: Schema.Attribute.Enumeration<
+      ['footer', 'plan-card', 'checkout']
+    > &
+      Schema.Attribute.DefaultTo<'footer'>;
+    gstNote: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Premium is exclusive of GST'>;
+    irdaRegistration: Schema.Attribute.String;
+    mandatoryDisclaimer: Schema.Attribute.Blocks;
   };
 }
 
@@ -513,6 +732,23 @@ export interface SharedStyling extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedUiTextBlock extends Struct.ComponentSchema {
+  collectionName: 'components_shared_ui_text_blocks';
+  info: {
+    description: 'Atomic UI component for buttons and labels';
+    displayName: 'UITextBlock';
+    icon: 'cursor';
+  };
+  attributes: {
+    contextKey: Schema.Attribute.String & Schema.Attribute.Required;
+    helperText: Schema.Attribute.Text;
+    iconName: Schema.Attribute.String;
+    labelText: Schema.Attribute.String & Schema.Attribute.Required;
+    variant: Schema.Attribute.Enumeration<['primary', 'secondary', 'ghost']> &
+      Schema.Attribute.DefaultTo<'primary'>;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
@@ -533,16 +769,29 @@ declare module '@strapi/strapi' {
       'page-builder.sticky-cta-bar': PageBuilderStickyCtaBar;
       'page-builder.testimonial-showcase': PageBuilderTestimonialShowcase;
       'page-builder.text-block': PageBuilderTextBlock;
+      'product.addon': ProductAddon;
+      'product.comparison-attribute': ProductComparisonAttribute;
+      'product.comparison-settings': ProductComparisonSettings;
+      'product.coverage': ProductCoverage;
+      'product.exclusion': ProductExclusion;
+      'product.feature': ProductFeature;
+      'product.inclusion': ProductInclusion;
+      'product.key-benefit': ProductKeyBenefit;
+      'product.plan-coverage': ProductPlanCoverage;
+      'product.waiting-period': ProductWaitingPeriod;
       'shared.app-links': SharedAppLinks;
       'shared.award': SharedAward;
+      'shared.faq': SharedFaq;
       'shared.link': SharedLink;
       'shared.page-metadata': SharedPageMetadata;
+      'shared.regulatory-disclosure': SharedRegulatoryDisclosure;
       'shared.scripts': SharedScripts;
       'shared.section-reference': SharedSectionReference;
       'shared.seo': SharedSeo;
       'shared.social-link': SharedSocialLink;
       'shared.stats-item': SharedStatsItem;
       'shared.styling': SharedStyling;
+      'shared.ui-text-block': SharedUiTextBlock;
     }
   }
 }
