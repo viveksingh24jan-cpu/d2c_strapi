@@ -5,7 +5,7 @@
     "singularName": "insurance-plan",
     "pluralName": "insurance-plans",
     "displayName": "InsurancePlan",
-    "description": "Plan variants (1+3) with Dynamic Page Builder"
+    "description": "Plan variants (1+3) with standardized Dynamic Page Builder"
   },
   "options": {
     "draftAndPublish": true
@@ -40,13 +40,22 @@
     "pageBuilder": {
       "type": "dynamiczone",
       "components": [
+        "page-builder.document-cta",
+        "page-builder.document-listing",
         "page-builder.banner",
+        "page-builder.hero-section",
+        "page-builder.text-block",
+        "page-builder.card-grid",
+        "page-builder.media-block",
         "page-builder.accordion",
         "page-builder.testimonial-showcase",
         "page-builder.comparison-table",
         "page-builder.progress-steps",
         "page-builder.stats-bar",
-        "page-builder.text-block"
+        "page-builder.insurance-product-cta",
+        "page-builder.featured-content",
+        "page-builder.sticky-cta-bar",
+        "shared.section-reference"
       ]
     },
     "tagline": {

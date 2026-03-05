@@ -1,0 +1,44 @@
+{
+  "collectionName": "components_page_builder_document_listings",
+  "info": {
+    "displayName": "Document Listing (Automated)",
+    "description": "Automatically pulls documents from the registry by category",
+    "icon": "file"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "health",
+        "motor",
+        "property",
+        "travel",
+        "commercial",
+        "corporate-governance",
+        "regulatory",
+        "investor-relations",
+        "compliance",
+        "digital-health",
+        "customer-consent"
+      ],
+      "required": true
+    },
+    "viewType": {
+      "type": "enumeration",
+      "enum": [
+        "list",
+        "grid",
+        "accordion"
+      ],
+      "default": "list"
+    }
+  }
+}

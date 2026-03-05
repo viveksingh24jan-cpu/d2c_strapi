@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_shared_action_links",
+  "info": {
+    "displayName": "Action Link",
+    "description": "Unified link pattern for files, pages, or URLs",
+    "icon": "link"
+  },
+  "options": {},
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "file",
+        "internal_page",
+        "external_url"
+      ],
+      "default": "file",
+      "required": true
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "page": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::page.page"
+    },
+    "url": {
+      "type": "string",
+      "regex": "^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?$"
+    }
+  }
+}

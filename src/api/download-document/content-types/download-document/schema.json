@@ -1,31 +1,60 @@
 {
   "kind": "collectionType",
-  "collectionName": "download_documents",
+  "collectionName": "public_disclosures",
   "info": {
     "singularName": "download-document",
     "pluralName": "download-documents",
-    "displayName": "DownloadDocument"
+    "displayName": "Public Disclosure",
+    "description": "IRDAI-compliant registry for Disclosures, Policies, and Financials serving PDF, HTML, or External Links"
   },
-  "options": { "draftAndPublish": false },
+  "options": {
+    "draftAndPublish": false
+  },
   "pluginOptions": {},
   "attributes": {
-    "title": { "type": "string", "required": true },
-    "documentType": {
-      "type": "enumeration",
-      "enum": ["proposal-form", "claim-form", "policy-wording", "customer-information-sheet"],
+    "title": {
+      "type": "string",
       "required": true
     },
-    "productCategory": {
+    "category": {
       "type": "enumeration",
-      "enum": ["health", "motor", "property", "travel", "commercial"],
+      "enum": ["Regulatory", "Financial", "Governance", "Metrics"],
       "required": true
     },
-    "file": {
+    "financialYear": {
+      "type": "string",
+      "regex": "^20[0-9]{2}-[0-9]{2}$"
+    },
+    "quarter": {
+      "type": "enumeration",
+      "enum": ["Q1", "Q2", "Q3", "Q4", "Annual"]
+    },
+    "actionType": {
+      "type": "enumeration",
+      "enum": ["pdf_viewer", "docx_viewer", "internal_page", "external_link"],
+      "required": true
+    },
+    "fileAsset": {
       "type": "media",
       "multiple": false,
       "allowedTypes": ["files"]
     },
-    "version": { "type": "string" },
-    "uploadedOn": { "type": "date" }
+    "internalLink": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::page.page"
+    },
+    "externalUrl": {
+      "type": "string"
+    },
+    "publishDate": {
+      "type": "date",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    }
   }
 }

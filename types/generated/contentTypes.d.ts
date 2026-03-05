@@ -433,7 +433,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   collectionName: 'articles';
   info: {
-    description: 'Blog posts and articles';
+    description: 'Blog posts and articles with standardized page builder';
     displayName: 'Article';
     pluralName: 'articles';
     singularName: 'article';
@@ -446,25 +446,22 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     authorName: Schema.Attribute.String;
     blocks: Schema.Attribute.DynamicZone<
       [
+        'page-builder.document-cta',
+        'page-builder.document-listing',
+        'page-builder.banner',
         'page-builder.hero-section',
         'page-builder.text-block',
         'page-builder.card-grid',
-        'page-builder.card-item',
         'page-builder.media-block',
         'page-builder.accordion',
         'page-builder.testimonial-showcase',
         'page-builder.comparison-table',
-        'page-builder.banner',
         'page-builder.progress-steps',
-        'page-builder.step-item',
         'page-builder.stats-bar',
         'page-builder.insurance-product-cta',
         'page-builder.featured-content',
         'page-builder.sticky-cta-bar',
         'shared.section-reference',
-        'shared.stats-item',
-        'shared.social-link',
-        'shared.link',
       ]
     >;
     categories: Schema.Attribute.Relation<
@@ -475,6 +472,7 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    cta: Schema.Attribute.Component<'shared.cta', false>;
     excerpt: Schema.Attribute.Text &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 300;
@@ -495,6 +493,7 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 200;
       }>;
+    uiConfig: Schema.Attribute.Component<'shared.ui-config', false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -510,7 +509,7 @@ export interface ApiAuthorAuthor extends Struct.CollectionTypeSchema {
     singularName: 'author';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     articles: Schema.Attribute.Relation<'oneToMany', 'api::article.article'>;
@@ -568,6 +567,7 @@ export interface ApiBranchBranch extends Struct.CollectionTypeSchema {
     phone: Schema.Attribute.String;
     pincode: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'branchName'> & Schema.Attribute.Required;
     state: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -645,7 +645,7 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
 export interface ApiCoverageCoverage extends Struct.CollectionTypeSchema {
   collectionName: 'coverages';
   info: {
-    description: 'The central repository for all coverage/discount keywords (VOLDED_FLAG, etc.)';
+    description: 'Master Registry for Coverage Keywords';
     displayName: 'Master Coverage Registry';
     pluralName: 'coverages';
     singularName: 'coverage';
@@ -656,7 +656,6 @@ export interface ApiCoverageCoverage extends Struct.CollectionTypeSchema {
   attributes: {
     addonCostLabel: Schema.Attribute.String;
     applicableToCategories: Schema.Attribute.JSON;
-    badge: Schema.Attribute.String;
     benefitHeadline: Schema.Attribute.String;
     comparisonGrid: Schema.Attribute.Component<
       'product.comparison-settings',
@@ -669,17 +668,15 @@ export interface ApiCoverageCoverage extends Struct.CollectionTypeSchema {
     explanationImage: Schema.Attribute.Media<'images'>;
     explanationVideoUrl: Schema.Attribute.String;
     heading: Schema.Attribute.String;
-    horizontals: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::horizontal.horizontal'
-    >;
     icon: Schema.Attribute.Media<'images'>;
+    identifier: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     infoTooltip: Schema.Attribute.Text;
-    insuranceProduct: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::insurance-product.insurance-product'
+    insurancePlans: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::insurance-plan.insurance-plan'
     >;
-    isRecommended: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     limitValue: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -687,13 +684,13 @@ export interface ApiCoverageCoverage extends Struct.CollectionTypeSchema {
       'api::coverage.coverage'
     > &
       Schema.Attribute.Private;
-    lookupKeys: Schema.Attribute.JSON & Schema.Attribute.Required;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     richFeatures: Schema.Attribute.Component<'product.feature', true>;
-    sortOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     type: Schema.Attribute.Enumeration<['default', 'addon', 'discount']> &
       Schema.Attribute.DefaultTo<'default'>;
+    uiConfig: Schema.Attribute.Component<'shared.ui-config', false>;
     unitLabel: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -703,9 +700,10 @@ export interface ApiCoverageCoverage extends Struct.CollectionTypeSchema {
 
 export interface ApiDownloadDocumentDownloadDocument
   extends Struct.CollectionTypeSchema {
-  collectionName: 'download_documents';
+  collectionName: 'public_disclosures';
   info: {
-    displayName: 'DownloadDocument';
+    description: 'IRDAI-compliant registry for Disclosures, Policies, and Financials serving PDF, HTML, or External Links';
+    displayName: 'Public Disclosure';
     pluralName: 'download-documents';
     singularName: 'download-document';
   };
@@ -713,36 +711,35 @@ export interface ApiDownloadDocumentDownloadDocument
     draftAndPublish: false;
   };
   attributes: {
+    actionType: Schema.Attribute.Enumeration<
+      ['pdf_viewer', 'docx_viewer', 'internal_page', 'external_link']
+    > &
+      Schema.Attribute.Required;
+    category: Schema.Attribute.Enumeration<
+      ['Regulatory', 'Financial', 'Governance', 'Metrics']
+    > &
+      Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    documentType: Schema.Attribute.Enumeration<
-      [
-        'proposal-form',
-        'claim-form',
-        'policy-wording',
-        'customer-information-sheet',
-      ]
-    > &
-      Schema.Attribute.Required;
-    file: Schema.Attribute.Media<'files'>;
+    externalUrl: Schema.Attribute.String;
+    fileAsset: Schema.Attribute.Media<'files'>;
+    financialYear: Schema.Attribute.String;
+    internalLink: Schema.Attribute.Relation<'oneToOne', 'api::page.page'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::download-document.download-document'
     > &
       Schema.Attribute.Private;
-    productCategory: Schema.Attribute.Enumeration<
-      ['health', 'motor', 'property', 'travel', 'commercial']
-    > &
-      Schema.Attribute.Required;
+    publishDate: Schema.Attribute.Date & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
+    quarter: Schema.Attribute.Enumeration<['Q1', 'Q2', 'Q3', 'Q4', 'Annual']>;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    uploadedOn: Schema.Attribute.Date;
-    version: Schema.Attribute.String;
   };
 }
 
@@ -796,7 +793,7 @@ export interface ApiFinancialDisclosureFinancialDisclosure
 export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
   collectionName: 'global_configs';
   info: {
-    description: 'Master settings for branding, regulatory info, and global conversion tools';
+    description: 'Master settings for branding, regulatory info, and IRDAI-compliant footer columns';
     displayName: 'Global Site Configuration';
     pluralName: 'global-configs';
     singularName: 'global-config';
@@ -814,11 +811,15 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
       Schema.Attribute.Private;
     defaultSeo: Schema.Attribute.Component<'shared.seo', false>;
     favicon: Schema.Attribute.Media<'images'>;
+    footer_company: Schema.Attribute.Component<'shared.footer-column', false>;
+    footer_legal: Schema.Attribute.Component<'shared.footer-column', false>;
+    footer_products: Schema.Attribute.Component<'shared.footer-column', false>;
+    footer_resources: Schema.Attribute.Component<'shared.footer-column', false>;
     footerCopyright: Schema.Attribute.Text;
     footerDescription: Schema.Attribute.Text;
     footerLogo: Schema.Attribute.Media<'images'>;
     gicUrl: Schema.Attribute.String;
-    headerEmailAddress: Schema.Attribute.String;
+    headerEmailAddress: Schema.Attribute.Email;
     headerLogo: Schema.Attribute.Media<'images'>;
     headerPhoneNumber: Schema.Attribute.String;
     irdaiRegNumber: Schema.Attribute.String & Schema.Attribute.Required;
@@ -829,7 +830,6 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
       'api::global-config.global-config'
     > &
       Schema.Attribute.Private;
-    privacyPage: Schema.Attribute.Relation<'oneToOne', 'api::page.page'>;
     publishedAt: Schema.Attribute.DateTime;
     registeredAddress: Schema.Attribute.Text & Schema.Attribute.Required;
     section41Warning: Schema.Attribute.Blocks;
@@ -837,53 +837,8 @@ export interface ApiGlobalConfigGlobalConfig extends Struct.SingleTypeSchema {
     siteName: Schema.Attribute.String & Schema.Attribute.Required;
     socialLinks: Schema.Attribute.Component<'shared.social-link', true>;
     stickyCta: Schema.Attribute.Component<'page-builder.sticky-cta-bar', false>;
-    supportEmail: Schema.Attribute.String;
-    termsPage: Schema.Attribute.Relation<'oneToOne', 'api::page.page'>;
+    supportEmail: Schema.Attribute.Email;
     trustMetrics: Schema.Attribute.Component<'shared.stats-item', true>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiHorizontalHorizontal extends Struct.CollectionTypeSchema {
-  collectionName: 'horizontals';
-  info: {
-    description: 'Product Line/Horizontal (e.g. Car, Bike under Motor)';
-    displayName: 'Product Line (Horizontal)';
-    pluralName: 'horizontals';
-    singularName: 'horizontal';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    code: Schema.Attribute.String & Schema.Attribute.Required;
-    coverages: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::coverage.coverage'
-    >;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    insuranceProducts: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::insurance-product.insurance-product'
-    >;
-    lineOfBusiness: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::line-of-business.line-of-business'
-    >;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::horizontal.horizontal'
-    > &
-      Schema.Attribute.Private;
-    name: Schema.Attribute.String & Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    sortOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -894,7 +849,7 @@ export interface ApiInsurancePlanInsurancePlan
   extends Struct.CollectionTypeSchema {
   collectionName: 'insurance_plans';
   info: {
-    description: 'Specific plan variants (e.g., Gold, Silver) with rich content';
+    description: 'Plan variants (1+3) with standardized Dynamic Page Builder';
     displayName: 'InsurancePlan';
     pluralName: 'insurance-plans';
     singularName: 'insurance-plan';
@@ -910,118 +865,33 @@ export interface ApiInsurancePlanInsurancePlan
       'product.comparison-attribute',
       true
     >;
+    coverages: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::coverage.coverage'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    ctaLabel: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'Select Plan'>;
-    ctaUrl: Schema.Attribute.String & Schema.Attribute.Required;
+    cta: Schema.Attribute.Component<'shared.cta', false>;
     discounts: Schema.Attribute.Component<'product.plan-coverage', true>;
     exclusions: Schema.Attribute.Component<'product.exclusion', true>;
     faqs: Schema.Attribute.Component<'shared.faq', true>;
+    identifier: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     inclusions: Schema.Attribute.Component<'product.plan-coverage', true>;
-    insuranceProduct: Schema.Attribute.Relation<
-      'manyToOne',
+    insuranceProducts: Schema.Attribute.Relation<
+      'manyToMany',
       'api::insurance-product.insurance-product'
     >;
-    isRecommended: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::insurance-plan.insurance-plan'
     > &
       Schema.Attribute.Private;
-    lookupKey: Schema.Attribute.String;
-    mainDescription: Schema.Attribute.Blocks;
-    mainHeading: Schema.Attribute.String & Schema.Attribute.Required;
+    mainHeading: Schema.Attribute.String;
     name: Schema.Attribute.String & Schema.Attribute.Required;
-    planTier: Schema.Attribute.Enumeration<
-      ['basic', 'standard', 'plus', 'gold', 'silver', 'bronze', 'premium']
-    > &
-      Schema.Attribute.DefaultTo<'standard'>;
-    publishedAt: Schema.Attribute.DateTime;
-    seo: Schema.Attribute.Component<'shared.seo', false>;
-    tagline: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    waitingPeriods: Schema.Attribute.Component<'product.waiting-period', true>;
-  };
-}
-
-export interface ApiInsuranceProductInsuranceProduct
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'insurance_products';
-  info: {
-    displayName: 'InsuranceProduct';
-    pluralName: 'insurance-products';
-    singularName: 'insurance-product';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    badge: Schema.Attribute.String;
-    blocks: Schema.Attribute.DynamicZone<
-      [
-        'page-builder.hero-section',
-        'page-builder.text-block',
-        'page-builder.card-grid',
-        'page-builder.card-item',
-        'page-builder.media-block',
-        'page-builder.accordion',
-        'page-builder.testimonial-showcase',
-        'page-builder.comparison-table',
-        'page-builder.banner',
-        'page-builder.progress-steps',
-        'page-builder.step-item',
-        'page-builder.stats-bar',
-        'page-builder.insurance-product-cta',
-        'page-builder.featured-content',
-        'page-builder.sticky-cta-bar',
-        'shared.stats-item',
-        'shared.social-link',
-        'shared.link',
-        'shared.award',
-      ]
-    >;
-    cisDocument: Schema.Attribute.Media<'files'>;
-    complianceFeatures: Schema.Attribute.Blocks;
-    coverageOverrides: Schema.Attribute.Component<
-      'product.plan-coverage',
-      true
-    >;
-    coverages: Schema.Attribute.Relation<'oneToMany', 'api::coverage.coverage'>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    ctaText: Schema.Attribute.String & Schema.Attribute.Required;
-    ctaUrl: Schema.Attribute.String & Schema.Attribute.Required;
-    eligibility: Schema.Attribute.Blocks;
-    heroHeading: Schema.Attribute.String;
-    heroImage: Schema.Attribute.Media<'images'>;
-    heroSubheading: Schema.Attribute.Text;
-    horizontal: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::horizontal.horizontal'
-    >;
-    icon: Schema.Attribute.Media<'images', true>;
-    insurancePlans: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::insurance-plan.insurance-plan'
-    >;
-    isActive: Schema.Attribute.Boolean & Schema.Attribute.Required;
-    isFeatured: Schema.Attribute.Boolean;
-    isStandard: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    keyBenefits: Schema.Attribute.Component<'product.key-benefit', true>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::insurance-product.insurance-product'
-    > &
-      Schema.Attribute.Private;
-    lookupKey: Schema.Attribute.String;
     odTerm: Schema.Attribute.Integer &
       Schema.Attribute.SetMinMax<
         {
@@ -1030,27 +900,30 @@ export interface ApiInsuranceProductInsuranceProduct
         },
         number
       >;
-    policyWording: Schema.Attribute.Media<'files'>;
-    pricePrefix: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'Starting at'>;
-    priceSuffix: Schema.Attribute.String & Schema.Attribute.DefaultTo<'/year'>;
-    productCategory: Schema.Attribute.Enumeration<
-      ['comprehensive', 'own-damage', 'third-party', 'bundled']
-    > &
-      Schema.Attribute.DefaultTo<'comprehensive'>;
-    productDescription: Schema.Attribute.Blocks;
-    productName: Schema.Attribute.String & Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    regulatoryDetails: Schema.Attribute.Component<
-      'shared.regulatory-disclosure',
-      false
+    pageBuilder: Schema.Attribute.DynamicZone<
+      [
+        'page-builder.document-cta',
+        'page-builder.document-listing',
+        'page-builder.banner',
+        'page-builder.hero-section',
+        'page-builder.text-block',
+        'page-builder.card-grid',
+        'page-builder.media-block',
+        'page-builder.accordion',
+        'page-builder.testimonial-showcase',
+        'page-builder.comparison-table',
+        'page-builder.progress-steps',
+        'page-builder.stats-bar',
+        'page-builder.insurance-product-cta',
+        'page-builder.featured-content',
+        'page-builder.sticky-cta-bar',
+        'shared.section-reference',
+      ]
     >;
+    publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
-    shortDescription: Schema.Attribute.Text;
-    slug: Schema.Attribute.UID<'productName'>;
-    sortOrder: Schema.Attribute.Integer & Schema.Attribute.Required;
-    startingPrice: Schema.Attribute.Decimal;
-    tagline: Schema.Attribute.String & Schema.Attribute.Required;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    tagline: Schema.Attribute.String;
     tpTerm: Schema.Attribute.Integer &
       Schema.Attribute.SetMinMax<
         {
@@ -1059,7 +932,80 @@ export interface ApiInsuranceProductInsuranceProduct
         },
         number
       >;
-    uinNumber: Schema.Attribute.String;
+    uiConfig: Schema.Attribute.Component<'shared.ui-config', false>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiInsuranceProductInsuranceProduct
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'insurance_products';
+  info: {
+    description: 'Master Products (4W, 2W) with Dynamic Page Builder and optimized sorting';
+    displayName: 'InsuranceProduct';
+    pluralName: 'insurance-products';
+    singularName: 'insurance-product';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    cardIcon: Schema.Attribute.Media<'images'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    cta: Schema.Attribute.Component<'shared.cta', false>;
+    heroDescription: Schema.Attribute.Text;
+    heroHeading: Schema.Attribute.String;
+    identifier: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    insurancePlans: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::insurance-plan.insurance-plan'
+    >;
+    keyBenefits: Schema.Attribute.Component<'product.key-benefit', true>;
+    lineOfBusiness: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::line-of-business.line-of-business'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::insurance-product.insurance-product'
+    > &
+      Schema.Attribute.Private;
+    pageBuilder: Schema.Attribute.DynamicZone<
+      [
+        'page-builder.document-cta',
+        'page-builder.document-listing',
+        'page-builder.banner',
+        'page-builder.hero-section',
+        'page-builder.text-block',
+        'page-builder.card-grid',
+        'page-builder.media-block',
+        'page-builder.accordion',
+        'page-builder.testimonial-showcase',
+        'page-builder.comparison-table',
+        'page-builder.progress-steps',
+        'page-builder.stats-bar',
+        'page-builder.insurance-product-cta',
+        'page-builder.featured-content',
+        'page-builder.sticky-cta-bar',
+        'shared.section-reference',
+      ]
+    >;
+    productLabel: Schema.Attribute.Enumeration<
+      ['New', 'Best Seller', 'Tax Saving', 'Recommended', 'Limited Offer']
+    >;
+    productName: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    slug: Schema.Attribute.UID<'productName'> & Schema.Attribute.Required;
+    sortOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    uiConfig: Schema.Attribute.Component<'shared.ui-config', false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1096,6 +1042,7 @@ export interface ApiLeadershipProfileLeadershipProfile
     name: Schema.Attribute.String & Schema.Attribute.Required;
     photo: Schema.Attribute.Media<'images'>;
     publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
     socialLinks: Schema.Attribute.Component<'shared.social-link', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1107,7 +1054,7 @@ export interface ApiLineOfBusinessLineOfBusiness
   extends Struct.CollectionTypeSchema {
   collectionName: 'line_of_businesses';
   info: {
-    description: 'Root categories (Motor, Health, Travel, Property)';
+    description: 'Root Category (Motor, Health, Travel)';
     displayName: 'LineOfBusiness';
     pluralName: 'line-of-businesses';
     singularName: 'line-of-business';
@@ -1119,22 +1066,28 @@ export interface ApiLineOfBusinessLineOfBusiness
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.Text;
-    horizontals: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::horizontal.horizontal'
-    >;
+    cta: Schema.Attribute.Component<'shared.cta', false>;
+    heroDescription: Schema.Attribute.Text;
+    heroHeading: Schema.Attribute.String;
     icon: Schema.Attribute.Media<'images'>;
+    identifier: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    insuranceProducts: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::insurance-product.insurance-product'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::line-of-business.line-of-business'
     > &
       Schema.Attribute.Private;
-    lookupKey: Schema.Attribute.String;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    uiConfig: Schema.Attribute.Component<'shared.ui-config', false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1207,6 +1160,8 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
   attributes: {
     content: Schema.Attribute.DynamicZone<
       [
+        'page-builder.document-cta',
+        'page-builder.document-listing',
         'page-builder.hero-section',
         'page-builder.text-block',
         'page-builder.card-grid',
@@ -1238,7 +1193,6 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::page.page'> &
       Schema.Attribute.Private;
-    metadata: Schema.Attribute.Component<'shared.page-metadata', false>;
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
@@ -1255,6 +1209,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.DefaultTo<'default'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+    uiConfig: Schema.Attribute.Component<'shared.ui-config', false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1276,6 +1231,8 @@ export interface ApiSharedSectionSharedSection
   attributes: {
     blocks: Schema.Attribute.DynamicZone<
       [
+        'page-builder.document-cta',
+        'page-builder.document-listing',
         'page-builder.hero-section',
         'page-builder.text-block',
         'page-builder.card-grid',
@@ -1353,6 +1310,7 @@ export interface ApiTestimonialTestimonial extends Struct.CollectionTypeSchema {
         number
       > &
       Schema.Attribute.DefaultTo<5>;
+    slug: Schema.Attribute.UID<'customerName'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1403,49 +1361,6 @@ export interface ApiToolTool extends Struct.CollectionTypeSchema {
       ['motor', 'health', 'travel', 'generic']
     > &
       Schema.Attribute.DefaultTo<'generic'>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiTransparencyReportTransparencyReport
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'transparency_reports';
-  info: {
-    description: 'IRDAI mandated public disclosures and transparency reports';
-    displayName: 'Transparency Report';
-    pluralName: 'transparency-reports';
-    singularName: 'transparency-report';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    file: Schema.Attribute.Media<'files'> & Schema.Attribute.Required;
-    financialYear: Schema.Attribute.String & Schema.Attribute.Required;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::transparency-report.transparency-report'
-    > &
-      Schema.Attribute.Private;
-    publicationDate: Schema.Attribute.Date;
-    publishedAt: Schema.Attribute.DateTime;
-    reportTitle: Schema.Attribute.String & Schema.Attribute.Required;
-    reportType: Schema.Attribute.Enumeration<
-      [
-        'public-disclosure',
-        'nl-schedule',
-        'stewardship-report',
-        'csr-report',
-        'annual-report',
-      ]
-    > &
-      Schema.Attribute.DefaultTo<'public-disclosure'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1972,7 +1887,6 @@ declare module '@strapi/strapi' {
       'api::download-document.download-document': ApiDownloadDocumentDownloadDocument;
       'api::financial-disclosure.financial-disclosure': ApiFinancialDisclosureFinancialDisclosure;
       'api::global-config.global-config': ApiGlobalConfigGlobalConfig;
-      'api::horizontal.horizontal': ApiHorizontalHorizontal;
       'api::insurance-plan.insurance-plan': ApiInsurancePlanInsurancePlan;
       'api::insurance-product.insurance-product': ApiInsuranceProductInsuranceProduct;
       'api::leadership-profile.leadership-profile': ApiLeadershipProfileLeadershipProfile;
@@ -1982,7 +1896,6 @@ declare module '@strapi/strapi' {
       'api::shared-section.shared-section': ApiSharedSectionSharedSection;
       'api::testimonial.testimonial': ApiTestimonialTestimonial;
       'api::tool.tool': ApiToolTool;
-      'api::transparency-report.transparency-report': ApiTransparencyReportTransparencyReport;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

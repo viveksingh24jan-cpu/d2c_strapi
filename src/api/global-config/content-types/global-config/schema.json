@@ -5,7 +5,7 @@
     "singularName": "global-config",
     "pluralName": "global-configs",
     "displayName": "Global Site Configuration",
-    "description": "Master settings for branding, regulatory info, and global conversion tools"
+    "description": "Master settings for branding, regulatory info, and IRDAI-compliant footer columns"
   },
   "options": {
     "draftAndPublish": false
@@ -23,9 +23,7 @@
     "favicon": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": [
-        "images"
-      ]
+      "allowedTypes": ["images"]
     },
     "defaultSeo": {
       "type": "component",
@@ -58,15 +56,16 @@
     "headerLogo": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": [
-        "images"
-      ]
+      "allowedTypes": ["images"]
     },
     "headerPhoneNumber": {
       "type": "string"
     },
     "headerEmailAddress": {
-      "type": "string"
+      "type": "email"
+    },
+    "supportEmail": {
+      "type": "email"
     },
     "footerDescription": {
       "type": "text"
@@ -74,22 +73,27 @@
     "footerLogo": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": [
-        "images"
-      ]
+      "allowedTypes": ["images"]
     },
-    "privacyPage": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::page.page"
+    "footer_products": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.footer-column"
     },
-    "termsPage": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::page.page"
+    "footer_company": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.footer-column"
     },
-    "supportEmail": {
-      "type": "string"
+    "footer_resources": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.footer-column"
+    },
+    "footer_legal": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.footer-column"
     },
     "socialLinks": {
       "type": "component",
@@ -107,20 +111,17 @@
     "analytics": {
       "type": "component",
       "component": "shared.scripts",
-      "repeatable": false,
-      "description": "GTM, Facebook Pixel, and other tracking scripts"
+      "repeatable": false
     },
     "stickyCta": {
       "type": "component",
       "component": "page-builder.sticky-cta-bar",
-      "repeatable": false,
-      "description": "Global sticky CTA visible across the site"
+      "repeatable": false
     },
     "trustMetrics": {
       "type": "component",
       "component": "shared.stats-item",
-      "repeatable": true,
-      "description": "Global stats like Claim Settlement Ratio, Cashless Network size, etc."
+      "repeatable": true
     }
   }
 }

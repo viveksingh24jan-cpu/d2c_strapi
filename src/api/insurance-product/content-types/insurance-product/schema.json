@@ -5,7 +5,7 @@
     "singularName": "insurance-product",
     "pluralName": "insurance-products",
     "displayName": "InsuranceProduct",
-    "description": "Master Products (4W, 2W) with Dynamic Page Builder"
+    "description": "Master Products (4W, 2W) with Dynamic Page Builder and optimized sorting"
   },
   "options": {
     "draftAndPublish": true
@@ -25,6 +25,22 @@
       "type": "uid",
       "targetField": "productName",
       "required": true
+    },
+    "productLabel": {
+      "type": "enumeration",
+      "enum": [
+        "New",
+        "Best Seller",
+        "Tax Saving",
+        "Recommended",
+        "Limited Offer"
+      ],
+      "description": "Badge shown on product cards"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0,
+      "description": "Lower numbers appear first in listings"
     },
     "lineOfBusiness": {
       "type": "relation",
@@ -52,6 +68,8 @@
     "pageBuilder": {
       "type": "dynamiczone",
       "components": [
+        "page-builder.document-cta",
+        "page-builder.document-listing",
         "page-builder.banner",
         "page-builder.hero-section",
         "page-builder.text-block",
@@ -64,7 +82,8 @@
         "page-builder.stats-bar",
         "page-builder.insurance-product-cta",
         "page-builder.featured-content",
-        "page-builder.sticky-cta-bar"
+        "page-builder.sticky-cta-bar",
+        "shared.section-reference"
       ]
     },
     "keyBenefits": {

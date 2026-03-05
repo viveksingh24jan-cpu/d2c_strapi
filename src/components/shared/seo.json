@@ -3,7 +3,7 @@
   "info": {
     "displayName": "Advanced SEO",
     "icon": "search",
-    "description": "Enterprise-grade SEO with Robots and Structured Data"
+    "description": "Enterprise-grade SEO with Robots, Structured Data, and Global Fallback"
   },
   "options": {},
   "attributes": {
@@ -29,11 +29,17 @@
       "description": "e.g., noindex, nofollow"
     },
     "canonicalURL": {
-      "type": "string"
+      "type": "string",
+      "regex": "^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?$"
     },
     "structuredData": {
       "type": "json",
       "description": "JSON-LD for Schema.org"
+    },
+    "useGlobalFallback": {
+      "type": "boolean",
+      "default": true,
+      "description": "If enabled, missing fields will use data from Global Configuration"
     }
   }
 }

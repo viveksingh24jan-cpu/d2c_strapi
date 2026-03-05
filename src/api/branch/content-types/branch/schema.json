@@ -10,6 +10,11 @@
   "pluginOptions": {},
   "attributes": {
     "branchName": { "type": "string", "required": true },
+    "slug": {
+      "type": "uid",
+      "targetField": "branchName",
+      "required": true
+    },
     "branchType": {
       "type": "enumeration",
       "enum": ["head-office", "regional-office", "branch-office", "ombudsman-office"],

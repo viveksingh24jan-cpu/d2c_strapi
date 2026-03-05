@@ -44,15 +44,11 @@
       "default": "default",
       "description": "Select a template for specific frontend layout logic"
     },
-    "metadata": {
-      "type": "component",
-      "component": "shared.page-metadata",
-      "repeatable": false,
-      "description": "Page-level settings like redirection or mandatory labels"
-    },
     "content": {
       "type": "dynamiczone",
       "components": [
+        "page-builder.document-cta",
+        "page-builder.document-listing",
         "page-builder.hero-section",
         "page-builder.text-block",
         "page-builder.card-grid",

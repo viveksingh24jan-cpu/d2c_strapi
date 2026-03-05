@@ -5,7 +5,7 @@
     "singularName": "article",
     "pluralName": "articles",
     "displayName": "Article",
-    "description": "Blog posts and articles"
+    "description": "Blog posts and articles with standardized page builder"
   },
   "options": {
     "draftAndPublish": true
@@ -64,25 +64,22 @@
     "blocks": {
       "type": "dynamiczone",
       "components": [
+        "page-builder.document-cta",
+        "page-builder.document-listing",
+        "page-builder.banner",
         "page-builder.hero-section",
         "page-builder.text-block",
         "page-builder.card-grid",
-        "page-builder.card-item",
         "page-builder.media-block",
         "page-builder.accordion",
         "page-builder.testimonial-showcase",
         "page-builder.comparison-table",
-        "page-builder.banner",
         "page-builder.progress-steps",
-        "page-builder.step-item",
         "page-builder.stats-bar",
         "page-builder.insurance-product-cta",
         "page-builder.featured-content",
         "page-builder.sticky-cta-bar",
-        "shared.section-reference",
-        "shared.stats-item",
-        "shared.social-link",
-        "shared.link"
+        "shared.section-reference"
       ]
     },
     "seo": {

@@ -136,6 +136,60 @@ export interface PageBuilderComparisonTable extends Struct.ComponentSchema {
   };
 }
 
+export interface PageBuilderDocumentCta extends Struct.ComponentSchema {
+  collectionName: 'components_page_builder_document_ctas';
+  info: {
+    description: 'Manually select specific documents/integrations from the registry to display on this page';
+    displayName: 'Document Link / CTA';
+    icon: 'download';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    displayIcon: Schema.Attribute.Enumeration<
+      ['pdf', 'external-link', 'form', 'none']
+    > &
+      Schema.Attribute.DefaultTo<'pdf'>;
+    documents: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::download-document.download-document'
+    >;
+    title: Schema.Attribute.String;
+    variant: Schema.Attribute.Enumeration<['button', 'card', 'simple-link']> &
+      Schema.Attribute.DefaultTo<'button'>;
+  };
+}
+
+export interface PageBuilderDocumentListing extends Struct.ComponentSchema {
+  collectionName: 'components_page_builder_document_listings';
+  info: {
+    description: 'Automatically pulls documents from the registry by category';
+    displayName: 'Document Listing (Automated)';
+    icon: 'file';
+  };
+  attributes: {
+    category: Schema.Attribute.Enumeration<
+      [
+        'health',
+        'motor',
+        'property',
+        'travel',
+        'commercial',
+        'corporate-governance',
+        'regulatory',
+        'investor-relations',
+        'compliance',
+        'digital-health',
+        'customer-consent',
+      ]
+    > &
+      Schema.Attribute.Required;
+    description: Schema.Attribute.Text;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    viewType: Schema.Attribute.Enumeration<['list', 'grid', 'accordion']> &
+      Schema.Attribute.DefaultTo<'list'>;
+  };
+}
+
 export interface PageBuilderFeaturedContent extends Struct.ComponentSchema {
   collectionName: 'components_page_builder_featured_content';
   info: {
@@ -179,21 +233,18 @@ export interface PageBuilderHeroSection extends Struct.ComponentSchema {
 export interface PageBuilderInsuranceProductCta extends Struct.ComponentSchema {
   collectionName: 'components_page_builder_insurance_product_ctas';
   info: {
-    description: 'Dynamic product card that pulls data from the Product Registry (Single Source of Truth)';
+    description: 'CTA for a specific vehicle product (4W, 2W, CV)';
     displayName: 'Insurance Product CTA';
-    icon: 'shopping-cart';
+    icon: 'car';
   };
   attributes: {
-    customSubtitle: Schema.Attribute.Text;
-    customTitle: Schema.Attribute.String;
-    isFeatured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    cta: Schema.Attribute.Component<'shared.cta', false>;
+    description: Schema.Attribute.Text;
     product: Schema.Attribute.Relation<
       'oneToOne',
       'api::insurance-product.insurance-product'
     >;
-    variant: Schema.Attribute.Enumeration<['card', 'banner', 'minimal']> &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'card'>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -516,6 +567,25 @@ export interface ProductWaitingPeriod extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedActionLink extends Struct.ComponentSchema {
+  collectionName: 'components_shared_action_links';
+  info: {
+    description: 'Unified link pattern for files, pages, or URLs';
+    displayName: 'Action Link';
+    icon: 'link';
+  };
+  attributes: {
+    file: Schema.Attribute.Media<'files'>;
+    page: Schema.Attribute.Relation<'oneToOne', 'api::page.page'>;
+    type: Schema.Attribute.Enumeration<
+      ['file', 'internal_page', 'external_url']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'file'>;
+    url: Schema.Attribute.String;
+  };
+}
+
 export interface SharedAppLinks extends Struct.ComponentSchema {
   collectionName: 'components_shared_app_links';
   info: {
@@ -547,6 +617,25 @@ export interface SharedAward extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedCta extends Struct.ComponentSchema {
+  collectionName: 'components_shared_ctas';
+  info: {
+    description: 'Configurable buttons and links';
+    displayName: 'Dynamic CTA';
+    icon: 'cursor';
+  };
+  attributes: {
+    actionUrl: Schema.Attribute.String & Schema.Attribute.Required;
+    iconName: Schema.Attribute.String;
+    isVisible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    labelText: Schema.Attribute.String & Schema.Attribute.Required;
+    variant: Schema.Attribute.Enumeration<
+      ['primary', 'secondary', 'ghost', 'link']
+    > &
+      Schema.Attribute.DefaultTo<'primary'>;
+  };
+}
+
 export interface SharedFaq extends Struct.ComponentSchema {
   collectionName: 'components_shared_faqs';
   info: {
@@ -557,6 +646,19 @@ export interface SharedFaq extends Struct.ComponentSchema {
   attributes: {
     answer: Schema.Attribute.Text & Schema.Attribute.Required;
     question: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedFooterColumn extends Struct.ComponentSchema {
+  collectionName: 'components_shared_footer_columns';
+  info: {
+    description: 'Standardized footer column with title and links';
+    displayName: 'Footer Column';
+    icon: 'bulletList';
+  };
+  attributes: {
+    links: Schema.Attribute.Component<'shared.link', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -576,22 +678,6 @@ export interface SharedLink extends Struct.ComponentSchema {
       ['primary', 'secondary', 'outline', 'text']
     > &
       Schema.Attribute.DefaultTo<'primary'>;
-  };
-}
-
-export interface SharedPageMetadata extends Struct.ComponentSchema {
-  collectionName: 'components_shared_page_metadata';
-  info: {
-    description: 'Custom settings for specific page templates';
-    displayName: 'Page Metadata';
-    icon: 'cog';
-  };
-  attributes: {
-    attachmentForDownload: Schema.Attribute.Media<'files'>;
-    isMandatory: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    lastUpdated: Schema.Attribute.DateTime;
-    redirectionPath: Schema.Attribute.String;
-    thirdPartyScripts: Schema.Attribute.Component<'shared.scripts', false>;
   };
 }
 
@@ -645,30 +731,23 @@ export interface SharedSectionReference extends Struct.ComponentSchema {
 }
 
 export interface SharedSeo extends Struct.ComponentSchema {
-  collectionName: 'components_shared_seo';
+  collectionName: 'components_shared_seos';
   info: {
-    description: 'SEO metadata for pages and content';
-    displayName: 'SEO';
+    description: 'Enterprise-grade SEO with Robots, Structured Data, and Global Fallback';
+    displayName: 'Advanced SEO';
     icon: 'search';
   };
   attributes: {
-    canonical_url: Schema.Attribute.String;
-    keywords: Schema.Attribute.String;
-    meta_description: Schema.Attribute.Text &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 160;
-      }>;
-    meta_image: Schema.Attribute.Media<'images'>;
-    meta_robots: Schema.Attribute.String;
-    meta_title: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 60;
-      }>;
-    og_description: Schema.Attribute.String;
-    og_title: Schema.Attribute.String;
+    canonicalURL: Schema.Attribute.String;
+    metaDescription: Schema.Attribute.Text & Schema.Attribute.Required;
+    metaImage: Schema.Attribute.Media<'images'>;
+    metaKeywords: Schema.Attribute.Text;
+    metaRobots: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'index, follow'>;
+    metaTitle: Schema.Attribute.String & Schema.Attribute.Required;
     structuredData: Schema.Attribute.JSON;
+    useGlobalFallback: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
   };
 }
 
@@ -732,20 +811,24 @@ export interface SharedStyling extends Struct.ComponentSchema {
   };
 }
 
-export interface SharedUiTextBlock extends Struct.ComponentSchema {
-  collectionName: 'components_shared_ui_text_blocks';
+export interface SharedUiConfig extends Struct.ComponentSchema {
+  collectionName: 'components_shared_ui_configs';
   info: {
-    description: 'Atomic UI component for buttons and labels';
-    displayName: 'UITextBlock';
-    icon: 'cursor';
+    description: 'Visibility and Layout control';
+    displayName: 'UI UX Config';
+    icon: 'cog';
   };
   attributes: {
-    contextKey: Schema.Attribute.String & Schema.Attribute.Required;
-    helperText: Schema.Attribute.Text;
-    iconName: Schema.Attribute.String;
-    labelText: Schema.Attribute.String & Schema.Attribute.Required;
-    variant: Schema.Attribute.Enumeration<['primary', 'secondary', 'ghost']> &
-      Schema.Attribute.DefaultTo<'primary'>;
+    isVisibleInFooter: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    isVisibleInMenu: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    isVisibleOnHomepage: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    showInComparisonGrid: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    sortOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    themeColor: Schema.Attribute.String;
   };
 }
 
@@ -759,6 +842,8 @@ declare module '@strapi/strapi' {
       'page-builder.card-grid': PageBuilderCardGrid;
       'page-builder.card-item': PageBuilderCardItem;
       'page-builder.comparison-table': PageBuilderComparisonTable;
+      'page-builder.document-cta': PageBuilderDocumentCta;
+      'page-builder.document-listing': PageBuilderDocumentListing;
       'page-builder.featured-content': PageBuilderFeaturedContent;
       'page-builder.hero-section': PageBuilderHeroSection;
       'page-builder.insurance-product-cta': PageBuilderInsuranceProductCta;
@@ -779,11 +864,13 @@ declare module '@strapi/strapi' {
       'product.key-benefit': ProductKeyBenefit;
       'product.plan-coverage': ProductPlanCoverage;
       'product.waiting-period': ProductWaitingPeriod;
+      'shared.action-link': SharedActionLink;
       'shared.app-links': SharedAppLinks;
       'shared.award': SharedAward;
+      'shared.cta': SharedCta;
       'shared.faq': SharedFaq;
+      'shared.footer-column': SharedFooterColumn;
       'shared.link': SharedLink;
-      'shared.page-metadata': SharedPageMetadata;
       'shared.regulatory-disclosure': SharedRegulatoryDisclosure;
       'shared.scripts': SharedScripts;
       'shared.section-reference': SharedSectionReference;
@@ -791,7 +878,7 @@ declare module '@strapi/strapi' {
       'shared.social-link': SharedSocialLink;
       'shared.stats-item': SharedStatsItem;
       'shared.styling': SharedStyling;
-      'shared.ui-text-block': SharedUiTextBlock;
+      'shared.ui-config': SharedUiConfig;
     }
   }
 }

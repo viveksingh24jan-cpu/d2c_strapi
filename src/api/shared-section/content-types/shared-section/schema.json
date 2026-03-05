@@ -18,6 +18,8 @@
     "blocks": {
       "type": "dynamiczone",
       "components": [
+        "page-builder.document-cta",
+        "page-builder.document-listing",
         "page-builder.hero-section",
         "page-builder.text-block",
         "page-builder.card-grid",

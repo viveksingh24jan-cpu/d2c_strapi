@@ -1,0 +1,41 @@
+{
+  "collectionName": "components_page_builder_document_ctas",
+  "info": {
+    "displayName": "Document Link / CTA",
+    "description": "Manually select specific documents/integrations from the registry to display on this page",
+    "icon": "download"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "documents": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::download-document.download-document"
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": [
+        "button",
+        "card",
+        "simple-link"
+      ],
+      "default": "button"
+    },
+    "displayIcon": {
+      "type": "enumeration",
+      "enum": [
+        "pdf",
+        "external-link",
+        "form",
+        "none"
+      ],
+      "default": "pdf"
+    }
+  }
+}

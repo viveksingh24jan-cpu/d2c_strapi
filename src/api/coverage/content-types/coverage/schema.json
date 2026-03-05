@@ -15,10 +15,11 @@
       "type": "string",
       "required": true
     },
-    "identifiers": {
-      "type": "json",
+    "identifier": {
+      "type": "string",
       "required": true,
-      "description": "Array of keywords (VOLDED_FLAG, etc.)"
+      "unique": true,
+      "description": "Unique technical key (e.g. ZERO_DEP)"
     },
     "type": {
       "type": "enumeration",
