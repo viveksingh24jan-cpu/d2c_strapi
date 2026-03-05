@@ -4,8 +4,8 @@
   "info": {
     "singularName": "download-document",
     "pluralName": "download-documents",
-    "displayName": "Public Disclosure",
-    "description": "IRDAI-compliant registry for Disclosures, Policies, and Financials serving PDF, HTML, or External Links"
+    "displayName": "Unified Public Disclosure",
+    "description": "Consolidated registry for single policies and quarterly NL-Schedule sets (NL-1 to NL-47)"
   },
   "options": {
     "draftAndPublish": false
@@ -16,14 +16,26 @@
       "type": "string",
       "required": true
     },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
     "category": {
       "type": "enumeration",
       "enum": ["Regulatory", "Financial", "Governance", "Metrics"],
       "required": true
     },
+    "disclosureType": {
+      "type": "enumeration",
+      "enum": ["single_document", "quarterly_nl_set"],
+      "default": "single_document",
+      "required": true
+    },
     "financialYear": {
       "type": "string",
-      "regex": "^20[0-9]{2}-[0-9]{2}$"
+      "regex": "^20[0-9]{2}-[0-9]{2}$",
+      "description": "e.g. 2024-25"
     },
     "quarter": {
       "type": "enumeration",
@@ -32,7 +44,8 @@
     "actionType": {
       "type": "enumeration",
       "enum": ["pdf_viewer", "docx_viewer", "internal_page", "external_link"],
-      "required": true
+      "default": "pdf_viewer",
+      "description": "Used for single document entries"
     },
     "fileAsset": {
       "type": "media",
@@ -47,13 +60,14 @@
     "externalUrl": {
       "type": "string"
     },
+    "nestedSchedules": {
+      "type": "component",
+      "repeatable": true,
+      "component": "disclosures.disclosure-document",
+      "description": "Used for quarterly sets (NL-1 to NL-47)"
+    },
     "publishDate": {
       "type": "date",
-      "required": true
-    },
-    "slug": {
-      "type": "uid",
-      "targetField": "title",
       "required": true
     }
   }

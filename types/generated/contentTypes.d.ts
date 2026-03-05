@@ -702,8 +702,8 @@ export interface ApiDownloadDocumentDownloadDocument
   extends Struct.CollectionTypeSchema {
   collectionName: 'public_disclosures';
   info: {
-    description: 'IRDAI-compliant registry for Disclosures, Policies, and Financials serving PDF, HTML, or External Links';
-    displayName: 'Public Disclosure';
+    description: 'Consolidated registry for single policies and quarterly NL-Schedule sets (NL-1 to NL-47)';
+    displayName: 'Unified Public Disclosure';
     pluralName: 'download-documents';
     singularName: 'download-document';
   };
@@ -714,7 +714,7 @@ export interface ApiDownloadDocumentDownloadDocument
     actionType: Schema.Attribute.Enumeration<
       ['pdf_viewer', 'docx_viewer', 'internal_page', 'external_link']
     > &
-      Schema.Attribute.Required;
+      Schema.Attribute.DefaultTo<'pdf_viewer'>;
     category: Schema.Attribute.Enumeration<
       ['Regulatory', 'Financial', 'Governance', 'Metrics']
     > &
@@ -722,6 +722,11 @@ export interface ApiDownloadDocumentDownloadDocument
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    disclosureType: Schema.Attribute.Enumeration<
+      ['single_document', 'quarterly_nl_set']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'single_document'>;
     externalUrl: Schema.Attribute.String;
     fileAsset: Schema.Attribute.Media<'files'>;
     financialYear: Schema.Attribute.String;
@@ -732,57 +737,14 @@ export interface ApiDownloadDocumentDownloadDocument
       'api::download-document.download-document'
     > &
       Schema.Attribute.Private;
+    nestedSchedules: Schema.Attribute.Component<
+      'disclosures.disclosure-document',
+      true
+    >;
     publishDate: Schema.Attribute.Date & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     quarter: Schema.Attribute.Enumeration<['Q1', 'Q2', 'Q3', 'Q4', 'Annual']>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiFinancialDisclosureFinancialDisclosure
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'financial_disclosures';
-  info: {
-    description: 'Quarterly results, annual reports, ESG reports, and public disclosures';
-    displayName: 'Financial Disclosure';
-    pluralName: 'financial-disclosures';
-    singularName: 'financial-disclosure';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    disclosureType: Schema.Attribute.Enumeration<
-      [
-        'quarterly-result',
-        'annual-report',
-        'esg-report',
-        'stewardship-policy',
-        'public-disclosure',
-      ]
-    > &
-      Schema.Attribute.Required;
-    documents: Schema.Attribute.Component<
-      'disclosures.disclosure-document',
-      true
-    >;
-    financialYear: Schema.Attribute.String & Schema.Attribute.Required;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::financial-disclosure.financial-disclosure'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    publishedOn: Schema.Attribute.Date;
-    quarter: Schema.Attribute.Enumeration<['Q1', 'Q2', 'Q3', 'Q4']>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1889,7 +1851,6 @@ declare module '@strapi/strapi' {
       'api::category.category': ApiCategoryCategory;
       'api::coverage.coverage': ApiCoverageCoverage;
       'api::download-document.download-document': ApiDownloadDocumentDownloadDocument;
-      'api::financial-disclosure.financial-disclosure': ApiFinancialDisclosureFinancialDisclosure;
       'api::global-config.global-config': ApiGlobalConfigGlobalConfig;
       'api::insurance-plan.insurance-plan': ApiInsurancePlanInsurancePlan;
       'api::insurance-product.insurance-product': ApiInsuranceProductInsuranceProduct;
