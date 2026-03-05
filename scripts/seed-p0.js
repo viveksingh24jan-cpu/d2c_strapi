@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = async function seed(strapi) {
-  console.log('🚀 Starting FINAL ULTIMATE PRODUCTION-GRADE DATA SATURATION (Unified Hub)...');
+  console.log('🚀 Starting ULTIMATE PRODUCTION-GRADE SEED (All Mandatory Pages)...');
 
   // 1. CLEANUP
   const collections = [
@@ -24,7 +24,7 @@ module.exports = async function seed(strapi) {
   // 2. GLOBAL CONFIG
   const gcData = {
     siteName: 'Kiwi General Insurance',
-    siteDescription: 'Award-winning digital protection for 7 Crore+ Indians.',
+    siteDescription: 'Simple, Scalable, Fast, and Agile Insurance.',
     cinNumber: 'U66000MH2024PLC123456',
     irdaiRegNumber: '123',
     registeredAddress: 'Unit 101, Lotus Business Park, Ram Mandir Road, Goregaon (East), Mumbai 400063',
@@ -38,13 +38,16 @@ module.exports = async function seed(strapi) {
   else await strapi.documents('api::global-config.global-config').create({ data: gcData });
 
   // 3. REGISTRIES
-  console.log('📦 Populating Registries (High Volume)...');
+  console.log('📦 Populating Registries...');
+  
+  // Coverages
   const coverageIds = [];
   for (let i = 1; i <= 30; i++) {
     const c = await strapi.documents('api::coverage.coverage').create({ data: { name: `Coverage Block ${i}`, identifier: `COV_${i}`, type: 'addon', heading: `Heading ${i}`, status: 'published' } });
     coverageIds.push(c.id);
   }
 
+  // Insurance Engine
   const lobNames = ['Motor Insurance', 'Health Insurance', 'Travel Insurance'];
   const lobIds = {};
   for (const name of lobNames) {
@@ -57,34 +60,25 @@ module.exports = async function seed(strapi) {
     { name: 'Bike Insurance', iden: '2W', lob: 'Motor Insurance' },
     { name: 'Health Insurance', iden: 'HEALTH', lob: 'Health Insurance' }
   ];
-  const productIds = [];
   for (const p of products) {
     const createdProduct = await strapi.documents('api::insurance-product.insurance-product').create({
       data: { productName: p.name, identifier: p.iden, slug: p.name.toLowerCase().replace(/ /g, '-'), lineOfBusiness: lobIds[p.lob], productLabel: 'Best Seller', isVisibleOnHomepage: true, sortOrder: 1, status: 'published' }
     });
-    productIds.push(createdProduct.id);
-
     await strapi.documents('api::insurance-plan.insurance-plan').create({
       data: { name: `${p.name} Platinum`, identifier: `${p.iden}_PLAT`, slug: `${p.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}-platinum`, insuranceProducts: [createdProduct.id], coverages: coverageIds.slice(0, 5), status: 'published' }
     });
   }
 
-  const author = await strapi.documents('api::author.author').create({ data: { name: 'Vivek Singh', slug: 'vivek-singh', status: 'published' } });
-  const category = await strapi.documents('api::category.category').create({ data: { name: 'Guides', slug: 'guides', status: 'published' } });
-  for (let i = 1; i <= 10; i++) await strapi.documents('api::article.article').create({ data: { title: `Guide ${i}`, slug: `guide-${i}`, author: author.id, categories: [category.id], excerpt: 'Excerpt', isFeatured: true, status: 'published' } });
-
-  for (let i = 1; i <= 5; i++) await strapi.documents('api::leadership-profile.leadership-profile').create({ data: { name: `Executive ${i}`, slug: `exec-${i}`, designation: 'Director', category: 'Board', status: 'published' } });
-  for (let i = 1; i <= 15; i++) await strapi.documents('api::branch.branch').create({ data: { branchName: `Branch ${i}`, slug: `branch-${i}`, branchType: 'branch-office', city: 'Mumbai', status: 'published' } });
-
-  // 4. UNIFIED PUBLIC DISCLOSURES (Single Docs & Sets)
-  console.log('🏛️ Populating Unified Disclosure Registry...');
+  // 4. UNIFIED PUBLIC DISCLOSURES (Mandatory)
+  console.log('🏛️ Populating Mandatory Documents...');
   
-  // A. Single Policies
-  const policies = [
-    { title: 'AML Policy', cat: 'Regulatory' },
-    { title: 'Code of Conduct', cat: 'Governance' }
+  const mandatoryPolicies = [
+    { title: 'AML Policy', cat: 'Regulatory' }, { title: 'Code of Conduct', cat: 'Governance' },
+    { title: 'Anti-Bribery Policy', cat: 'Governance' }, { title: 'Whistle Blower Policy', cat: 'Governance' },
+    { title: 'Stewardship Policy', cat: 'Governance' }, { title: 'Underwriting Policy', cat: 'Regulatory' },
+    { title: 'Policyholder Protection Policy', cat: 'Regulatory' }, { title: 'Annual Report 2025', cat: 'Financial' }
   ];
-  for (const p of policies) {
+  for (const p of mandatoryPolicies) {
     await strapi.documents('api::download-document.download-document').create({
       data: {
         title: p.title, slug: p.title.toLowerCase().replace(/ /g, '-'),
@@ -94,64 +88,95 @@ module.exports = async function seed(strapi) {
     });
   }
 
-  // B. Quarterly NL-Sets (The Big One)
+  // Quarterly NL Sets
   const nlItems = [];
-  for (let i = 1; i <= 47; i++) {
-    nlItems.push({ 
-      title: `NL-${i} Schedule`, 
-      actionType: 'pdf_viewer', 
-      description: `Premium Schedule NL-${i}` 
-    });
-  }
+  for (let i = 1; i <= 47; i++) nlItems.push({ title: `NL-${i}`, actionType: 'pdf_viewer' });
   await strapi.documents('api::download-document.download-document').create({
     data: {
-      title: 'Mandatory Disclosures - Q1 2026-27',
-      slug: 'q1-2026-27-nl-set',
-      category: 'Financial',
-      disclosureType: 'quarterly_nl_set',
-      financialYear: '2026-27',
-      quarter: 'Q1',
-      nestedSchedules: nlItems,
-      publishDate: new Date().toISOString(),
-      status: 'published'
+      title: 'Mandatory Disclosures - Q1 2026-27', slug: 'q1-2026-27-nl-set', category: 'Financial',
+      disclosureType: 'quarterly_nl_set', financialYear: '2026-27', quarter: 'Q1', nestedSchedules: nlItems,
+      publishDate: new Date().toISOString(), status: 'published'
     }
   });
 
-  const trustBar = await strapi.documents('api::shared-section.shared-section').create({
-    data: { title: 'Global Trust', blocks: [{ __component: 'page-builder.stats-bar', title: 'Stats', stats: [{ label: 'CSR', value: '99%' }] }], status: 'published' }
-  });
-
-  for (let i = 1; i <= 5; i++) await strapi.documents('api::testimonial.testimonial').create({ data: { customerName: `User ${i}`, slug: `user-${i}`, customerTitle: 'Buyer', quote: [{ type: 'paragraph', children: [{ type: 'text', text: 'Good!' }] }], rating: 5, status: 'published' } });
-  await strapi.documents('api::tool.tool').create({ data: { name: 'Calc', slug: 'calc', category: 'calculator', status: 'published' } });
-  await strapi.documents('api::campaign.campaign').create({ data: { campaignName: 'Sale', startDate: '2026-06-01', endDate: '2026-08-31', isActive: true, status: 'published' } });
-
-  // 5. ALL MANDATORY PAGES
-  console.log('📄 Assembling 10+ Sitemap Pages...');
+  // 5. CORPORATE ENTITIES
+  console.log('👔 Adding Leadership & Branches...');
+  const leaders = [
+    { name: 'Vikram Aditya', slug: 'vikram-aditya', role: 'CEO', cat: 'KMP' },
+    { name: 'Sunita Rao', slug: 'sunita-rao', role: 'CFO', cat: 'KMP' },
+    { name: 'Amitabh Kant', slug: 'amitabh-kant', role: 'Chairman', cat: 'Board' }
+  ];
+  for (const l of leaders) await strapi.documents('api::leadership-profile.leadership-profile').create({ data: { name: l.name, slug: l.slug, designation: l.role, category: l.cat, status: 'published' } });
+  
+  await strapi.documents('api::branch.branch').create({ data: { branchName: 'Mumbai HQ', slug: 'mumbai-hq', branchType: 'head-office', city: 'Mumbai', status: 'published' } });
+  
+  // 6. ALL MANDATORY PAGES (Based on Schema Capabilities)
+  console.log('📄 Assembling All Mandatory Pages...');
   const pageList = [
     { title: 'Home', slug: 'index', template: 'home' },
-    { title: 'Public Disclosures', slug: 'disclosures', template: 'legal' }
+    { title: 'About Us', slug: 'about-us', template: 'about' },
+    { title: 'Board of Directors', slug: 'board-of-directors', template: 'about' },
+    { title: 'Key Management Personnel', slug: 'kmp', template: 'about' },
+    { title: 'Our Products', slug: 'products', template: 'product-landing' },
+    { title: 'Customer Service', slug: 'customer-service', template: 'default' },
+    { title: 'Branch List', slug: 'branch-list', template: 'default' },
+    { title: 'Grievance Redressal', slug: 'grievance-redressal', template: 'grievance' },
+    { title: 'Ombudsman List', slug: 'ombudsman-list', template: 'legal' },
+    { title: 'News & Media', slug: 'news-media', template: 'default' },
+    { title: 'Public Disclosures', slug: 'public-disclosures', template: 'legal' },
+    { title: 'Corporate Governance', slug: 'corporate-governance', template: 'legal' },
+    { title: 'Investor Relations', slug: 'investor-relations', template: 'legal' },
+    { title: 'Compliance Hub', slug: 'compliance', template: 'legal' }
   ];
 
   for (const p of pageList) {
     let content = [{ __component: 'page-builder.hero-section', title: p.title, layout: 'centered' }];
+    
     if (p.slug === 'index') {
       content.push({ __component: 'page-builder.product-grid', title: 'Featured Products', mode: 'automated' });
-      content.push({ __component: 'shared.section-reference', sharedSection: trustBar.id });
     }
-    if (p.slug === 'disclosures') {
+    
+    if (p.slug === 'public-disclosures') {
       content.push({ __component: 'page-builder.document-listing', title: 'Regulatory Disclosures', category: 'Regulatory', viewType: 'list' });
-      content.push({ __component: 'page-builder.document-listing', title: 'Quarterly Disclosures', category: 'Financial', viewType: 'grid' });
+      content.push({ __component: 'page-builder.document-listing', title: 'Financial Reports', category: 'Financial', viewType: 'list' });
     }
+
+    if (p.slug === 'compliance') {
+      content.push({ __component: 'page-builder.document-listing', title: 'Compliance Policies', category: 'Regulatory', viewType: 'grid' });
+    }
+
+    if (p.slug === 'grievance-redressal') {
+      content.push({
+        __component: 'page-builder.accordion', title: 'Escalation Matrix',
+        items: [
+          { title: 'Level 1: Support', content: [{ type: 'paragraph', children: [{ type: 'text', text: 'Email hello@kiwi.com' }] }] },
+          { title: 'Level 2: GRO', content: [{ type: 'paragraph', children: [{ type: 'text', text: 'Contact our Grievance Officer' }] }] },
+          { title: 'Level 3: Ombudsman', content: [{ type: 'paragraph', children: [{ type: 'text', text: 'Escalate to IRDAI Bima Bharosa' }] }] }
+        ]
+      });
+    }
+
     await strapi.documents('api::page.page').create({ data: { ...p, content, status: 'published' } });
   }
 
-  // 6. NAVIGATION
-  console.log('🍴 Building Mega Navigation...');
+  // 7. NAVIGATION
+  console.log('🍴 Building Navigation...');
   const headerItems = ['Home', 'Products', 'Customer Service', 'About Us', 'Public Disclosures'];
   for (let i = 0; i < headerItems.length; i++) {
     const slug = pageList.find(ap => ap.title.includes(headerItems[i]))?.slug || 'index';
     await strapi.documents('api::navigation-menu.navigation-menu').create({ data: { label: headerItems[i], url: i === 0 ? '/' : `/${slug}`, location: 'header', displayOrder: i + 1, status: 'published' } });
   }
 
-  console.log('✨ MISSION ACCOMPLISHED: CMS FULLY SATURATED (Unified Hub).');
+  const footers = [
+    { loc: 'footer_products', title: 'Products', links: ['Car Insurance', 'Bike Insurance', 'Health Insurance'] },
+    { loc: 'footer_company', title: 'Company', links: ['About Us', 'Leadership', 'News'] },
+    { loc: 'footer_resources', title: 'Resources', links: ['Disclosures', 'Grievance', 'Branches'] },
+    { loc: 'footer_legal', title: 'Legal', links: ['Privacy Policy', 'Terms of Use', 'AML Policy'] }
+  ];
+  for (const f of footers) {
+    const parent = await strapi.documents('api::navigation-menu.navigation-menu').create({ data: { label: f.title, location: f.loc, status: 'published' } });
+    for (const l of f.links) await strapi.documents( 'api::navigation-menu.navigation-menu').create({ data: { label: l, url: '/', parent: parent.id, status: 'published' } });
+  }
+
+  console.log('✨ SUCCESS: ALL MANDATORY PAGES & DATA ARE LIVE.');
 }
