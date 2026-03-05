@@ -2,7 +2,7 @@
   "collectionName": "components_page_builder_document_listings",
   "info": {
     "displayName": "Document Listing (Automated)",
-    "description": "Automatically pulls documents from the registry by category",
+    "description": "Automatically pulls documents from the registry by category (Regulatory, Financial, etc.)",
     "icon": "file"
   },
   "options": {},
@@ -17,17 +17,10 @@
     "category": {
       "type": "enumeration",
       "enum": [
-        "health",
-        "motor",
-        "property",
-        "travel",
-        "commercial",
-        "corporate-governance",
-        "regulatory",
-        "investor-relations",
-        "compliance",
-        "digital-health",
-        "customer-consent"
+        "Regulatory",
+        "Financial",
+        "Governance",
+        "Metrics"
       ],
       "required": true
     },

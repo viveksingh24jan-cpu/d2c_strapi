@@ -966,6 +966,8 @@ export interface ApiInsuranceProductInsuranceProduct
       'manyToMany',
       'api::insurance-plan.insurance-plan'
     >;
+    isVisibleOnHomepage: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     keyBenefits: Schema.Attribute.Component<'product.key-benefit', true>;
     lineOfBusiness: Schema.Attribute.Relation<
       'manyToOne',
@@ -979,6 +981,7 @@ export interface ApiInsuranceProductInsuranceProduct
       Schema.Attribute.Private;
     pageBuilder: Schema.Attribute.DynamicZone<
       [
+        'page-builder.product-grid',
         'page-builder.document-cta',
         'page-builder.document-listing',
         'page-builder.banner',
@@ -1160,6 +1163,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
   attributes: {
     content: Schema.Attribute.DynamicZone<
       [
+        'page-builder.product-grid',
         'page-builder.document-cta',
         'page-builder.document-listing',
         'page-builder.hero-section',

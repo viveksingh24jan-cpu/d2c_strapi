@@ -38,8 +38,7 @@
     },
     "useGlobalFallback": {
       "type": "boolean",
-      "default": true,
-      "description": "If enabled, missing fields will use data from Global Configuration"
+      "default": true
     }
   }
 }

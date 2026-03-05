@@ -1,26 +1,38 @@
 {
-  "collectionName": "components_disclosures_disclosure_document",
+  "collectionName": "components_disclosures_disclosure_documents",
   "info": {
     "displayName": "Disclosure Document",
-    "description": "IRDAI compliance document attachment",
+    "description": "IRDAI compliant document attachment with dynamic routing",
     "icon": "file"
   },
   "options": {},
   "attributes": {
-    "form_name": {
-      "type": "string"
-    },
     "title": {
-      "type": "string"
-    },
-    "file": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["files"]
+      "type": "string",
+      "required": true
     },
     "description": {
       "type": "text"
+    },
+    "actionType": {
+      "type": "enumeration",
+      "enum": ["pdf_viewer", "docx_viewer", "internal_page", "external_link"],
+      "default": "pdf_viewer",
+      "required": true
+    },
+    "fileAsset": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["files"]
+    },
+    "externalUrl": {
+      "type": "string",
+      "regex": "^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?$"
+    },
+    "internalLink": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::page.page"
     }
   }
 }

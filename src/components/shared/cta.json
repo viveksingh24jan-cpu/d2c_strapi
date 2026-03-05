@@ -7,7 +7,7 @@
   },
   "options": {},
   "attributes": {
-    "labelText": {
+    "label": {
       "type": "string",
       "required": true
     },

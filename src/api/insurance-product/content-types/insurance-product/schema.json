@@ -42,6 +42,10 @@
       "default": 0,
       "description": "Lower numbers appear first in listings"
     },
+    "isVisibleOnHomepage": {
+      "type": "boolean",
+      "default": false
+    },
     "lineOfBusiness": {
       "type": "relation",
       "relation": "manyToOne",
@@ -68,6 +72,7 @@
     "pageBuilder": {
       "type": "dynamiczone",
       "components": [
+        "page-builder.product-grid",
         "page-builder.document-cta",
         "page-builder.document-listing",
         "page-builder.banner",

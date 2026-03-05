@@ -1,17 +1,23 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
 export interface DisclosuresDisclosureDocument extends Struct.ComponentSchema {
-  collectionName: 'components_disclosures_disclosure_document';
+  collectionName: 'components_disclosures_disclosure_documents';
   info: {
-    description: 'IRDAI compliance document attachment';
+    description: 'IRDAI compliant document attachment with dynamic routing';
     displayName: 'Disclosure Document';
     icon: 'file';
   };
   attributes: {
+    actionType: Schema.Attribute.Enumeration<
+      ['pdf_viewer', 'docx_viewer', 'internal_page', 'external_link']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'pdf_viewer'>;
     description: Schema.Attribute.Text;
-    file: Schema.Attribute.Media<'files'>;
-    form_name: Schema.Attribute.String;
-    title: Schema.Attribute.String;
+    externalUrl: Schema.Attribute.String;
+    fileAsset: Schema.Attribute.Media<'files'>;
+    internalLink: Schema.Attribute.Relation<'oneToOne', 'api::page.page'>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -162,25 +168,13 @@ export interface PageBuilderDocumentCta extends Struct.ComponentSchema {
 export interface PageBuilderDocumentListing extends Struct.ComponentSchema {
   collectionName: 'components_page_builder_document_listings';
   info: {
-    description: 'Automatically pulls documents from the registry by category';
+    description: 'Automatically pulls documents from the registry by category (Regulatory, Financial, etc.)';
     displayName: 'Document Listing (Automated)';
     icon: 'file';
   };
   attributes: {
     category: Schema.Attribute.Enumeration<
-      [
-        'health',
-        'motor',
-        'property',
-        'travel',
-        'commercial',
-        'corporate-governance',
-        'regulatory',
-        'investor-relations',
-        'compliance',
-        'digital-health',
-        'customer-consent',
-      ]
+      ['Regulatory', 'Financial', 'Governance', 'Metrics']
     > &
       Schema.Attribute.Required;
     description: Schema.Attribute.Text;
@@ -270,6 +264,25 @@ export interface PageBuilderMediaBlock extends Struct.ComponentSchema {
     > &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'image'>;
+  };
+}
+
+export interface PageBuilderProductGrid extends Struct.ComponentSchema {
+  collectionName: 'components_page_builder_product_grids';
+  info: {
+    description: 'Display a grid of insurance products pulled directly from the registry';
+    displayName: 'Product Selection Grid';
+    icon: 'grid';
+  };
+  attributes: {
+    mode: Schema.Attribute.Enumeration<['automated', 'manual']> &
+      Schema.Attribute.DefaultTo<'automated'>;
+    products: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::insurance-product.insurance-product'
+    >;
+    subtitle: Schema.Attribute.Text;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -628,7 +641,7 @@ export interface SharedCta extends Struct.ComponentSchema {
     actionUrl: Schema.Attribute.String & Schema.Attribute.Required;
     iconName: Schema.Attribute.String;
     isVisible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    labelText: Schema.Attribute.String & Schema.Attribute.Required;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
     variant: Schema.Attribute.Enumeration<
       ['primary', 'secondary', 'ghost', 'link']
     > &
@@ -848,6 +861,7 @@ declare module '@strapi/strapi' {
       'page-builder.hero-section': PageBuilderHeroSection;
       'page-builder.insurance-product-cta': PageBuilderInsuranceProductCta;
       'page-builder.media-block': PageBuilderMediaBlock;
+      'page-builder.product-grid': PageBuilderProductGrid;
       'page-builder.progress-steps': PageBuilderProgressSteps;
       'page-builder.stats-bar': PageBuilderStatsBar;
       'page-builder.step-item': PageBuilderStepItem;

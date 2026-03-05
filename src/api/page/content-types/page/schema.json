@@ -47,6 +47,7 @@
     "content": {
       "type": "dynamiczone",
       "components": [
+        "page-builder.product-grid",
         "page-builder.document-cta",
         "page-builder.document-listing",
         "page-builder.hero-section",

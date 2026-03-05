@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_page_builder_product_grids",
+  "info": {
+    "displayName": "Product Selection Grid",
+    "description": "Display a grid of insurance products pulled directly from the registry",
+    "icon": "grid"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "mode": {
+      "type": "enumeration",
+      "enum": [
+        "automated",
+        "manual"
+      ],
+      "default": "automated",
+      "description": "Automated: Pulls all 'Visible on Homepage' products. Manual: Pick specific products."
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::insurance-product.insurance-product"
+    }
+  }
+}
