@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_page_builder_leadership_grids",
+  "info": {
+    "displayName": "Leadership Grid (Automated)",
+    "description": "Automatically displays leadership profiles by category",
+    "icon": "user"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "Our Leadership"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Board",
+        "KMP",
+        "All"
+      ],
+      "required": true,
+      "default": "Board"
+    }
+  }
+}

@@ -76,6 +76,33 @@ export interface PageBuilderBanner extends Struct.ComponentSchema {
   };
 }
 
+export interface PageBuilderBranchLocator extends Struct.ComponentSchema {
+  collectionName: 'components_page_builder_branch_locators';
+  info: {
+    description: 'Automatically displays branches from the directory';
+    displayName: 'Branch Locator (Automated)';
+    icon: 'pin-map';
+  };
+  attributes: {
+    filterType: Schema.Attribute.Enumeration<
+      [
+        'all',
+        'head-office',
+        'regional-office',
+        'branch-office',
+        'ombudsman-office',
+      ]
+    > &
+      Schema.Attribute.DefaultTo<'all'>;
+    introText: Schema.Attribute.Text;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Our Branches'>;
+    viewLayout: Schema.Attribute.Enumeration<['list', 'grid', 'map']> &
+      Schema.Attribute.DefaultTo<'list'>;
+  };
+}
+
 export interface PageBuilderCardGrid extends Struct.ComponentSchema {
   collectionName: 'components_page_builder_card_grid';
   info: {
@@ -239,6 +266,24 @@ export interface PageBuilderInsuranceProductCta extends Struct.ComponentSchema {
       'api::insurance-product.insurance-product'
     >;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface PageBuilderLeadershipGrid extends Struct.ComponentSchema {
+  collectionName: 'components_page_builder_leadership_grids';
+  info: {
+    description: 'Automatically displays leadership profiles by category';
+    displayName: 'Leadership Grid (Automated)';
+    icon: 'user';
+  };
+  attributes: {
+    category: Schema.Attribute.Enumeration<['Board', 'KMP', 'All']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Board'>;
+    subtitle: Schema.Attribute.Text;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Our Leadership'>;
   };
 }
 
@@ -852,6 +897,7 @@ declare module '@strapi/strapi' {
       'page-builder.accordion': PageBuilderAccordion;
       'page-builder.accordion-item': PageBuilderAccordionItem;
       'page-builder.banner': PageBuilderBanner;
+      'page-builder.branch-locator': PageBuilderBranchLocator;
       'page-builder.card-grid': PageBuilderCardGrid;
       'page-builder.card-item': PageBuilderCardItem;
       'page-builder.comparison-table': PageBuilderComparisonTable;
@@ -860,6 +906,7 @@ declare module '@strapi/strapi' {
       'page-builder.featured-content': PageBuilderFeaturedContent;
       'page-builder.hero-section': PageBuilderHeroSection;
       'page-builder.insurance-product-cta': PageBuilderInsuranceProductCta;
+      'page-builder.leadership-grid': PageBuilderLeadershipGrid;
       'page-builder.media-block': PageBuilderMediaBlock;
       'page-builder.product-grid': PageBuilderProductGrid;
       'page-builder.progress-steps': PageBuilderProgressSteps;

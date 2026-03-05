@@ -145,6 +145,22 @@ module.exports = async function seed(strapi) {
       content.push({ __component: 'page-builder.document-listing', title: 'Compliance Policies', category: 'Regulatory', viewType: 'grid' });
     }
 
+    if (p.slug === 'board-of-directors') {
+      content.push({ __component: 'page-builder.leadership-grid', title: 'Board of Directors', category: 'Board' });
+    }
+
+    if (p.slug === 'kmp') {
+      content.push({ __component: 'page-builder.leadership-grid', title: 'Key Management Personnel', category: 'KMP' });
+    }
+
+    if (p.slug === 'branch-list') {
+      content.push({ __component: 'page-builder.branch-locator', title: 'Our Branches', filterType: 'all', viewLayout: 'list' });
+    }
+
+    if (p.slug === 'ombudsman-list') {
+      content.push({ __component: 'page-builder.branch-locator', title: 'Ombudsman Offices', filterType: 'ombudsman-office', viewLayout: 'list' });
+    }
+
     if (p.slug === 'grievance-redressal') {
       content.push({
         __component: 'page-builder.accordion', title: 'Escalation Matrix',

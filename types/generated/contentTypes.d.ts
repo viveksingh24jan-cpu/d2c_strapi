@@ -1131,6 +1131,8 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'page-builder.hero-section',
         'page-builder.text-block',
         'page-builder.card-grid',
+        'page-builder.branch-locator',
+        'page-builder.leadership-grid',
         'page-builder.card-item',
         'page-builder.media-block',
         'page-builder.accordion',

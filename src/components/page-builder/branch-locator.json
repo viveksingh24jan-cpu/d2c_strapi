@@ -1,0 +1,40 @@
+{
+  "collectionName": "components_page_builder_branch_locators",
+  "info": {
+    "displayName": "Branch Locator (Automated)",
+    "description": "Automatically displays branches from the directory",
+    "icon": "pin-map"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "Our Branches"
+    },
+    "introText": {
+      "type": "text"
+    },
+    "filterType": {
+      "type": "enumeration",
+      "enum": [
+        "all",
+        "head-office",
+        "regional-office",
+        "branch-office",
+        "ombudsman-office"
+      ],
+      "default": "all",
+      "label": "Filter by Branch Type"
+    },
+    "viewLayout": {
+      "type": "enumeration",
+      "enum": [
+        "list",
+        "grid",
+        "map"
+      ],
+      "default": "list"
+    }
+  }
+}
