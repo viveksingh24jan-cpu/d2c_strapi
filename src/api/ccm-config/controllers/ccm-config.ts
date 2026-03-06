@@ -37,7 +37,9 @@ export default factories.createCoreController('api::ccm-config.ccm-config', ({ s
     }
 
     // 2. Optimized "Flat" Data Transformation for the PDF Engine
-    const flattenedCoverages = template.linkedPlan?.coverages?.map(cov => ({
+    const templateData = template as any;
+    
+    const flattenedCoverages = templateData.linkedPlan?.coverages?.map((cov: any) => ({
       code: cov.identifier,
       name: cov.name,
       pdfTitle: cov.pdfDisplayName || cov.name,
@@ -46,20 +48,20 @@ export default factories.createCoreController('api::ccm-config.ccm-config', ({ s
       iconUrl: cov.icon?.url || null,
     })) || [];
 
-    const pdfSections = template.sections.map(section => ({
+    const pdfSections = templateData.sections?.map((section: any) => ({
       tag: section.xmlTag,
       title: section.sectionTitle,
       content: section.isDynamicCoverages ? null : section.content,
       isCoverages: section.isDynamicCoverages,
       showSignature: section.showSignature
-    }));
+    })) || [];
 
     // 3. Return Clean JSON (No 'data.attributes' nesting)
     return {
       templateMeta: {
-        name: template.templateName,
-        logo: template.headerLogo?.url || null,
-        footer: template.footerText,
+        name: templateData.templateName,
+        logo: templateData.headerLogo?.url || null,
+        footer: templateData.footerText,
       },
       pdfStructure: pdfSections,
       coverages: flattenedCoverages,
