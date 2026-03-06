@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_ccm_pdf_sections",
+  "info": {
+    "displayName": "PDF Section",
+    "description": "A reusable section for Policy PDF documents",
+    "icon": "layer-group"
+  },
+  "options": {},
+  "attributes": {
+    "sectionTitle": {
+      "type": "string",
+      "required": true
+    },
+    "xmlTag": {
+      "type": "string",
+      "description": "Tag name for the XML output (e.g. <POLICY_SCHEDULE>)"
+    },
+    "content": {
+      "type": "blocks",
+      "description": "Static content for this section (e.g. Preamble text)"
+    },
+    "isDynamicCoverages": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, this section will automatically pull the coverages from the linked plan"
+    },
+    "showSignature": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

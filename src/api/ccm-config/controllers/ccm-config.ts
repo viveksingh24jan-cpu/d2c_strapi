@@ -1,0 +1,68 @@
+
+import { factories } from '@strapi/strapi';
+
+export default factories.createCoreController('api::ccm-config.ccm-config', ({ strapi }) => ({
+  async resolve(ctx) {
+    const { productId, package: sorPackage, lob, sublob } = ctx.query;
+
+    if (!productId || !sorPackage) {
+      return ctx.badRequest('Missing productId or package identifiers from SOR');
+    }
+
+    // 1. Fetch the Template Mapping with high-performance query
+    const template = await strapi.documents('api::ccm-config.ccm-config').findFirst({
+      filters: {
+        sor_product_id: productId,
+        sor_package: sorPackage,
+        ...(lob && { sor_lob: lob }),
+        ...(sublob && { sor_sublob: sublob }),
+      },
+      populate: {
+        headerLogo: true,
+        sections: true,
+        linkedPlan: {
+          populate: {
+            coverages: {
+              populate: {
+                icon: true,
+              }
+            }
+          }
+        }
+      } as any,
+    });
+
+    if (!template) {
+      return ctx.notFound(`No PDF Template found for Product ID ${productId} and Package ${sorPackage}`);
+    }
+
+    // 2. Optimized "Flat" Data Transformation for the PDF Engine
+    const flattenedCoverages = template.linkedPlan?.coverages?.map(cov => ({
+      code: cov.identifier,
+      name: cov.name,
+      pdfTitle: cov.pdfDisplayName || cov.name,
+      legalWording: cov.pdfLegalWording,
+      type: cov.type,
+      iconUrl: cov.icon?.url || null,
+    })) || [];
+
+    const pdfSections = template.sections.map(section => ({
+      tag: section.xmlTag,
+      title: section.sectionTitle,
+      content: section.isDynamicCoverages ? null : section.content,
+      isCoverages: section.isDynamicCoverages,
+      showSignature: section.showSignature
+    }));
+
+    // 3. Return Clean JSON (No 'data.attributes' nesting)
+    return {
+      templateMeta: {
+        name: template.templateName,
+        logo: template.headerLogo?.url || null,
+        footer: template.footerText,
+      },
+      pdfStructure: pdfSections,
+      coverages: flattenedCoverages,
+    };
+  },
+}));

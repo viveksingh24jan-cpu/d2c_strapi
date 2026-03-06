@@ -26,6 +26,14 @@
       "enum": ["default", "addon", "discount"],
       "default": "default"
     },
+    "pdfDisplayName": {
+      "type": "string",
+      "description": "Short name used in PDF Tables"
+    },
+    "pdfLegalWording": {
+      "type": "text",
+      "description": "Full legal clause to be printed in the PDF wording section"
+    },
     "heading": {
       "type": "string"
     },

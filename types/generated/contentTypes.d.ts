@@ -646,6 +646,46 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCcmConfigCcmConfig extends Struct.CollectionTypeSchema {
+  collectionName: 'ccm_configs';
+  info: {
+    description: 'Configure PDF Policy documents mapped to SOR identifiers';
+    displayName: 'CCM PDF Builder';
+    pluralName: 'ccm-configs';
+    singularName: 'ccm-config';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    footerText: Schema.Attribute.Text;
+    headerLogo: Schema.Attribute.Media<'images'>;
+    linkedPlan: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::insurance-plan.insurance-plan'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::ccm-config.ccm-config'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.Component<'ccm.pdf-section', true>;
+    sor_lob: Schema.Attribute.String & Schema.Attribute.Required;
+    sor_package: Schema.Attribute.String & Schema.Attribute.Required;
+    sor_product_id: Schema.Attribute.Integer & Schema.Attribute.Required;
+    sor_sublob: Schema.Attribute.String & Schema.Attribute.Required;
+    templateName: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCoverageCoverage extends Struct.CollectionTypeSchema {
   collectionName: 'coverages';
   info: {
@@ -689,6 +729,8 @@ export interface ApiCoverageCoverage extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
+    pdfDisplayName: Schema.Attribute.String;
+    pdfLegalWording: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
     richFeatures: Schema.Attribute.Component<'product.feature', true>;
     seo: Schema.Attribute.Component<'shared.seo', false>;
@@ -1863,6 +1905,7 @@ declare module '@strapi/strapi' {
       'api::branch.branch': ApiBranchBranch;
       'api::campaign.campaign': ApiCampaignCampaign;
       'api::category.category': ApiCategoryCategory;
+      'api::ccm-config.ccm-config': ApiCcmConfigCcmConfig;
       'api::coverage.coverage': ApiCoverageCoverage;
       'api::download-document.download-document': ApiDownloadDocumentDownloadDocument;
       'api::global-config.global-config': ApiGlobalConfigGlobalConfig;

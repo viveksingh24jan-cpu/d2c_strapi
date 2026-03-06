@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ccm_configs",
+  "info": {
+    "singularName": "ccm-config",
+    "pluralName": "ccm-configs",
+    "displayName": "CCM PDF Builder",
+    "description": "Configure PDF Policy documents mapped to SOR identifiers"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "templateName": {
+      "type": "string",
+      "required": true
+    },
+    "sor_lob": {
+      "type": "string",
+      "required": true,
+      "description": "Matches SOR 'lob' field (e.g. MOTOR)"
+    },
+    "sor_sublob": {
+      "type": "string",
+      "required": true,
+      "description": "Matches SOR 'sublob' field (e.g. FOURWHEELER)"
+    },
+    "sor_product_id": {
+      "type": "integer",
+      "required": true,
+      "description": "Matches SOR 'product_id' (e.g. 35001)"
+    },
+    "sor_package": {
+      "type": "string",
+      "required": true,
+      "description": "Matches SOR 'policy_package' (e.g. PACKAGE)"
+    },
+    "sections": {
+      "type": "component",
+      "repeatable": true,
+      "component": "ccm.pdf-section"
+    },
+    "linkedPlan": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::insurance-plan.insurance-plan"
+    },
+    "footerText": {
+      "type": "text"
+    },
+    "headerLogo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

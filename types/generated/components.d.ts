@@ -1,5 +1,22 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface CcmPdfSection extends Struct.ComponentSchema {
+  collectionName: 'components_ccm_pdf_sections';
+  info: {
+    description: 'A reusable section for Policy PDF documents';
+    displayName: 'PDF Section';
+    icon: 'layer-group';
+  };
+  attributes: {
+    content: Schema.Attribute.Blocks;
+    isDynamicCoverages: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    sectionTitle: Schema.Attribute.String & Schema.Attribute.Required;
+    showSignature: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    xmlTag: Schema.Attribute.String;
+  };
+}
+
 export interface DisclosuresDisclosureDocument extends Struct.ComponentSchema {
   collectionName: 'components_disclosures_disclosure_documents';
   info: {
@@ -1015,6 +1032,7 @@ export interface SharedUiConfig extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'ccm.pdf-section': CcmPdfSection;
       'disclosures.disclosure-document': DisclosuresDisclosureDocument;
       'page-builder.accordion': PageBuilderAccordion;
       'page-builder.accordion-item': PageBuilderAccordionItem;
