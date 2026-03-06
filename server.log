@@ -1,0 +1,28 @@
+
+> testing@0.1.0 dev
+> strapi develop
+
+- Cleaning dist dir /Users/vivek.singh/testing/dist
+✔ Cleaning dist dir (16ms)
+- Loading Strapi
+[2026-03-06 19:14:35.941] [33mwarn[39m: admin.auth.options.expiresIn is deprecated and will be removed in Strapi 6. Please configure admin.auth.sessions.maxRefreshTokenLifespan and admin.auth.sessions.maxSessionLifespan.
+- Building build context
+
+[INFO] Including the following ENV variables as part of the JS bundle:
+    - ADMIN_PATH
+    - STRAPI_ADMIN_BACKEND_URL
+    - STRAPI_TELEMETRY_DISABLED
+    - STRAPI_AI_URL
+    - STRAPI_ANALYTICS_URL
+✔ Building build context (36ms)
+- Creating admin
+✔ Creating admin (172ms)
+✔ Loading Strapi (1218ms)
+- Generating types
+✔ Generating types (177ms)
+- Compiling TS
+- Cleaning dist dir /Users/vivek.singh/testing/dist
+✔ Cleaning dist dir (14ms)
+✔ Compiling TS (1192ms)
+[2026-03-06 19:14:37.623] [31merror[39m: The port 1337 is already used by another application.
+[2026-03-06 19:14:37.623] [32minfo[39m: Shutting down Strapi
