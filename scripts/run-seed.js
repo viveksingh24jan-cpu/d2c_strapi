@@ -1,14 +1,18 @@
 
 const strapi = require('@strapi/strapi');
 
-async function main() {
+async function run() {
   const app = await strapi.createStrapi({ distDir: './dist' }).load();
-  const seed = require('./seed-p0.js');
-  await seed(app);
-  process.exit(0);
+  const seed = require('./seed-production.js');
+  
+  try {
+    await seed(app);
+    console.log('Seeding completed successfully.');
+  } catch (error) {
+    console.error('Seeding failed:', error);
+  } finally {
+    process.exit(0);
+  }
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+run();
