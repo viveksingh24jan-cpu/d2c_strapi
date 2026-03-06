@@ -3,20 +3,21 @@ import { factories } from '@strapi/strapi';
 
 export default factories.createCoreController('api::ccm-config.ccm-config', ({ strapi }) => ({
   async resolve(ctx) {
-    const { productId, package: sorPackage, lob, sublob, documentType } = ctx.query;
+    const { package: sorPackage, lob, sublob, documentType } = ctx.query;
 
-    if (!productId || !sorPackage) {
-      return ctx.badRequest('Missing productId or package identifiers from SOR');
+    if (!lob || !sublob || !sorPackage) {
+      return ctx.badRequest('Missing lob, sublob or package identifiers from SOR');
     }
 
     const docType = documentType || 'policy_schedule';
 
-    console.log(`[CCM Resolve] Searching for: ID=${productId}, Pkg=${sorPackage}, Type=${docType}`);
+    console.log(`[CCM Resolve] Searching for: LOB=${lob}, SubLOB=${sublob}, Pkg=${sorPackage}, Type=${docType}`);
 
-    // 1. Fetch ALL templates for this productId (loosest filter)
+    // 1. Fetch ALL templates for this combination
     const templates = await strapi.documents('api::ccm-config.ccm-config').findMany({
       filters: {
-        sor_product_id: Number(productId),
+        sor_lob: lob,
+        sor_sublob: sublob,
       },
       status: 'published',
       locale: 'en',
@@ -35,7 +36,7 @@ export default factories.createCoreController('api::ccm-config.ccm-config', ({ s
       } as any,
     });
 
-    console.log(`[CCM Resolve] Found ${templates.length} templates matching Product ID ${productId}`);
+    console.log(`[CCM Resolve] Found ${templates.length} templates matching LOB ${lob} and SubLOB ${sublob}`);
 
     // 2. Manual filter to see exactly where the mismatch happens
     const template: any = templates.find((t: any) => {
@@ -46,7 +47,7 @@ export default factories.createCoreController('api::ccm-config.ccm-config', ({ s
     });
 
     if (!template) {
-      return ctx.notFound(`No PDF Template found for Product ID ${productId}, Package ${sorPackage} and Document Type ${docType}`);
+      return ctx.notFound(`No PDF Template found for LOB ${lob}, SubLOB ${sublob}, Package ${sorPackage} and Document Type ${docType}`);
     }
 
     // 3. Optimized "Flat" Data Transformation for the PDF Engine
@@ -59,6 +60,7 @@ export default factories.createCoreController('api::ccm-config.ccm-config', ({ s
       legalWording: cov.pdfLegalWording,
       type: cov.type,
       iconUrl: cov.icon?.url || null,
+      iconCode: cov.iconCode || null,
     })) || [];
 
     const pdfSections = templateData.sections?.map((section: any) => ({

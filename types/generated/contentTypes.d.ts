@@ -688,7 +688,6 @@ export interface ApiCcmConfigCcmConfig extends Struct.CollectionTypeSchema {
     sections: Schema.Attribute.Component<'ccm.pdf-section', true>;
     sor_lob: Schema.Attribute.String & Schema.Attribute.Required;
     sor_package: Schema.Attribute.String & Schema.Attribute.Required;
-    sor_product_id: Schema.Attribute.Integer & Schema.Attribute.Required;
     sor_sublob: Schema.Attribute.String & Schema.Attribute.Required;
     templateName: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
@@ -724,6 +723,7 @@ export interface ApiCoverageCoverage extends Struct.CollectionTypeSchema {
     explanationVideoUrl: Schema.Attribute.String;
     heading: Schema.Attribute.String;
     icon: Schema.Attribute.Media<'images'>;
+    iconCode: Schema.Attribute.String;
     identifier: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;

@@ -42,6 +42,10 @@
       "multiple": false,
       "allowedTypes": ["images"]
     },
+    "iconCode": {
+      "type": "string",
+      "description": "Library-specific icon code (e.g. 'shield-check', 'car-crash')"
+    },
     "explanationImage": {
       "type": "media",
       "multiple": false,

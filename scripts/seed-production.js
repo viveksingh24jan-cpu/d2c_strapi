@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = async function seed(strapi) {
-  console.log('🚀 Starting PRODUCTION SEED with Multi-Document CCM Support (Locale: en)...');
+  console.log('🚀 Starting PRODUCTION SEED (Semantic Mapping Only - No ProductIDs)...');
 
   // 1. CLEANUP
   const collections = [
@@ -20,19 +20,17 @@ module.exports = async function seed(strapi) {
     } catch (e) { }
   }
 
-  // 2. LINES OF BUSINESS (LOB)
+  // 2. LOB
   const lobMoto = await strapi.documents('api::line-of-business.line-of-business').create({ 
     data: { name: 'Motor Insurance', identifier: 'MOTO', slug: 'motor-insurance' },
-    status: 'published',
-    locale: 'en'
+    status: 'published', locale: 'en'
   });
 
   // 3. COVERAGE REGISTRY
-  console.log('📦 Populating Coverage Registry...');
   const sorCoverages = [
-    { code: 'LLTP_FLAG', name: 'Legal Liability to Third Party', type: 'default', pdfName: 'Legal Liability to Third Parties', wording: 'The Company will indemnify the insured...' },
-    { code: 'PAOD_FLAG', name: 'CPA to owner driver', type: 'default', pdfName: 'Compulsory PA Cover', wording: 'The Company undertakes to pay...' },
-    { code: 'ZERO_DEP', name: 'Zero Depreciation', type: 'addon', pdfName: 'Depreciation Waiver Clause', wording: 'We shall not deduct any amount...' }
+    { code: 'LLTP_FLAG', name: 'Legal Liability to Third Party', type: 'default', icon: 'shield-user' },
+    { code: 'PAOD_FLAG', name: 'CPA to owner driver', type: 'default', icon: 'heart-pulse' },
+    { code: 'ZERO_DEP', name: 'Zero Depreciation', type: 'addon', icon: 'sparkles' }
   ];
 
   const coverageMap = {};
@@ -42,55 +40,61 @@ module.exports = async function seed(strapi) {
         name: c.name, 
         identifier: c.code, 
         type: c.type, 
-        pdfDisplayName: c.pdfName,
-        pdfLegalWording: c.wording
+        iconCode: c.icon,
+        pdfDisplayName: c.name,
+        pdfLegalWording: `Legal wording for ${c.name}`
       },
-      status: 'published',
-      locale: 'en'
+      status: 'published', locale: 'en'
     });
     coverageMap[c.code] = created.id;
   }
 
-  // 4. PRODUCTS (4W)
+  // 4. PRODUCTS
+  const product2W = await strapi.documents('api::insurance-product.insurance-product').create({
+    data: { productName: 'Bike Insurance', identifier: 'TWOWHEELER', slug: 'bike-insurance', lineOfBusiness: lobMoto.id },
+    status: 'published', locale: 'en'
+  });
+
   const product4W = await strapi.documents('api::insurance-product.insurance-product').create({
-    data: { productName: 'Car Insurance', identifier: '4W', slug: 'car-insurance', lineOfBusiness: lobMoto.id },
-    status: 'published',
-    locale: 'en'
+    data: { productName: 'Car Insurance', identifier: 'FOURWHEELER', slug: 'car-insurance', lineOfBusiness: lobMoto.id },
+    status: 'published', locale: 'en'
   });
 
-  // 5. PLANS (PACKAGE)
+  // 5. PLANS
   const planComp = await strapi.documents('api::insurance-plan.insurance-plan').create({
-    data: { name: 'Comprehensive Package', identifier: 'PACKAGE', slug: 'comprehensive-package', insuranceProducts: [product4W.id], coverages: Object.values(coverageMap) },
-    status: 'published',
-    locale: 'en'
+    data: { name: 'Comprehensive Package', identifier: 'PACKAGE', slug: 'comprehensive-package', insuranceProducts: [product2W.id, product4W.id], coverages: Object.values(coverageMap) },
+    status: 'published', locale: 'en'
   });
 
-  // 6. CCM PDF BUILDER (Multiple Document Types)
-  console.log('📄 Creating PDF Templates...');
-  
+  // 6. CCM PDF BUILDER (Semantic Mapping)
+  const categories = [
+    { name: 'Bike', sublob: 'TWOWHEELER' },
+    { name: 'Car', sublob: 'FOURWHEELER' }
+  ];
+
   const docTypes = ['policy_schedule', 'proposal_pdf', 'quote_pdf', 'premium_receipt', 'e_card'];
-  
-  for (const type of docTypes) {
-    const created = await strapi.documents('api::ccm-config.ccm-config').create({
-      data: {
-        templateName: `Motor Template: ${type}`,
-        documentType: type,
-        sor_lob: 'MOTO',
-        sor_sublob: 'FOURWHEELER',
-        sor_product_id: 35001,
-        sor_package: 'PACKAGE',
-        linkedPlan: planComp.id,
-        sections: [
-          { sectionTitle: 'Header Section', xmlTag: 'HEADER', content: [{ type: 'paragraph', children: [{ type: 'text', text: `This is a ${type} document.` }] }] },
-          { sectionTitle: 'Dynamic Coverages', xmlTag: 'COVERAGES', isDynamicCoverages: true }
-        ],
-        footerText: 'Registered Office: Mumbai.'
-      },
-      status: 'published',
-      locale: 'en'
-    });
-    console.log(`[Seed] Created ${type}: ${created.documentId} (PID: 35001, PKG: PACKAGE)`);
+
+  for (const cat of categories) {
+    for (const type of docTypes) {
+      await strapi.documents('api::ccm-config.ccm-config').create({
+        data: {
+          templateName: `${cat.name} Template: ${type}`,
+          documentType: type,
+          sor_lob: 'MOTO',
+          sor_sublob: cat.sublob,
+          sor_package: 'PACKAGE',
+          linkedPlan: planComp.id,
+          sections: [
+            { sectionTitle: 'Header', xmlTag: 'HEADER', content: [{ type: 'paragraph', children: [{ type: 'text', text: `Official ${cat.name} ${type} document.` }] }] },
+            { sectionTitle: 'Coverages', xmlTag: 'COVERAGES', isDynamicCoverages: true }
+          ],
+          footerText: 'Kiwi Insurance Ltd.'
+        },
+        status: 'published', locale: 'en'
+      });
+    }
+    console.log(`[Seed] Created full template suite for ${cat.name} (${cat.sublob})`);
   }
 
-  console.log('✨ SUCCESS: ALL DOCUMENT TYPES HYDRATED AND PUBLISHED.');
+  console.log('✨ SUCCESS: DATA HYDRATED WITH SEMANTIC MAPPING (NO PRODUCT_ID).');
 }
