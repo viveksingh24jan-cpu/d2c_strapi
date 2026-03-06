@@ -15,6 +15,18 @@
       "type": "string",
       "required": true
     },
+    "documentType": {
+      "type": "enumeration",
+      "enum": [
+        "policy_schedule",
+        "proposal_pdf",
+        "quote_pdf",
+        "premium_receipt",
+        "e_card"
+      ],
+      "default": "policy_schedule",
+      "required": true
+    },
     "sor_lob": {
       "type": "string",
       "required": true,

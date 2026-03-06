@@ -661,6 +661,17 @@ export interface ApiCcmConfigCcmConfig extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    documentType: Schema.Attribute.Enumeration<
+      [
+        'policy_schedule',
+        'proposal_pdf',
+        'quote_pdf',
+        'premium_receipt',
+        'e_card',
+      ]
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'policy_schedule'>;
     footerText: Schema.Attribute.Text;
     headerLogo: Schema.Attribute.Media<'images'>;
     linkedPlan: Schema.Attribute.Relation<

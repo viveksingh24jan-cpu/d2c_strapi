@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = async function seed(strapi) {
-  console.log('🚀 Starting PRODUCTION SEED with CCM PDF Mapping...');
+  console.log('🚀 Starting PRODUCTION SEED with Multi-Document CCM Support...');
 
   // 1. CLEANUP
   const collections = [
@@ -23,12 +23,11 @@ module.exports = async function seed(strapi) {
     data: { name: 'Motor Insurance', identifier: 'MOTO', slug: 'motor-insurance', status: 'published' } 
   });
 
-  // 3. COVERAGE REGISTRY (With PDF Metadata)
-  console.log('📦 Populating Coverage Metadata for PDF...');
+  // 3. COVERAGE REGISTRY
   const sorCoverages = [
-    { code: 'LLTP_FLAG', name: 'Legal Liability to Third Party', type: 'default', pdfName: 'Legal Liability to Third Parties', wording: 'The Company will indemnify the insured against all sums which the insured shall become legally liable to pay...' },
-    { code: 'PAOD_FLAG', name: 'CPA to owner driver', type: 'default', pdfName: 'Compulsory PA Cover for Owner-Driver', wording: 'The Company undertakes to pay compensation as per the following scale for bodily injury/death sustained by the owner-driver...' },
-    { code: 'ZERO_DEP', name: 'Zero Depreciation', type: 'addon', pdfName: 'Depreciation Waiver Clause', wording: 'In consideration of the payment of additional premium, it is hereby agreed that the Company shall not deduct any amount for depreciation...' }
+    { code: 'LLTP_FLAG', name: 'Legal Liability to Third Party', type: 'default', pdfName: 'Legal Liability to Third Parties', wording: 'The Company will indemnify the insured...' },
+    { code: 'PAOD_FLAG', name: 'CPA to owner driver', type: 'default', pdfName: 'Compulsory PA Cover', wording: 'The Company undertakes to pay...' },
+    { code: 'ZERO_DEP', name: 'Zero Depreciation', type: 'addon', pdfName: 'Depreciation Waiver Clause', wording: 'We shall not deduct any amount...' }
   ];
 
   const coverageMap = {};
@@ -48,42 +47,57 @@ module.exports = async function seed(strapi) {
 
   // 4. PRODUCTS (4W)
   const product4W = await strapi.documents('api::insurance-product.insurance-product').create({
-    data: { 
-      productName: 'Car Insurance', identifier: '4W', slug: 'car-insurance', 
-      lineOfBusiness: lobMoto.id, status: 'published' 
-    }
+    data: { productName: 'Car Insurance', identifier: '4W', slug: 'car-insurance', lineOfBusiness: lobMoto.id, status: 'published' }
   });
 
   // 5. PLANS (PACKAGE)
   const planComp = await strapi.documents('api::insurance-plan.insurance-plan').create({
-    data: { 
-      name: 'Comprehensive Package', identifier: 'PACKAGE', slug: 'comprehensive-package', 
-      insuranceProducts: [product4W.id], 
-      coverages: Object.values(coverageMap),
-      status: 'published' 
-    }
+    data: { name: 'Comprehensive Package', identifier: 'PACKAGE', slug: 'comprehensive-package', insuranceProducts: [product4W.id], coverages: Object.values(coverageMap), status: 'published' }
   });
 
-  // 6. CCM PDF BUILDER (The Mapping Engine)
-  console.log('📄 Creating PDF Template Mapping for SOR...');
+  // 6. CCM PDF BUILDER (Multiple Document Types)
+  console.log('📄 Creating PDF Templates for Policy Schedule & Premium Receipt...');
+  
+  // A. Policy Schedule
   await strapi.documents('api::ccm-config.ccm-config').create({
     data: {
-      templateName: 'Motor Private Car Policy Schedule',
+      templateName: 'Motor Policy Schedule (Standard)',
+      documentType: 'policy_schedule',
       sor_lob: 'MOTO',
       sor_sublob: 'FOURWHEELER',
       sor_product_id: 35001,
       sor_package: 'PACKAGE',
       linkedPlan: planComp.id,
       sections: [
-        { sectionTitle: 'Preamble', xmlTag: 'PREAMBLE', content: [{ type: 'paragraph', children: [{ type: 'text', text: 'Whereas the insured by a proposal and declaration which shall be the basis of this contract...' }] }] },
-        { sectionTitle: 'Policy Schedule', xmlTag: 'SCHEDULE' },
-        { sectionTitle: 'Coverages & Endorsements', xmlTag: 'COVERAGES', isDynamicCoverages: true },
+        { sectionTitle: 'Preamble', xmlTag: 'PREAMBLE', content: [{ type: 'paragraph', children: [{ type: 'text', text: 'Whereas the insured...' }] }] },
+        { sectionTitle: 'Schedule', xmlTag: 'SCHEDULE' },
+        { sectionTitle: 'Coverages', xmlTag: 'COVERAGES', isDynamicCoverages: true },
         { sectionTitle: 'Signatures', xmlTag: 'SIGNATURES', showSignature: true }
       ],
-      footerText: 'Registered Office: Mumbai. IRDAI Reg No: 123.',
+      footerText: 'Registered Office: Mumbai.',
       status: 'published'
     }
   });
 
-  console.log('✨ SUCCESS: PDF BUILDER AREA CONFIGURED AND MAPPED.');
+  // B. Premium Receipt
+  await strapi.documents('api::ccm-config.ccm-config').create({
+    data: {
+      templateName: 'Motor Premium Receipt',
+      documentType: 'premium_receipt',
+      sor_lob: 'MOTO',
+      sor_sublob: 'FOURWHEELER',
+      sor_product_id: 35001,
+      sor_package: 'PACKAGE',
+      linkedPlan: planComp.id,
+      sections: [
+        { sectionTitle: 'Receipt Header', xmlTag: 'HEADER', content: [{ type: 'paragraph', children: [{ type: 'text', text: 'Acknowledgment of Premium Payment' }] }] },
+        { sectionTitle: 'Payment Details', xmlTag: 'PAYMENT' },
+        { sectionTitle: 'Signatures', xmlTag: 'SIGNATURES', showSignature: true }
+      ],
+      footerText: 'Thank you for choosing Kiwi Insurance.',
+      status: 'published'
+    }
+  });
+
+  console.log('✨ SUCCESS: MULTI-DOCUMENT ARCHITECTURE READY.');
 }

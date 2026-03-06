@@ -3,17 +3,20 @@ import { factories } from '@strapi/strapi';
 
 export default factories.createCoreController('api::ccm-config.ccm-config', ({ strapi }) => ({
   async resolve(ctx) {
-    const { productId, package: sorPackage, lob, sublob } = ctx.query;
+    const { productId, package: sorPackage, lob, sublob, documentType } = ctx.query;
 
     if (!productId || !sorPackage) {
       return ctx.badRequest('Missing productId or package identifiers from SOR');
     }
+
+    const docType = documentType || 'policy_schedule';
 
     // 1. Fetch the Template Mapping with high-performance query
     const template = await strapi.documents('api::ccm-config.ccm-config').findFirst({
       filters: {
         sor_product_id: productId,
         sor_package: sorPackage,
+        documentType: docType,
         ...(lob && { sor_lob: lob }),
         ...(sublob && { sor_sublob: sublob }),
       },
@@ -33,7 +36,7 @@ export default factories.createCoreController('api::ccm-config.ccm-config', ({ s
     });
 
     if (!template) {
-      return ctx.notFound(`No PDF Template found for Product ID ${productId} and Package ${sorPackage}`);
+      return ctx.notFound(`No PDF Template found for Product ID ${productId}, Package ${sorPackage} and Document Type ${docType}`);
     }
 
     // 2. Optimized "Flat" Data Transformation for the PDF Engine
@@ -60,6 +63,7 @@ export default factories.createCoreController('api::ccm-config.ccm-config', ({ s
     return {
       templateMeta: {
         name: templateData.templateName,
+        documentType: templateData.documentType,
         logo: templateData.headerLogo?.url || null,
         footer: templateData.footerText,
       },
