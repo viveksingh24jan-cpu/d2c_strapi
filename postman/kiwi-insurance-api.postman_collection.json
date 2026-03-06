@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "Kiwi General Insurance – D2C CMS API (Enhanced)",
-    "description": "Comprehensive API collection for the optimized Insurance D2C CMS with N-level nesting and automated enrichment logic.",
+    "name": "Kiwi General Insurance – D2C CMS API (Final Handover)",
+    "description": "Comprehensive API collection for the optimized Insurance D2C CMS with recursive N-level nesting.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -80,7 +80,7 @@
               "host": ["{{baseUrl}}"],
               "path": ["pages", "public-disclosures"]
             },
-            "description": "Fetch the disclosures page. 'document-listing' will be enriched with real document records (Regulatory, Financial, etc.)."
+            "description": "Fetch the disclosures page. 'document-listing' will be enriched with real document records."
           }
         },
         {
@@ -93,18 +93,6 @@
               "path": ["pages", "branch-list"]
             },
             "description": "Fetch branch list page. 'branch-locator' will be enriched with all branch records."
-          }
-        },
-        {
-          "name": "Board of Directors (Leadership Grid)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/pages/board-of-directors",
-              "host": ["{{baseUrl}}"],
-              "path": ["pages", "board-of-directors"]
-            },
-            "description": "Fetch leadership page. 'leadership-grid' will be enriched with Board member profiles."
           }
         },
         {
@@ -122,10 +110,10 @@
       ]
     },
     {
-      "name": "🚗 Insurance Products",
+      "name": "🚗 Insurance Hierarchy (4W/2W)",
       "item": [
         {
-          "name": "Product Landing (e.g. Car Insurance)",
+          "name": "1. Product Landing (e.g. Car Insurance)",
           "request": {
             "method": "GET",
             "url": {
@@ -137,15 +125,27 @@
           }
         },
         {
-          "name": "All Products List",
+          "name": "2. Plans for Product (Car Insurance Platinum)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/insurance-products?populate=*",
+              "raw": "{{baseUrl}}/insurance-plans?filters[insuranceProducts][slug][$eq]=car-insurance&populate=*",
               "host": ["{{baseUrl}}"],
-              "path": ["insurance-products"]
+              "path": ["insurance-plans"]
             },
-            "description": "List all products with their basic relations and SEO."
+            "description": "Fetch all plans (Platinum, Gold, etc.) associated with a specific vehicle product."
+          }
+        },
+        {
+          "name": "3. Coverage Lookup (Keyword Search)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/coverages?filters[identifier][$eq]=COV_1&populate=*",
+              "host": ["{{baseUrl}}"],
+              "path": ["coverages"]
+            },
+            "description": "Directly lookup technical coverage content by keyword (e.g., ZERO_DEP) for the quote engine."
           }
         }
       ]
@@ -164,58 +164,34 @@
             },
             "description": "Fetch a blog post. Its 'blocks' (Dynamic Zone) will be enriched just like standard pages."
           }
-        },
-        {
-          "name": "All Articles",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/articles?populate=*",
-              "host": ["{{baseUrl}}"],
-              "path": ["articles"]
-            },
-            "description": "List all blog posts with author and category details."
-          }
         }
       ]
     },
     {
-      "name": "🧩 Registry Lookups (Direct API)",
+      "name": "🗺️ Navigation & Menus",
       "item": [
         {
-          "name": "Fetch All Branches",
+          "name": "Fetch Header Menu",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/branches",
+              "raw": "{{baseUrl}}/navigation-menus?filters[location][$eq]=header&sort=displayOrder:asc&populate=*",
               "host": ["{{baseUrl}}"],
-              "path": ["branches"]
+              "path": ["navigation-menus"]
             },
-            "description": "Direct fetch for branches registry."
+            "description": "Fetch top-level header navigation links."
           }
         },
         {
-          "name": "Fetch All Documents",
+          "name": "Fetch Footer Menu Tree",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/download-documents?sort=publishDate:desc",
+              "raw": "{{baseUrl}}/navigation-menus?filters[location][$contains]=footer&populate[children][populate]=*",
               "host": ["{{baseUrl}}"],
-              "path": ["download-documents"]
+              "path": ["navigation-menus"]
             },
-            "description": "Direct fetch for public disclosure documents."
-          }
-        },
-        {
-          "name": "Fetch All Leadership Profiles",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/leadership-profiles?sort=displayOrder:asc",
-              "host": ["{{baseUrl}}"],
-              "path": ["leadership-profiles"]
-            },
-            "description": "Direct fetch for the leadership registry."
+            "description": "Fetch footer columns and their nested links."
           }
         }
       ]
