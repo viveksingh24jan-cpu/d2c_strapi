@@ -16,9 +16,9 @@ export default factories.createCoreController('api::ccm-config.ccm-config', ({ s
     // 1. Fetch ALL templates for this combination
     const templates = await strapi.documents('api::ccm-config.ccm-config').findMany({
       filters: {
-        sor_lob: lob,
-        sor_sublob: sublob,
-      },
+        sor_lob: lob as string,
+        sor_sublob: sublob as string,
+      } as any,
       status: 'published',
       locale: 'en',
       populate: {
