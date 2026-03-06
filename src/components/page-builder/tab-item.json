@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_page_builder_tab_items",
+  "info": {
+    "displayName": "Tab Item",
+    "icon": "window",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
+      "type": "dynamiczone",
+      "components": [
+        "page-builder.text-block",
+        "page-builder.card-grid",
+        "page-builder.accordion",
+        "page-builder.comparison-table",
+        "page-builder.media-block",
+        "page-builder.product-grid",
+        "page-builder.document-listing",
+        "page-builder.branch-locator",
+        "shared.link",
+        "shared.cta"
+      ]
+    },
+    "icon": {
+      "type": "string"
+    }
+  }
+}

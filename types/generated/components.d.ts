@@ -112,8 +112,9 @@ export interface PageBuilderCardGrid extends Struct.ComponentSchema {
   };
   attributes: {
     cards: Schema.Attribute.Component<'page-builder.card-item', true>;
+    customClassName: Schema.Attribute.String;
     layout: Schema.Attribute.Enumeration<
-      ['grid-2', 'grid-3', 'grid-4', 'masonry']
+      ['grid-2', 'grid-3', 'grid-4', 'masonry', 'bento-grid']
     > &
       Schema.Attribute.DefaultTo<'grid-3'>;
     subtitle: Schema.Attribute.Text;
@@ -130,6 +131,7 @@ export interface PageBuilderCardItem extends Struct.ComponentSchema {
   };
   attributes: {
     badge: Schema.Attribute.String;
+    colSpan: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
     description: Schema.Attribute.Text;
     icon: Schema.Attribute.String;
     image: Schema.Attribute.Media<'images'>;
@@ -142,6 +144,32 @@ export interface PageBuilderCardItem extends Struct.ComponentSchema {
         },
         number
       >;
+    rowSpan: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    variant: Schema.Attribute.Enumeration<
+      ['standard', 'glassmorphism', 'outline', 'primary']
+    > &
+      Schema.Attribute.DefaultTo<'standard'>;
+  };
+}
+
+export interface PageBuilderCharts extends Struct.ComponentSchema {
+  collectionName: 'components_page_builder_charts';
+  info: {
+    description: 'Displays data using Bar, Pie, or Line charts';
+    displayName: 'Data Visualization / Chart';
+    icon: 'chartPie';
+  };
+  attributes: {
+    chartType: Schema.Attribute.Enumeration<
+      ['bar', 'pie', 'doughnut', 'line', 'radar']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'bar'>;
+    config: Schema.Attribute.JSON;
+    data: Schema.Attribute.JSON & Schema.Attribute.Required;
+    description: Schema.Attribute.Text;
+    showLegend: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -166,6 +194,26 @@ export interface PageBuilderComparisonTable extends Struct.ComponentSchema {
     rows: Schema.Attribute.JSON & Schema.Attribute.Required;
     subtitle: Schema.Attribute.Text;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface PageBuilderCtaSection extends Struct.ComponentSchema {
+  collectionName: 'components_page_builder_cta_sections';
+  info: {
+    description: 'A high-conversion section with headline, description, and primary/secondary CTAs';
+    displayName: 'CTA Section (Strip)';
+    icon: 'megaphone';
+  };
+  attributes: {
+    backgroundImage: Schema.Attribute.Media<'images'>;
+    ctaPrimary: Schema.Attribute.Component<'shared.link', false>;
+    ctaSecondary: Schema.Attribute.Component<'shared.link', false>;
+    description: Schema.Attribute.Text;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    variant: Schema.Attribute.Enumeration<
+      ['standard', 'centered', 'full-width-strip', 'dark', 'light']
+    > &
+      Schema.Attribute.DefaultTo<'standard'>;
   };
 }
 
@@ -290,25 +338,56 @@ export interface PageBuilderLeadershipGrid extends Struct.ComponentSchema {
 export interface PageBuilderMediaBlock extends Struct.ComponentSchema {
   collectionName: 'components_page_builder_media_blocks';
   info: {
-    description: 'Unified component for Image, Local Video, or External Embeds';
+    description: 'Unified component for Image, Local Video, External Embeds, and Lottie';
     displayName: 'Media Block';
     icon: 'picture';
   };
   attributes: {
     altText: Schema.Attribute.String;
+    aspectRatio: Schema.Attribute.Enumeration<
+      ['original', '1:1', '4:3', '16:9', '21:9']
+    > &
+      Schema.Attribute.DefaultTo<'original'>;
     autoplay: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     caption: Schema.Attribute.String;
     description: Schema.Attribute.Text;
     externalUrl: Schema.Attribute.String;
-    file: Schema.Attribute.Media<'images' | 'videos'>;
+    file: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     showControls: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     thumbnail: Schema.Attribute.Media<'images'>;
     title: Schema.Attribute.String;
     type: Schema.Attribute.Enumeration<
-      ['image', 'video-local', 'video-external']
+      [
+        'image',
+        'illustration',
+        'infographic',
+        'lottie',
+        'video-local',
+        'video-external',
+      ]
     > &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'image'>;
+  };
+}
+
+export interface PageBuilderModals extends Struct.ComponentSchema {
+  collectionName: 'components_page_builder_modals';
+  info: {
+    description: 'Configurable popup modal content';
+    displayName: 'Modal Overlay';
+    icon: 'expand';
+  };
+  attributes: {
+    content: Schema.Attribute.Blocks;
+    delaySeconds: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    modalId: Schema.Attribute.String & Schema.Attribute.Required;
+    size: Schema.Attribute.Enumeration<
+      ['small', 'medium', 'large', 'full-screen']
+    > &
+      Schema.Attribute.DefaultTo<'medium'>;
+    title: Schema.Attribute.String;
+    triggerOnLoad: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
   };
 }
 
@@ -393,6 +472,47 @@ export interface PageBuilderStickyCtaBar extends Struct.ComponentSchema {
       Schema.Attribute.DefaultTo<'bottom'>;
     showCloseButton: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<true>;
+  };
+}
+
+export interface PageBuilderTabItem extends Struct.ComponentSchema {
+  collectionName: 'components_page_builder_tab_items';
+  info: {
+    description: '';
+    displayName: 'Tab Item';
+    icon: 'window';
+  };
+  attributes: {
+    content: Schema.Attribute.DynamicZone<
+      [
+        'page-builder.text-block',
+        'page-builder.card-grid',
+        'page-builder.accordion',
+        'page-builder.comparison-table',
+        'page-builder.media-block',
+        'page-builder.product-grid',
+        'page-builder.document-listing',
+        'page-builder.branch-locator',
+        'shared.link',
+        'shared.cta',
+      ]
+    >;
+    icon: Schema.Attribute.String;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface PageBuilderTabs extends Struct.ComponentSchema {
+  collectionName: 'components_page_builder_tabs';
+  info: {
+    description: 'Horizontal tabs for organized content delivery';
+    displayName: 'Tabs Content';
+    icon: 'layers';
+  };
+  attributes: {
+    activeTab: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    tabs: Schema.Attribute.Component<'page-builder.tab-item', true>;
+    title: Schema.Attribute.String;
   };
 }
 
@@ -883,6 +1003,8 @@ export interface SharedUiConfig extends Struct.ComponentSchema {
       Schema.Attribute.DefaultTo<true>;
     isVisibleOnHomepage: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<true>;
+    showBreadcrumbs: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
     showInComparisonGrid: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<true>;
     sortOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
@@ -900,7 +1022,9 @@ declare module '@strapi/strapi' {
       'page-builder.branch-locator': PageBuilderBranchLocator;
       'page-builder.card-grid': PageBuilderCardGrid;
       'page-builder.card-item': PageBuilderCardItem;
+      'page-builder.charts': PageBuilderCharts;
       'page-builder.comparison-table': PageBuilderComparisonTable;
+      'page-builder.cta-section': PageBuilderCtaSection;
       'page-builder.document-cta': PageBuilderDocumentCta;
       'page-builder.document-listing': PageBuilderDocumentListing;
       'page-builder.featured-content': PageBuilderFeaturedContent;
@@ -908,11 +1032,14 @@ declare module '@strapi/strapi' {
       'page-builder.insurance-product-cta': PageBuilderInsuranceProductCta;
       'page-builder.leadership-grid': PageBuilderLeadershipGrid;
       'page-builder.media-block': PageBuilderMediaBlock;
+      'page-builder.modals': PageBuilderModals;
       'page-builder.product-grid': PageBuilderProductGrid;
       'page-builder.progress-steps': PageBuilderProgressSteps;
       'page-builder.stats-bar': PageBuilderStatsBar;
       'page-builder.step-item': PageBuilderStepItem;
       'page-builder.sticky-cta-bar': PageBuilderStickyCtaBar;
+      'page-builder.tab-item': PageBuilderTabItem;
+      'page-builder.tabs': PageBuilderTabs;
       'page-builder.testimonial-showcase': PageBuilderTestimonialShowcase;
       'page-builder.text-block': PageBuilderTextBlock;
       'product.addon': ProductAddon;

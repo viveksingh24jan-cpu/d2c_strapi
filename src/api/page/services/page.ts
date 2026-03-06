@@ -77,6 +77,24 @@ export default factories.createCoreService('api::page.page', ({ strapi }) => ({
           },
           'page-builder.sticky-cta-bar': { populate: { ctaButton: { populate: '*' } } },
           'page-builder.featured-content': { populate: '*' },
+          'page-builder.cta-section': { 
+            populate: { 
+              ctaPrimary: { populate: '*' }, 
+              ctaSecondary: { populate: '*' },
+              backgroundImage: true 
+            } 
+          },
+          'page-builder.tabs': { 
+            populate: { 
+              tabs: { 
+                populate: {
+                  content: { populate: '*' }
+                } 
+              } 
+            } 
+          },
+          'page-builder.modals': true,
+          'page-builder.charts': true,
           'shared.section-reference': { 
             populate: { 
               shared_section: { 
@@ -94,5 +112,109 @@ export default factories.createCoreService('api::page.page', ({ strapi }) => ({
         }
       },
     };
+  },
+
+  /**
+   * Enriches the page content by fetching data for automated components.
+   * Modifies the page object in place.
+   * Now Recursive!
+   */
+  async enrichPageContent(entity: any, field = 'content') {
+    if (!entity || !entity[field] || !Array.isArray(entity[field])) return entity;
+
+    // Helper to process a single component list (Dynamic Zone or Array of Components)
+    const processComponentList = async (components: any[]) => {
+      for (const component of components) {
+        const type = component.__component;
+
+        // --- RECURSION ---
+        // 1. Tabs: Dive into each tab's content
+        if (type === 'page-builder.tabs' && component.tabs) {
+          for (const tab of component.tabs) {
+             // 'content' is the name of the dynamic zone in tab-item
+             if (tab.content) {
+               await this.enrichPageContent(tab, 'content');
+             }
+          }
+        }
+
+        // 2. Shared Section Reference: Dive into the referenced section's blocks
+        if (type === 'shared.section-reference' && component.shared_section && component.shared_section.blocks) {
+          await this.enrichPageContent(component.shared_section, 'blocks');
+        }
+
+        // --- AUTOMATION ---
+        // 3. Branch Locator
+        if (type === 'page-builder.branch-locator') {
+          const filters: any = {};
+          if (component.filterType && component.filterType !== 'all') {
+            filters.branchType = component.filterType;
+          }
+
+          component.data = await strapi.documents('api::branch.branch').findMany({
+            filters,
+            populate: '*', // Populate address blocks
+          });
+        }
+
+        // 4. Leadership Grid
+        if (type === 'page-builder.leadership-grid') {
+          const filters: any = {};
+          if (component.category && component.category !== 'All') {
+            filters.category = component.category;
+          }
+
+          component.data = await strapi.documents('api::leadership-profile.leadership-profile').findMany({
+            filters,
+            sort: 'displayOrder:asc',
+            populate: {
+              photo: true,
+              socialLinks: true,
+            } as any,
+          });
+        }
+
+        // 5. Document Listing
+        if (type === 'page-builder.document-listing') {
+          const filters: any = {};
+          if (component.category) {
+            filters.category = component.category;
+          }
+
+          component.data = await strapi.documents('api::download-document.download-document').findMany({
+            filters,
+            sort: 'publishDate:desc',
+            populate: {
+              fileAsset: true,
+              internalLink: true,
+              nestedSchedules: {
+                populate: {
+                  fileAsset: true,
+                  internalLink: true, // Also populate links in schedules
+                }
+              }
+            } as any,
+          });
+        }
+
+        // 6. Product Grid (Automated Mode)
+        if (type === 'page-builder.product-grid' && component.mode === 'automated') {
+          component.data = await strapi.documents('api::insurance-product.insurance-product').findMany({
+            filters: {
+              isVisibleOnHomepage: true,
+            },
+            sort: 'sortOrder:asc',
+            populate: {
+              cardIcon: true,
+              cta: true,
+              keyBenefits: true,
+            } as any,
+          });
+        }
+      }
+    };
+
+    await processComponentList(entity[field]);
+    return entity;
   }
 }));

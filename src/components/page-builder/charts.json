@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_page_builder_charts",
+  "info": {
+    "displayName": "Data Visualization / Chart",
+    "description": "Displays data using Bar, Pie, or Line charts",
+    "icon": "chartPie"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "chartType": {
+      "type": "enumeration",
+      "enum": ["bar", "pie", "doughnut", "line", "radar"],
+      "default": "bar",
+      "required": true
+    },
+    "data": {
+      "type": "json",
+      "required": true,
+      "description": "Chart data in standard JSON format"
+    },
+    "config": {
+      "type": "json",
+      "description": "Advanced Chart.js or D3 configuration"
+    },
+    "showLegend": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

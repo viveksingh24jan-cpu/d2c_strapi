@@ -461,6 +461,10 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
         'page-builder.insurance-product-cta',
         'page-builder.featured-content',
         'page-builder.sticky-cta-bar',
+        'page-builder.cta-section',
+        'page-builder.tabs',
+        'page-builder.modals',
+        'page-builder.charts',
         'shared.section-reference',
       ]
     >;
@@ -959,6 +963,10 @@ export interface ApiInsuranceProductInsuranceProduct
         'page-builder.insurance-product-cta',
         'page-builder.featured-content',
         'page-builder.sticky-cta-bar',
+        'page-builder.cta-section',
+        'page-builder.tabs',
+        'page-builder.modals',
+        'page-builder.charts',
         'shared.section-reference',
       ]
     >;
@@ -1145,6 +1153,10 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'page-builder.insurance-product-cta',
         'page-builder.featured-content',
         'page-builder.sticky-cta-bar',
+        'page-builder.cta-section',
+        'page-builder.tabs',
+        'page-builder.modals',
+        'page-builder.charts',
         'shared.section-reference',
         'shared.stats-item',
         'shared.seo',

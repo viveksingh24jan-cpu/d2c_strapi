@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_page_builder_cta_sections",
+  "info": {
+    "displayName": "CTA Section (Strip)",
+    "description": "A high-conversion section with headline, description, and primary/secondary CTAs",
+    "icon": "megaphone"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "ctaPrimary": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    },
+    "ctaSecondary": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": ["standard", "centered", "full-width-strip", "dark", "light"],
+      "default": "standard"
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_page_builder_tabs",
+  "info": {
+    "displayName": "Tabs Content",
+    "description": "Horizontal tabs for organized content delivery",
+    "icon": "layers"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "tabs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "page-builder.tab-item"
+    },
+    "activeTab": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

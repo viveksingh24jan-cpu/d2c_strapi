@@ -37,6 +37,21 @@
       "type": "integer",
       "min": 1,
       "max": 5
+    },
+    "colSpan": {
+      "type": "integer",
+      "description": "Grid columns to span (for Bento layouts)",
+      "default": 1
+    },
+    "rowSpan": {
+      "type": "integer",
+      "description": "Grid rows to span (for Bento layouts)",
+      "default": 1
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": ["standard", "glassmorphism", "outline", "primary"],
+      "default": "standard"
     }
   }
 }

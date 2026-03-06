@@ -2,7 +2,7 @@
   "collectionName": "components_page_builder_media_blocks",
   "info": {
     "displayName": "Media Block",
-    "description": "Unified component for Image, Local Video, or External Embeds",
+    "description": "Unified component for Image, Local Video, External Embeds, and Lottie",
     "icon": "picture"
   },
   "options": {},
@@ -17,6 +17,9 @@
       "type": "enumeration",
       "enum": [
         "image",
+        "illustration",
+        "infographic",
+        "lottie",
         "video-local",
         "video-external"
       ],
@@ -28,12 +31,13 @@
       "multiple": false,
       "allowedTypes": [
         "images",
-        "videos"
+        "videos",
+        "files"
       ]
     },
     "externalUrl": {
       "type": "string",
-      "description": "YouTube, Vimeo, or other external URL"
+      "description": "YouTube, Vimeo, or Lottie URL"
     },
     "thumbnail": {
       "type": "media",
@@ -55,6 +59,11 @@
     },
     "altText": {
       "type": "string"
+    },
+    "aspectRatio": {
+      "type": "enumeration",
+      "enum": ["original", "1:1", "4:3", "16:9", "21:9"],
+      "default": "original"
     }
   }
 }

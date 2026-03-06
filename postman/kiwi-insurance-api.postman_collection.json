@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "Kiwi General Insurance – D2C CMS API (Final Handover)",
-    "description": "Comprehensive API collection for the optimized Insurance D2C CMS. Supports LOB > Product > Plan > Coverage hierarchy with keyword-based lookups.",
+    "name": "Kiwi General Insurance – D2C CMS API (Enhanced)",
+    "description": "Comprehensive API collection for the optimized Insurance D2C CMS with N-level nesting and automated enrichment logic.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -28,76 +28,194 @@
   },
   "item": [
     {
-      "name": "🏥 D2C Insurance Hierarchy",
+      "name": "🚀 Global & Bootstrap",
       "item": [
         {
-          "name": "1. Line of Business (LOB)",
+          "name": "1. Site Bootstrap (Full Config + Navigation)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/line-of-businesses?populate=*",
+              "raw": "{{baseUrl}}/bootstrap",
               "host": ["{{baseUrl}}"],
-              "path": ["line-of-businesses"]
+              "path": ["bootstrap"]
             },
-            "description": "Fetch all LOBs with SEO, CTA, and UI Config."
+            "description": "Fetch Global Config, Navigation Menus, and Homepage SEO in a single call."
           }
         },
         {
-          "name": "2. Insurance Products (4W/2W Master)",
+          "name": "2. Global Config Only",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/insurance-products?filters[uiConfig][isVisibleOnHomepage][$eq]=true&populate=*",
+              "raw": "{{baseUrl}}/global-config?populate=*",
               "host": ["{{baseUrl}}"],
-              "path": ["insurance-products"]
+              "path": ["global-config"]
             },
-            "description": "Fetch homepage product cards."
-          }
-        },
-        {
-          "name": "3. Insurance Plans (Tenures 1+3, 1+5)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/insurance-plans?filters[insuranceProduct][identifier][$eq]=4W&populate[inclusions][populate]=*&populate[addons][populate]=*&populate[faqs]=*&populate[seo]=*",
-              "host": ["{{baseUrl}}"],
-              "path": ["insurance-plans"]
-            },
-            "description": "Fetch specific plans for a vehicle type with full detail population."
+            "description": "Fetch master branding, regulatory info, and CIN/IRDAI numbers."
           }
         }
       ]
     },
     {
-      "name": "🔍 Keyword Engine (Registry)",
+      "name": "📄 Dynamic Pages (Enriched)",
       "item": [
         {
-          "name": "Lookup by Keyword (Single Source of Truth)",
+          "name": "Home Page (Product Selection)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/coverages?filters[identifiers][$contains]=VOLDED_FLAG&populate=*",
+              "raw": "{{baseUrl}}/pages/index",
               "host": ["{{baseUrl}}"],
-              "path": ["coverages"]
+              "path": ["pages", "index"]
             },
-            "description": "Pull UI/UX content (headings, icons, tooltips) for a technical keyword."
+            "description": "Fetch the homepage. The 'product-grid' will be automatically enriched with products marked 'Visible on Homepage'."
+          }
+        },
+        {
+          "name": "Public Disclosures (Document Listing)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/pages/public-disclosures",
+              "host": ["{{baseUrl}}"],
+              "path": ["pages", "public-disclosures"]
+            },
+            "description": "Fetch the disclosures page. 'document-listing' will be enriched with real document records (Regulatory, Financial, etc.)."
+          }
+        },
+        {
+          "name": "Branch List (Branch Locator)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/pages/branch-list",
+              "host": ["{{baseUrl}}"],
+              "path": ["pages", "branch-list"]
+            },
+            "description": "Fetch branch list page. 'branch-locator' will be enriched with all branch records."
+          }
+        },
+        {
+          "name": "Board of Directors (Leadership Grid)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/pages/board-of-directors",
+              "host": ["{{baseUrl}}"],
+              "path": ["pages", "board-of-directors"]
+            },
+            "description": "Fetch leadership page. 'leadership-grid' will be enriched with Board member profiles."
+          }
+        },
+        {
+          "name": "Grievance Redressal (Accordion & Nesting)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/pages/grievance-redressal",
+              "host": ["{{baseUrl}}"],
+              "path": ["pages", "grievance-redressal"]
+            },
+            "description": "Fetch grievance page with complex nested blocks and escalation matrix."
           }
         }
       ]
     },
     {
-      "name": "📄 Dynamic Page Builder",
+      "name": "🚗 Insurance Products",
       "item": [
         {
-          "name": "Product Landing Page (Full Build)",
+          "name": "Product Landing (e.g. Car Insurance)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/insurance-products?filters[slug][$eq]=car-insurance&populate[pageBuilder][on][page-builder.accordion][populate]=*&populate[pageBuilder][on][page-builder.banner][populate]=*&populate[seo]=*",
+              "raw": "{{baseUrl}}/insurance-products/car-insurance",
+              "host": ["{{baseUrl}}"],
+              "path": ["insurance-products", "car-insurance"]
+            },
+            "description": "Fetch a specific product page with its full 'pageBuilder' dynamic zone and enriched data."
+          }
+        },
+        {
+          "name": "All Products List",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/insurance-products?populate=*",
               "host": ["{{baseUrl}}"],
               "path": ["insurance-products"]
             },
-            "description": "Fetch the full dynamic landing page for a specific product."
+            "description": "List all products with their basic relations and SEO."
+          }
+        }
+      ]
+    },
+    {
+      "name": "📰 Articles & Blog",
+      "item": [
+        {
+          "name": "Single Article (Enriched)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/articles/the-internet-s-own-boy",
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", "the-internet-s-own-boy"]
+            },
+            "description": "Fetch a blog post. Its 'blocks' (Dynamic Zone) will be enriched just like standard pages."
+          }
+        },
+        {
+          "name": "All Articles",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/articles?populate=*",
+              "host": ["{{baseUrl}}"],
+              "path": ["articles"]
+            },
+            "description": "List all blog posts with author and category details."
+          }
+        }
+      ]
+    },
+    {
+      "name": "🧩 Registry Lookups (Direct API)",
+      "item": [
+        {
+          "name": "Fetch All Branches",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/branches",
+              "host": ["{{baseUrl}}"],
+              "path": ["branches"]
+            },
+            "description": "Direct fetch for branches registry."
+          }
+        },
+        {
+          "name": "Fetch All Documents",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/download-documents?sort=publishDate:desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["download-documents"]
+            },
+            "description": "Direct fetch for public disclosure documents."
+          }
+        },
+        {
+          "name": "Fetch All Leadership Profiles",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/leadership-profiles?sort=displayOrder:asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["leadership-profiles"]
+            },
+            "description": "Direct fetch for the leadership registry."
           }
         }
       ]
