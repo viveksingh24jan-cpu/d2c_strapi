@@ -1,79 +1,65 @@
 # 🏗️ Kiwi General Insurance: CMS Architecture Blueprint
 
-This document defines the high-performance, headless architecture of the Kiwi CMS. It is engineered for **Simple, Scalable, Fast, and Agile** content delivery, merging ACKO’s marketing conversion power with GoDigit’s regulatory depth.
+This document defines the high-performance, headless architecture of the Kiwi CMS. It is engineered for **N-Level Recursive Nesting** and automated data hydration.
 
 ---
 
 ## 🏛️ 1. ARCHITECTURAL FOUNDATION
 
-The system is built on **Strapi v5** using a **Headless, Atomic Design** approach.
+The system is built on **Strapi v5** using a **Recursive Atomic Design** approach.
 
 ### **Core Principles:**
-*   **SSOT (Single Source of Truth):** Data (like Product pricing or Author bios) is defined in a registry once and referenced everywhere.
-*   **Atomic Reusability:** Every UI block is a reusable component. Global blocks are managed in `Shared Sections` and mirrored via `Section References`.
-*   **SEO-First:** Metadata, JSON-LD Structured Data, and Geo-location are baked into the schema level.
-*   **Headless Purity:** No pricing logic or calculators exist in the CMS; only the metadata required to render them on the frontend.
+*   **Recursive Enrichment:** Standard Strapi APIs are extended to "Auto-Hydrate" nested registries (Branches, Leadership, Documents) at any depth.
+*   **Atomic Reusability:** Every UI block is a reusable component. Nested dynamic zones (inside Tabs) allow for complex layouts without code.
+*   **Hybrid Delivery:** Combines the flexibility of a Dynamic Zone with the "Source of Truth" reliability of a Registry.
 
 ---
 
 ## 🏬 2. COLLECTION TYPES (The Warehouses)
 
-The CMS manages **21 Collection Types**, organized into four strategic tiers:
-
 ### **Tier A: Product & Marketing Engine**
-*   **Insurance Products:** The master registry for all plans (Car, Health, Home). Includes `isStandard` flag for IRDAI compliance and `startingPrice` for dynamic CTAs.
-*   **Campaigns:** Time-limited seasonal promotions (e.g., "Monsoon Offer") with start/end dates.
-*   **Partners:** Registry of network hospitals, garages, and brand collaborators.
-*   **Testimonials:** Verified social proof linked to specific products.
+*   **Insurance Products:** Master registry. Includes `enrichProductContent` for automated page building.
+*   **Campaigns:** Time-limited seasonal promotions.
+*   **Testimonials:** Verified social proof.
 
 ### **Tier B: Dynamic Content & SEO**
-*   **Pages (Unified Model):** The engine for every URL. Uses a massive Dynamic Zone to build layouts block-by-block.
-*   **Article:** Blog posts and educational guides. Linked to **Authors** and **Categories**.
-*   **Author:** Profile registry with standardized bios (blocks) and social links.
-*   **Redirects:** 301/302 SEO management.
+*   **Pages (Recursive Model):** The main engine. Supports `page-builder.tabs` with nested enrichment.
+*   **Article:** Blog posts with standardized author/category hydration.
 
 ### **Tier C: Infrastructure & Regulatory**
-*   **Transparency Reports:** IRDAI public disclosures and financial results.
-*   **Branch:** Office locations with integrated **Latitude/Longitude** for map rendering.
-*   **GrievanceLevel:** Standardized 3-tier escalation matrix.
-*   **OmbudsmanOffice:** Regional government contact registry.
-
-### **Tier D: HR & Support**
-*   **Job Listing:** Career portal data.
-*   **Tool:** Metadata for calculators (Premium, HLV, IDV).
-*   **Download Document:** Registry for PDFs (Forms, CIS, Policy Wordings).
+*   **Branch:** Office locations with auto-hydration in `branch-locator`.
+*   **Download Document:** PDF registry with automated categorisation in `document-listing`.
+*   **Leadership Profile:** Profiles with auto-sorting in `leadership-grid`.
 
 ---
 
-## 🧩 3. COMPONENT LIBRARY (The LEGO System)
+## 🧩 3. COMPONENT LIBRARY (Enhanced)
 
-### **Category 1: Page Builder (The Visuals)**
-*   `Hero Section`: High-impact banners with layout controls.
-*   `Insurance Product CTA`: Dynamic link component that pulls real-time data from the Product Registry.
-*   `Comparison Table`: Feature comparison grid.
-*   `Stats Bar`: Trust metrics (e.g., "99% Claims Ratio").
-*   `Accordion`: FAQ and detail lists.
+### **Category 1: Interactivity (New)**
+*   `Tabs Content`: Recursive dynamic zone support for multi-layered navigation.
+*   `Modals`: ID-driven overlay system for conversion triggers.
+*   `Charts`: JSON-driven data visualization for Bar/Pie/Line.
 
-### **Category 2: Shared (The Logic)**
-*   `Section Reference`: Allows a Page to render a global block from `Shared Sections`.
-*   `SEO`: Deep metadata with `structuredData` for JSON-LD.
-*   `Award`: Reusable trust badges from the Award Registry.
+### **Category 2: Conversion (Atomic)**
+*   `CTA Section (Strip)`: High-conversion headline + button strip.
+*   `Sticky CTA Bar`: Global or page-level sticky navigation for conversion.
 
 ---
 
-## 🧶 4. DATA FLOW & LINKING LOGIC
+## 🧶 4. RECURSIVE DATA FLOW
 
-1.  **Creation Workflow:** Create the **Product** or **Partner** in the registry first.
-2.  **Assembly:** Create a **Page** and add an `Insurance Product CTA` component. Select the Product via Relation.
-3.  **Inheritance:** The frontend API automatically populates the `startingPrice` and `uinNumber`.
-4.  **Global Update:** Changing a price in the Registry updates it across the entire site instantly.
+1.  **Page Fetch:** Frontend calls `/api/pages/index`.
+2.  **Service Logic:** `enrichPageContent` scans the dynamic zone.
+3.  **Nesting Dive:** It finds a `Tabs` component -> dives into each `Tab Item`.
+4.  **Hydration:** Inside a Tab, it finds a `Branch Locator` -> Fetches all Branch records and attaches them to `data`.
+5.  **Clean Output:** Client receives a single, fully-formed JSON with all nested data ready for rendering.
 
 ---
 
 ## 🧑‍💻 5. DEVELOPER IMPLEMENTATION TIPS
 
-*   **Initial Load:** Fetch `GlobalConfig` for site-wide brain data.
-*   **Page Loading:** Use the **Master Component Query** (see Postman) to fetch all dynamic blocks in one request.
-*   **Geo-SEO:** Use Branch `latitude/longitude` fields for rendering office maps.
+*   **Recursive Depth:** The enrichment engine is currently configured for N-level depth. Ensure `getCommonPopulation` is updated when adding new nested components.
+*   **MIME Types:** `media-block` is updated to allow `.json` for Lottie support. Ensure the frontend uses a Lottie player library (e.g., `lottie-react`).
+*   **Bento Grid:** Use `colSpan` (1-4) and `rowSpan` (1-4) in `card-item` to implement modern Bento-style layouts.
 
-**The Kiwi CMS is designed for maximum scalability. Treat every block as a reusable asset.**
+**The Kiwi CMS is designed for maximum scalability and zero-waterfall performance.**

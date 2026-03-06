@@ -1,32 +1,36 @@
 # 🏁 Technical Specification: Kiwi Insurance D2C CMS (v1.0)
 ## *The Architect's Handover Doc*
 
-This document is the **Source of Truth** for the system architecture, mapping, and database schema.
+This document is the **Source of Truth** for the system architecture, recursive mapping, and database schema.
 
 ---
 
-## 1. Technical Architecture
-The system uses a **Shadowing & Fallback** pattern for high-performance content delivery.
+## 1. Technical Architecture: "The Enrichment Engine"
+Unlike standard Strapi fetches, this system uses a custom **Recursive Enrichment Engine** in the backend (`src/api/*/services/*.ts`).
 
-1.  **Registry (Level 0)**: Master Coverage collection.
-2.  **Product (Level 1)**: Vehicle master (e.g., `4W`).
-3.  **Plan (Level 2)**: Policy variant (e.g., `Comprehensive`).
+### **Recursive N-Level Nesting**
+The `enrichPageContent` method automatically hydrates "Automated" components even if they are nested inside:
+1.  **Tabs Content** (Dynamic Zone inside Tabs)
+2.  **Shared Section References** (Blocks mirrored from global sections)
+3.  **Hero/Banner Zones**
 
-### **The "Identifier" Pattern**
-Every entity has an `identifier` field (Unique String). This is used by the insurance pricing engine and the frontend for 1:1 mapping.
+### **Automated Hydration Components**
+*   **`branch-locator`**: Injects Branch registry records based on `filterType`.
+*   **`leadership-grid`**: Injects Leadership profiles by `category`.
+*   **`document-listing`**: Injects Disclosure documents by `category`.
+*   **`product-grid`**: Injects Insurance Products visible on the homepage.
 
 ---
 
 ## 2. API Endpoints & Population
 
-### **A. Homepage Product Cards**
-*   **Query**: `GET /api/insurance-products?filters[uiConfig][isVisibleOnHomepage][$eq]=true&populate=cardIcon,uiConfig,cta`
+### **A. Optimized Page Fetch (Clean JSON)**
+*   **Query**: `GET /api/pages/:idOrSlug`
+*   **Population**: Automatically handles deep nesting of images, CTAs, and automated data. No complex query strings required on the frontend.
 
 ### **B. Product Landing Page**
-*   **Query**: `GET /api/insurance-products?filters[slug][$eq]=car-insurance&populate=keyBenefits,seo,pageBuilder,cta`
-
-### **C. Plan Selection Page**
-*   **Query**: `GET /api/insurance-plans?filters[insuranceProduct][identifier][$eq]=4W&populate=inclusions,addons,discounts,faqs,comparisonAttributes,seo`
+*   **Query**: `GET /api/insurance-products/:slug`
+*   **Enrichment**: Hydrates the `pageBuilder` dynamic zone with all registry data.
 
 ---
 
@@ -38,26 +42,32 @@ Every entity has an `identifier` field (Unique String). This is used by the insu
 | **InsuranceProduct**| Vehicle Master | Belongs to `LOB`. Has Many `InsurancePlans`. |
 | **InsurancePlan** | Policy Master | Has Many `InsuranceProducts` (Matrix). Has Many `Coverages`. |
 | **Coverage** | Keyword Master | Has Many `InsurancePlans` (Registry). |
+| **Page** | Unified URL | Dynamic Zone with recursive hydration. |
 
 ---
 
-## 4. Components Registry
+## 4. Components Registry (Advanced)
 
-### **`shared.seo` (Enterprise)**
-Includes `metaRobots`, `canonicalURL`, and `structuredData` (JSON-LD).
+### **`page-builder.tabs` (Interactivity)**
+Supports N-level nested Dynamic Zones inside each tab.
 
-### **`shared.cta` (Dynamic)**
-Supports `variants` (Primary/Secondary) and `isVisible` toggles for atomic button management.
+### **`page-builder.modals` (Conversion)**
+Configurable exit-intent or time-delay popups via `modalId` and `triggerOnLoad`.
 
-### **`product.plan-coverage` (Link Engine)**
-This component links a Plan to a Master Coverage and provides **Override** fields:
-*   `titleOverride`
-*   `descriptionOverride`
-*   `iconOverride`
+### **`page-builder.charts` (Data Viz)**
+Supports Bar, Pie, Line, and Radar charts via standard JSON data payloads.
 
 ---
 
-## 5. Deployment & Maintenance
-1.  **Strapi v4**: Uses standard REST endpoints.
-2.  **Identifiers**: NEVER change an `identifier` in the CMS without updating the Price Engine code.
-3.  **SEO Canonicalization**: Use the `canonicalURL` field to prevent duplicate content penalties across tenures.
+## 5. Postman Collection: Test Scenarios
+The collection in `postman/` covers:
+1.  **Hydrated Page Load**: Verifies that Branch/Document data is injected correctly.
+2.  **Product Landing Matrix**: Testing LOB > Product > Plan population.
+3.  **Search & Registry**: Testing direct lookup by technical keywords.
+
+---
+
+## 6. Developer Maintenance
+1.  **Adding an Automated Block**: Update `enrichPageContent` in `src/api/page/services/page.ts`.
+2.  **Schema Changes**: Ensure `getCommonPopulation` is updated to include new nested fields.
+3.  **Performance**: The enrichment logic runs server-side to ensure the frontend receives a single, fast LCP-optimized JSON.
