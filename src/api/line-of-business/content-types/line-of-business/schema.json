@@ -29,7 +29,9 @@
     "icon": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
     "heroHeading": {
       "type": "string"

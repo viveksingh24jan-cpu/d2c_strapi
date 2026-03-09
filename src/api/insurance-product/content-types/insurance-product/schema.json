@@ -10,6 +10,7 @@
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
     "productName": {
       "type": "string",
@@ -18,8 +19,7 @@
     "identifier": {
       "type": "string",
       "required": true,
-      "unique": true,
-      "description": "e.g. 4W, 2W, CV"
+      "unique": true
     },
     "slug": {
       "type": "uid",
@@ -34,13 +34,11 @@
         "Tax Saving",
         "Recommended",
         "Limited Offer"
-      ],
-      "description": "Badge shown on product cards"
+      ]
     },
     "sortOrder": {
       "type": "integer",
-      "default": 0,
-      "description": "Lower numbers appear first in listings"
+      "default": 0
     },
     "isVisibleOnHomepage": {
       "type": "boolean",
@@ -61,7 +59,9 @@
     "cardIcon": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
     "heroHeading": {
       "type": "string"
@@ -97,8 +97,8 @@
     },
     "keyBenefits": {
       "type": "component",
-      "repeatable": true,
-      "component": "product.key-benefit"
+      "component": "product.key-benefit",
+      "repeatable": true
     },
     "seo": {
       "type": "component",
@@ -111,6 +111,41 @@
     "uiConfig": {
       "type": "component",
       "component": "shared.ui-config"
+    },
+    "isEmiAvailable": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "uinNumber": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "isActive": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "isMonthlyAvailable": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "isWithdrawn": {
+      "type": "boolean",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": ""
+            },
+            ""
+          ]
+        }
+      },
+      "required": true,
+      "default": false
     }
   }
 }

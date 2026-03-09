@@ -985,7 +985,19 @@ export interface ApiInsuranceProductInsuranceProduct
       'manyToMany',
       'api::insurance-plan.insurance-plan'
     >;
+    isActive: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
+    isEmiAvailable: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    isMonthlyAvailable: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
     isVisibleOnHomepage: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    isWithdrawn: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<false>;
     keyBenefits: Schema.Attribute.Component<'product.key-benefit', true>;
     lineOfBusiness: Schema.Attribute.Relation<
@@ -1032,6 +1044,9 @@ export interface ApiInsuranceProductInsuranceProduct
     slug: Schema.Attribute.UID<'productName'> & Schema.Attribute.Required;
     sortOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     uiConfig: Schema.Attribute.Component<'shared.ui-config', false>;
+    uinNumber: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1172,6 +1187,42 @@ export interface ApiNavigationMenuNavigationMenu
   };
 }
 
+export interface ApiNodalOfficerNodalOfficer
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'nodal_officers';
+  info: {
+    displayName: 'Nodal Officer Registry';
+    pluralName: 'nodal-officers';
+    singularName: 'nodal-officer';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    address: Schema.Attribute.Text & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    designation: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Nodal Officer'>;
+    email: Schema.Attribute.Email & Schema.Attribute.Required;
+    jurisdiction: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::nodal-officer.nodal-officer'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    phone: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    state: Schema.Attribute.Relation<'manyToOne', 'api::state.state'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiPagePage extends Struct.CollectionTypeSchema {
   collectionName: 'pages';
   info: {
@@ -1297,6 +1348,41 @@ export interface ApiSharedSectionSharedSection
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiStateState extends Struct.CollectionTypeSchema {
+  collectionName: 'states';
+  info: {
+    displayName: 'State/UT Registry';
+    pluralName: 'states';
+    singularName: 'state';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    code: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isUT: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::state.state'> &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    nodal_officers: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::nodal-officer.nodal-officer'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1925,8 +2011,10 @@ declare module '@strapi/strapi' {
       'api::leadership-profile.leadership-profile': ApiLeadershipProfileLeadershipProfile;
       'api::line-of-business.line-of-business': ApiLineOfBusinessLineOfBusiness;
       'api::navigation-menu.navigation-menu': ApiNavigationMenuNavigationMenu;
+      'api::nodal-officer.nodal-officer': ApiNodalOfficerNodalOfficer;
       'api::page.page': ApiPagePage;
       'api::shared-section.shared-section': ApiSharedSectionSharedSection;
+      'api::state.state': ApiStateState;
       'api::testimonial.testimonial': ApiTestimonialTestimonial;
       'api::tool.tool': ApiToolTool;
       'plugin::content-releases.release': PluginContentReleasesRelease;

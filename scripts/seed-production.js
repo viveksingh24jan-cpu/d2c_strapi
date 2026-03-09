@@ -3,55 +3,68 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = async function seed(strapi) {
-  console.log('🚀 Starting PRODUCTION SEED (Semantic Mapping Only - No ProductIDs)...');
+  console.log('🚀 Starting PRODUCTION SEED (Nodal Officer Registry Upgrade)...');
 
   // 1. CLEANUP
   const collections = [
     'api::page.page', 'api::navigation-menu.navigation-menu', 'api::insurance-product.insurance-product',
     'api::insurance-plan.insurance-plan', 'api::coverage.coverage', 'api::line-of-business.line-of-business',
-    'api::ccm-config.ccm-config'
+    'api::ccm-config.ccm-config', 'api::state.state', 'api::nodal-officer.nodal-officer'
   ];
   for (const uid of collections) {
     try {
-      const docs = await strapi.documents(uid).findMany({ locale: 'en', status: 'draft' });
+      const docs = await strapi.documents(uid).findMany({ locale: 'en', status: 'published' });
       for (const doc of docs) await strapi.documents(uid).delete({ documentId: doc.documentId, locale: 'en' });
-      const pubDocs = await strapi.documents(uid).findMany({ locale: 'en', status: 'published' });
-      for (const doc of pubDocs) await strapi.documents(uid).delete({ documentId: doc.documentId, locale: 'en' });
+      const draftDocs = await strapi.documents(uid).findMany({ locale: 'en', status: 'draft' });
+      for (const doc of draftDocs) await strapi.documents(uid).delete({ documentId: doc.documentId, locale: 'en' });
     } catch (e) { }
   }
 
-  // 2. LOB
+  // 2. STATE REGISTRY
+  console.log('🇮🇳 Populating States...');
+  const states = [
+    { name: 'Maharashtra', code: 'MH', isUT: false },
+    { name: 'Delhi', code: 'DL', isUT: true },
+    { name: 'Karnataka', code: 'KA', isUT: false }
+  ];
+  const stateMap = {};
+  for (const s of states) {
+    const created = await strapi.documents('api::state.state').create({
+      data: { name: s.name, code: s.code, isUT: s.isUT },
+      status: 'published', locale: 'en'
+    });
+    stateMap[s.code] = created.id;
+  }
+
+  // 3. NODAL OFFICERS
+  console.log('👮 Adding Nodal Officers...');
+  const officers = [
+    { name: 'Arun Kumar', state: 'MH', email: 'nodal.mh@kiwi.com', phone: '022-1234567', addr: 'Lotus Business Park, Mumbai', juris: 'All Maharashtra except Pune' },
+    { name: 'Sanjay Patil', state: 'MH', email: 'nodal.pune@kiwi.com', phone: '020-7654321', addr: 'Shivaji Nagar, Pune', juris: 'Pune District' },
+    { name: 'Meenakshi Sharma', state: 'DL', email: 'nodal.dl@kiwi.com', phone: '011-9988776', addr: 'Connaught Place, New Delhi', juris: 'Delhi NCR' }
+  ];
+  for (const o of officers) {
+    await strapi.documents('api::nodal-officer.nodal-officer').create({
+      data: {
+        name: o.name,
+        email: o.email,
+        phone: o.phone,
+        address: o.addr,
+        jurisdiction: o.juris,
+        state: stateMap[o.state]
+      },
+      status: 'published', locale: 'en'
+    });
+  }
+
+  // 4. LOB & COVERAGES (Minimal for logic check)
   const lobMoto = await strapi.documents('api::line-of-business.line-of-business').create({ 
     data: { name: 'Motor Insurance', identifier: 'MOTO', slug: 'motor-insurance' },
     status: 'published', locale: 'en'
   });
 
-  // 3. COVERAGE REGISTRY
-  const sorCoverages = [
-    { code: 'LLTP_FLAG', name: 'Legal Liability to Third Party', type: 'default', icon: 'shield-user' },
-    { code: 'PAOD_FLAG', name: 'CPA to owner driver', type: 'default', icon: 'heart-pulse' },
-    { code: 'ZERO_DEP', name: 'Zero Depreciation', type: 'addon', icon: 'sparkles' }
-  ];
-
-  const coverageMap = {};
-  for (const c of sorCoverages) {
-    const created = await strapi.documents('api::coverage.coverage').create({ 
-      data: { 
-        name: c.name, 
-        identifier: c.code, 
-        type: c.type, 
-        iconCode: c.icon,
-        pdfDisplayName: c.name,
-        pdfLegalWording: `Legal wording for ${c.name}`
-      },
-      status: 'published', locale: 'en'
-    });
-    coverageMap[c.code] = created.id;
-  }
-
-  // 4. PRODUCTS
-  const product2W = await strapi.documents('api::insurance-product.insurance-product').create({
-    data: { productName: 'Bike Insurance', identifier: 'TWOWHEELER', slug: 'bike-insurance', lineOfBusiness: lobMoto.id },
+  const createdCov = await strapi.documents('api::coverage.coverage').create({ 
+    data: { name: 'Zero Depreciation', identifier: 'ZERO_DEP', type: 'addon', pdfDisplayName: 'Depreciation Waiver', pdfLegalWording: 'Full wording...' },
     status: 'published', locale: 'en'
   });
 
@@ -60,41 +73,25 @@ module.exports = async function seed(strapi) {
     status: 'published', locale: 'en'
   });
 
-  // 5. PLANS
   const planComp = await strapi.documents('api::insurance-plan.insurance-plan').create({
-    data: { name: 'Comprehensive Package', identifier: 'PACKAGE', slug: 'comprehensive-package', insuranceProducts: [product2W.id, product4W.id], coverages: Object.values(coverageMap) },
+    data: { name: 'Comprehensive Package', identifier: 'PACKAGE', slug: 'comprehensive-package', insuranceProducts: [product4W.id], coverages: [createdCov.id] },
     status: 'published', locale: 'en'
   });
 
-  // 6. CCM PDF BUILDER (Semantic Mapping)
-  const categories = [
-    { name: 'Bike', sublob: 'TWOWHEELER' },
-    { name: 'Car', sublob: 'FOURWHEELER' }
-  ];
+  // 5. CCM PDF BUILDER
+  await strapi.documents('api::ccm-config.ccm-config').create({
+    data: {
+      templateName: 'Motor Policy Schedule',
+      documentType: 'policy_schedule',
+      sor_lob: 'MOTO',
+      sor_sublob: 'FOURWHEELER',
+      sor_package: 'PACKAGE',
+      linkedPlan: planComp.id,
+      sections: [{ sectionTitle: 'Coverages', xmlTag: 'COVERAGES', isDynamicCoverages: true }],
+      footerText: 'Kiwi Insurance'
+    },
+    status: 'published', locale: 'en'
+  });
 
-  const docTypes = ['policy_schedule', 'proposal_pdf', 'quote_pdf', 'premium_receipt', 'e_card'];
-
-  for (const cat of categories) {
-    for (const type of docTypes) {
-      await strapi.documents('api::ccm-config.ccm-config').create({
-        data: {
-          templateName: `${cat.name} Template: ${type}`,
-          documentType: type,
-          sor_lob: 'MOTO',
-          sor_sublob: cat.sublob,
-          sor_package: 'PACKAGE',
-          linkedPlan: planComp.id,
-          sections: [
-            { sectionTitle: 'Header', xmlTag: 'HEADER', content: [{ type: 'paragraph', children: [{ type: 'text', text: `Official ${cat.name} ${type} document.` }] }] },
-            { sectionTitle: 'Coverages', xmlTag: 'COVERAGES', isDynamicCoverages: true }
-          ],
-          footerText: 'Kiwi Insurance Ltd.'
-        },
-        status: 'published', locale: 'en'
-      });
-    }
-    console.log(`[Seed] Created full template suite for ${cat.name} (${cat.sublob})`);
-  }
-
-  console.log('✨ SUCCESS: DATA HYDRATED WITH SEMANTIC MAPPING (NO PRODUCT_ID).');
+  console.log('✨ SUCCESS: NODAL OFFICERS MAPPED TO STATES.');
 }

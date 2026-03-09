@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "nodal_officers",
+  "info": {
+    "singularName": "nodal-officer",
+    "pluralName": "nodal-officers",
+    "displayName": "Nodal Officer Registry"
+  },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "name": { "type": "string", "required": true },
+    "designation": { "type": "string", "default": "Nodal Officer" },
+    "email": { "type": "email", "required": true },
+    "phone": { "type": "string", "required": true },
+    "address": { "type": "text", "required": true },
+    "state": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::state.state",
+      "inversedBy": "nodal_officers"
+    },
+    "jurisdiction": {
+      "type": "text",
+      "description": "Specific areas covered (e.g. 'Western Maharashtra')"
+    }
+  }
+}

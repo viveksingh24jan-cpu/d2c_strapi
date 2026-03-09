@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "states",
+  "info": {
+    "singularName": "state",
+    "pluralName": "states",
+    "displayName": "State/UT Registry"
+  },
+  "options": { "draftAndPublish": false },
+  "attributes": {
+    "name": { "type": "string", "required": true, "unique": true },
+    "code": { "type": "string", "required": true, "unique": true, "description": "Short code (e.g. MH, DL)" },
+    "isUT": { "type": "boolean", "default": false },
+    "nodal_officers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::nodal-officer.nodal-officer",
+      "mappedBy": "state"
+    }
+  }
+}
